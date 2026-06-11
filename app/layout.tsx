@@ -6,7 +6,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Lumenfield - AI Creative Platform",
-  description: "Lumenfield ile AI destekli görsel, video, ses ve daha fazlasını yaratın.",
+  description: "Create stunning visuals, videos, audio and more with AI. Professional creative platform powered by Lumenfield.",
+  keywords: ["AI", "creative", "image generation", "video", "Lumenfield"],
 };
 
 export default function RootLayout({
@@ -15,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr">
+    <html lang="en">
       <body className={`${inter.className} bg-black text-white antialiased`}>
         {children}
       </body>

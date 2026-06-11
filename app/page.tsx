@@ -61,7 +61,7 @@ export default function Home() {
             ].map((item) => (
               <button
                 key={item.name}
-                className="px-3 py-2 text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-1"
+                className="px-3 py-2 text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-1 whitespace-nowrap"
               >
                 {item.name}
                 {item.badge && (
@@ -117,7 +117,7 @@ export default function Home() {
           </h1>
 
           <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
-            Lumenfield ile sınırsız yaratıcılığa adım atın. AI destekli görsel, video ve ses üretimi için profesyonel platform.
+            Step into limitless creativity with Lumenfield. Professional AI-powered platform for image, video, and audio generation.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -128,10 +128,10 @@ export default function Home() {
                 boxShadow: '0 0 20px rgba(255, 0, 136, 0.5)'
               }}
             >
-              🚀 Hemen Başla
+              🚀 Get Started
             </button>
             <button className="border-2 border-gray-600 hover:border-pink-500 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all">
-              📺 Demo İzle
+              📺 Watch Demo
             </button>
           </div>
         </div>
@@ -142,22 +142,22 @@ export default function Home() {
             {
               icon: "🎨",
               title: "Image Studio",
-              description: "AI ile profesyonel görseller. Midjourney, DALL-E, Stable Diffusion.",
+              description: "Create professional visuals with AI. Midjourney, DALL-E, Stable Diffusion integration.",
             },
             {
               icon: "🎬",
               title: "Cinema Studio",
-              description: "Hollywood kalitesinde video üretimi. Sahne, ışık, karakter.",
+              description: "Hollywood-quality video production. Scenes, lighting, characters in one platform.",
             },
             {
               icon: "🎵",
               title: "Audio Lab",
-              description: "AI ile müzik bestele, ses efektleri, podcast üretimi.",
+              description: "Compose music with AI, generate sound effects, produce podcasts.",
             },
           ].map((feature, i) => (
             <div
               key={i}
-              className="p-6 rounded-xl transition-all"
+              className="p-6 rounded-xl transition-all hover:scale-105"
               style={{ 
                 backgroundColor: '#0A0A0C',
                 border: '1px solid rgba(161, 161, 170, 0.2)'
@@ -176,7 +176,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="relative z-10 border-t border-gray-800 mt-24 py-8">
         <div className="max-w-7xl mx-auto px-6 text-center text-gray-400 text-sm">
-          © 2025 Lumenfield. Tüm yaratıcılığın aydınlandığı yer. ✨
+          © 2025 Lumenfield. Where creativity comes to light. ✨
         </div>
       </footer>
     </div>
