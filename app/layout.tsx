@@ -5,9 +5,10 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Lumenfield - AI Creative Platform",
-  description: "Create stunning visuals, videos, audio and more with AI. Professional creative platform powered by Lumenfield.",
-  keywords: ["AI", "creative", "image generation", "video", "Lumenfield"],
+  title: "Lumenfield AI Studio",
+  description:
+    "A premium AI production workspace for image, video, audio, marketing, plugins, credits and multilingual creative teams.",
+  keywords: ["Lumenfield", "AI studio", "image generation", "video generation", "AI marketing"],
 };
 
 export default function RootLayout({
