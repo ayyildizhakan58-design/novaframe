@@ -349,7 +349,7 @@ function ExplorePage({go}:{go:(p:Page)=>void}) {
     {n:"Seedance 2.0",     d:"720p cinematic video",        i:"⚡",p:"cinema" as Page,a:"#6366f1"},
     {n:"Marketing Studio", d:"Product ads in seconds",      i:"📱",p:"marketing" as Page,a:M},
     {n:"AI Influencer",    d:"Build virtual creators",      i:"🤖",p:"influencer" as Page,a:"#10b981"},
-    {n:"Nano Visual Pro",  d:"Photorealistic images",       i:"🎨",p:"image" as Page,a:"#f59e0b"},
+    {n:"Lumenfield Visual Pro", d:"Photorealistic images",  i:"🎨",p:"image" as Page,a:"#f59e0b"},
     {n:"Audio Studio",     d:"Voices in 30+ languages",     i:"🎙",p:"audio" as Page,a:"#06b6d4"},
     {n:"Canvas",           d:"AI visual workspace",         i:"🖼",p:"canvas" as Page,a:"#8b5cf6"},
   ];
@@ -1180,7 +1180,7 @@ function LibraryPage({go}:{go:(p:Page)=>void}) {
 
 // ─── LOGIN ────────────────────────────────────────────────────────────────────
 function LoginPage({go}:{go:(p:Page)=>void}) {
-  const tabs = ["Nano Visual Pro","Kling 3.0","Lumenfield Soul","Cinema App","SeedMotion 2.0","VeoStyle 3.1"];
+  const tabs = ["Lumenfield Visual Pro","Kling 3.0","Lumenfield Soul","Cinema App","SeedMotion 2.0","VeoStyle 3.1"];
   const [tab,setTab] = useState(0);
   const bgs = [`linear-gradient(160deg,#1a0030,${MD},#0d0019)`,"linear-gradient(160deg,#001020,#003060,#001020)","linear-gradient(160deg,#200010,#600030,#200010)","linear-gradient(160deg,#001020,#002040,#001020)","linear-gradient(160deg,#102000,#205000,#102000)","linear-gradient(160deg,#001020,#003030,#001020)"];
   return (
