@@ -1,4 +1,3 @@
-﻿
 "use client";
 import { type ReactNode, useState, useEffect } from "react";
 
@@ -21,14 +20,94 @@ type Page =
   | "pricing" | "mcp" | "collab" | "supercomputer" | "plugins";
 
 type Mega = "image" | "video" | "audio" | null;
+type CatalogItem = {
+  title: string;
+  desc: string;
+  icon: string;
+  badge?: "NEW" | "TOP" | "EXCLUSIVE";
+};
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
-const IMG_F = ["Create Image","Cinematic Cameras","Moodboard","Soul ID","AI Influencer","Photodump","Relight","Inpaint","Image Upscale","Face Swap","Character Swap","Draw to Edit","Fashion Factory"];
-const IMG_M = ["Nano Visual Pro","GPT Image 2","Recraft V4.1","Nano Banana Pro","Seedream 5.0","FluxFrame 2","Reve Studio","Z-Image","Topaz Upscale"];
-const VID_F = ["Create Video","Cinema Studio","Mixed Media","Edit Video","Click to Ad","Trend Generator","Lipsync Studio","Draw to Video","Sketch to Video","UGC Factory","Video Upscale","Animate","Vibe Motion","Recast Studio"];
-const VID_M = ["Seedance 2.0","Kling Motion 3.0","Kling O1 Edit","Sora 2","Google Veo 3.1","HappyHorse","Grok Imagine 1.5","WanFrame 2.7","Minimax Hailuo","DOP Camera Model"];
-const AUD_F = ["Voiceover","Change Voice","Translation","Text to Speech","Audio Localization","Lipsync Audio"];
-const AUD_M = ["Eleven v3","MiniMax Speech 2.8 HD","Seed Speech","VibeVoice","Calm Narrator","Studio Voice Pro"];
+const IMG_F: CatalogItem[] = [
+  {title:"Create Image",        desc:"Generate AI images",                              icon:"▧"},
+  {title:"Cinematic Cameras",   desc:"Image generation with camera controls",           icon:"▣", badge:"TOP"},
+  {title:"Canvas",              desc:"Visual ideation meets repeatable AI workflows",   icon:"⌘", badge:"NEW"},
+  {title:"Moodboard",           desc:"Turn your references into a focused moodboard",   icon:"〰"},
+  {title:"Soul ID Character",   desc:"Create unique reusable characters",               icon:"◎"},
+  {title:"AI Influencer",       desc:"Create and manage your AI influencer",            icon:"✦"},
+  {title:"Photodump",           desc:"Generate your aesthetic",                         icon:"▤", badge:"NEW"},
+  {title:"Relight",             desc:"Adjust lighting position, color, and brightness", icon:"☼"},
+  {title:"Inpaint",             desc:"Select an area, describe the change",             icon:"✐"},
+  {title:"Image Upscale",       desc:"Enhance image quality",                           icon:"↗"},
+  {title:"Face Swap",           desc:"Create realistic face swaps",                     icon:"▢"},
+  {title:"Character Swap",      desc:"Create realistic character swaps",                icon:"♙"},
+  {title:"Draw to Edit",        desc:"From sketch to picture",                          icon:"⌁"},
+  {title:"Fashion Factory",     desc:"Create fashion sets",                             icon:"▣"},
+];
+const IMG_M: CatalogItem[] = [
+  {title:"Lumenfield Soul 2.0",    desc:"Next generation ultra-realistic fashion visuals", icon:"∿", badge:"TOP"},
+  {title:"Lumenfield Soul Cinema", desc:"Cinematic film-grade aesthetic",                  icon:"∿"},
+  {title:"Lumenfield Popcorn",     desc:"Storyboard, edit, create",                        icon:"▱"},
+  {title:"GPT Image 2",            desc:"4K images with near-perfect text rendering",       icon:"◌", badge:"NEW"},
+  {title:"Recraft V4.1",           desc:"Photorealistic and expressive image generation",   icon:"◒", badge:"NEW"},
+  {title:"Nano Banana 2",          desc:"Pro quality at Flash speed",                       icon:"⌁"},
+  {title:"Nano Banana Pro",        desc:"Best 4K image model ever",                         icon:"⌁", badge:"TOP"},
+  {title:"Seedream 5.0 Lite",      desc:"Intelligent visual reasoning",                     icon:"▥"},
+  {title:"GPT Image 1.5",          desc:"True-color precision rendering",                   icon:"◎"},
+  {title:"Grok Imagine",           desc:"Versatile image styles by xAI",                    icon:"◓"},
+  {title:"FLUX.2",                 desc:"Speed-optimized detail",                           icon:"△"},
+  {title:"Reve",                   desc:"Advanced image editing model",                     icon:"✣"},
+  {title:"Z-Image",                desc:"Instant lifelike portraits",                       icon:"♜"},
+  {title:"Topaz",                  desc:"High-resolution upscaler",                         icon:"▪"},
+];
+const VID_F: CatalogItem[] = [
+  {title:"Create Video",     desc:"Generate AI videos",                         icon:"▯"},
+  {title:"Cinema Studio",    desc:"Cinematic video with AI director",           icon:"▦", badge:"TOP"},
+  {title:"Canvas",           desc:"Visual ideation meets repeatable workflows", icon:"⌘", badge:"NEW"},
+  {title:"Mixed Media",      desc:"Create mixed media projects",                icon:"▧"},
+  {title:"Edit Video",       desc:"Edit scenes, shots, elements",               icon:"▷"},
+  {title:"Click to Ad",      desc:"Turn product URLs into video ads",           icon:"⌲"},
+  {title:"Sora 2 Trends",    desc:"Turn ideas into viral videos",               icon:"✿"},
+  {title:"Lipsync Studio",   desc:"Create talking clips",                       icon:"♩"},
+  {title:"Draw to Video",    desc:"Sketch turns into a cinema",                 icon:"✐"},
+  {title:"Sketch to Video",  desc:"From sketch to video with Sora 2",           icon:"〰"},
+  {title:"UGC Factory",      desc:"Build UGC video with avatar",                icon:"▤"},
+  {title:"Video Upscale",    desc:"Enhance video quality",                      icon:"↙"},
+  {title:"Lumenfield Animate",desc:"Video smart replacement",                   icon:"☼"},
+  {title:"Vibe Motion",      desc:"Create professional motion graphics",        icon:"▯"},
+  {title:"Recast Studio",    desc:"Swap characters in videos",                  icon:"♭"},
+];
+const VID_M: CatalogItem[] = [
+  {title:"Seedance 2.0",         desc:"Most advanced video model",                         icon:"▥", badge:"TOP"},
+  {title:"Kling 3.0",            desc:"Cinematic videos with audio",                       icon:"◓", badge:"TOP"},
+  {title:"Kling Motion Control", desc:"Transfer motion from video to image",               icon:"◓"},
+  {title:"Kling O1 Edit",        desc:"Advanced video editing",                            icon:"◓"},
+  {title:"Sora 2",               desc:"OpenAI's most advanced video model",                icon:"✿"},
+  {title:"Google Veo 3.1 Lite",  desc:"Fast video generation by Google",                   icon:"G"},
+  {title:"Google Veo 3.1",       desc:"Advanced AI video with sound",                      icon:"G"},
+  {title:"HappyHorse",           desc:"Alibaba's ranked video and audio model",            icon:"〰"},
+  {title:"Grok Imagine Video",   desc:"Cinematic videos with synchronized audio",          icon:"◒", badge:"NEW"},
+  {title:"Wan 2.7",              desc:"AI video generation with first and end frame control",icon:"♜"},
+  {title:"Minimax Hailuo 2.3",   desc:"Fastest high-dynamic video",                        icon:"≋"},
+  {title:"Seedance 1.5 Pro",     desc:"Pro-grade audio-visual sync",                       icon:"▥"},
+  {title:"Lumenfield DOP",       desc:"VFX and camera control",                            icon:"∿"},
+];
+const AUD_F: CatalogItem[] = [
+  {title:"Voiceover",          desc:"Create expressive narration",             icon:"▌"},
+  {title:"Change Voice",       desc:"Transform voice tone and identity",       icon:"≋"},
+  {title:"Translation",        desc:"Localize voices across languages",        icon:"文"},
+  {title:"Text to Speech",     desc:"Studio quality speech generation",        icon:"T"},
+  {title:"Audio Localization", desc:"Match speech to markets and platforms",   icon:"◎"},
+  {title:"Lipsync Audio",      desc:"Prepare audio for talking clips",         icon:"♩"},
+];
+const AUD_M: CatalogItem[] = [
+  {title:"Eleven v3",             desc:"Expressive AI voice with emotion control", icon:"▌", badge:"TOP"},
+  {title:"MiniMax Speech 2.8 HD", desc:"Studio-quality text-to-speech",            icon:"≋", badge:"NEW"},
+  {title:"Seed Speech",           desc:"Multilingual text-to-speech",              icon:"▥"},
+  {title:"VibeVoice",             desc:"Long-form expressive voice synthesis",     icon:"V"},
+  {title:"Calm Narrator",         desc:"Clean narration for explainers",           icon:"◎"},
+  {title:"Studio Voice Pro",      desc:"Premium voiceover production",             icon:"✦"},
+];
 
 const CMODELS = [
   { name:"Cinema Studio 3.5", tag:"NEW",       desc:"AI director · camera selection · style presets", group:"Cinematic" },
@@ -111,6 +190,14 @@ button,input,textarea,select{font-family:inherit}
 .mc:hover,.mc.on{border-color:#e8006f;color:#ff4da6;background:rgba(232,0,111,.08)}
 .pc{display:flex;align-items:center;gap:6px;background:#0d0d0d;border:1px solid #1f1f1f;border-radius:8px;padding:8px 14px;font-size:12px;color:#888;cursor:pointer;transition:all .15s;font-weight:600}
 .pc:hover,.pc.on{border-color:#e8006f;color:#fff;background:rgba(232,0,111,.1)}
+.megaRow{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:center;width:100%;min-height:48px;background:transparent;border:0;border-radius:12px;padding:0;cursor:pointer;text-align:left;transition:background .16s,transform .16s}
+.megaRow:hover{background:rgba(255,255,255,.035);transform:translateX(3px)}
+.megaIcon{position:relative;width:48px;height:48px;border-radius:10px;background:#1b1d21;border:1px solid rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:900;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.megaRow:hover .megaIcon{border-color:rgba(232,0,111,.45);box-shadow:0 0 22px rgba(232,0,111,.18),inset 0 1px 0 rgba(255,255,255,.06)}
+.megaBadge{position:absolute;left:6px;top:-8px;z-index:2}
+.megaTitle{display:block;color:#fff;font-size:14px;font-weight:800;line-height:1.15;margin-bottom:5px}
+.megaDesc{display:block;color:#8f8f8f;font-size:13px;line-height:1.25}
+@media (max-width:760px){.megaRow{grid-template-columns:42px 1fr}.megaIcon{width:42px;height:42px}.megaTitle{font-size:13px}.megaDesc{font-size:12px}}
 `;
 
 // ─── MICRO COMPONENTS ────────────────────────────────────────────────────────
@@ -150,6 +237,32 @@ function Logo({sz=28}:{sz?:number}) {
   );
 }
 
+function Badge({label}:{label?: string}) {
+  if (!label) return null;
+  const bg = label === "TOP" ? M : label === "EXCLUSIVE" ? "#2563eb" : "#ccff00";
+  const fg = label === "NEW" ? "#050505" : "#fff";
+  return (
+    <span style={{background:bg,color:fg,border:`1px solid ${label==="NEW"?"rgba(204,255,0,.45)":"rgba(255,255,255,.18)"}`,borderRadius:5,padding:"2px 6px",fontSize:9,fontWeight:900,lineHeight:1,letterSpacing:.3,transform:"rotate(-5deg)",boxShadow:`0 0 18px ${bg}55`}}>
+      {label}
+    </span>
+  );
+}
+
+function MegaRow({item,onClick}:{item: CatalogItem; onClick:()=>void}) {
+  return (
+    <button onClick={onClick} className="megaRow">
+      <span className="megaIcon">
+        {item.badge && <span className="megaBadge"><Badge label={item.badge}/></span>}
+        {item.icon}
+      </span>
+      <span style={{minWidth:0}}>
+        <span className="megaTitle">{item.title}</span>
+        <span className="megaDesc">{item.desc}</span>
+      </span>
+    </button>
+  );
+}
+
 // ─── NAV ─────────────────────────────────────────────────────────────────────
 function Nav({cur,go}:{cur:Page;go:(p:Page)=>void}) {
   const [mega,setMega] = useState<Mega>(null);
@@ -171,10 +284,10 @@ function Nav({cur,go}:{cur:Page;go:(p:Page)=>void}) {
     {l:"Pricing",        p:"pricing"       as Page, badge:"30% OFF",bc:M},
   ];
 
-  const src = {
-    image: {f:IMG_F, m:IMG_M},
-    video: {f:VID_F, m:VID_M},
-    audio: {f:AUD_F, m:AUD_M},
+  const src: Record<Exclude<Mega, null>, {f: CatalogItem[]; m: CatalogItem[]; page: Page}> = {
+    image: {f:IMG_F, m:IMG_M, page:"image"},
+    video: {f:VID_F, m:VID_M, page:"video"},
+    audio: {f:AUD_F, m:AUD_M, page:"audio"},
   };
 
   return (
@@ -206,31 +319,17 @@ function Nav({cur,go}:{cur:Page;go:(p:Page)=>void}) {
       {mega&&(()=>{
         const d = src[mega];
         return (
-          <div style={{position:"absolute",top:57,left:0,right:0,background:"rgba(5,5,5,.98)",backdropFilter:"blur(20px)",borderBottom:`1px solid ${B1}`,padding:"28px 48px",display:"flex",gap:64,zIndex:1000,animation:"fadeIn .15s ease"}}>
+          <div style={{position:"absolute",top:57,left:8,width:"min(770px,calc(100vw - 16px))",maxHeight:"calc(100vh - 74px)",overflow:"auto",background:"rgba(22,22,22,.96)",backdropFilter:"blur(24px)",border:`1px solid ${B1}`,borderRadius:24,padding:"18px 18px 20px",display:"grid",gridTemplateColumns:"1fr 1fr",gap:28,zIndex:1000,boxShadow:"0 28px 90px rgba(0,0,0,.7), 0 0 0 1px rgba(232,0,111,.04)",animation:"fadeUp .18s ease both"}}>
             <div>
-              <Lbl s="Features"/>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"5px 28px",marginTop:12}}>
-                {d.f.map(f=>(
-                  <button key={f} style={{background:"none",border:"none",color:T2,fontSize:12,textAlign:"left",padding:"4px 0",cursor:"pointer",transition:"color .12s"}}
-                    onMouseEnter={e=>(e.currentTarget.style.color=ML)}
-                    onMouseLeave={e=>(e.currentTarget.style.color=T2)}
-                  >{f}</button>
-                ))}
+              <div style={{fontSize:13,color:T3,margin:"0 0 10px"}}>Features</div>
+              <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                {d.f.map(f=><MegaRow key={f.title} item={f} onClick={()=>{go(d.page);setMega(null);}}/>)}
               </div>
             </div>
-            <div style={{width:1,background:B1,flexShrink:0}}/>
             <div>
-              <Lbl s="Models"/>
-              <div style={{display:"flex",flexDirection:"column",gap:3,marginTop:12}}>
-                {d.m.map(m=>(
-                  <button key={m} style={{background:"none",border:"none",color:T2,fontSize:12,textAlign:"left",padding:"4px 0",cursor:"pointer",display:"flex",alignItems:"center",gap:8,transition:"color .12s"}}
-                    onMouseEnter={e=>(e.currentTarget.style.color=T1)}
-                    onMouseLeave={e=>(e.currentTarget.style.color=T2)}
-                  >
-                    <span style={{width:5,height:5,borderRadius:"50%",background:M,flexShrink:0}}/>
-                    {m}
-                  </button>
-                ))}
+              <div style={{fontSize:13,color:T3,margin:"0 0 10px"}}>Models</div>
+              <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                {d.m.map(m=><MegaRow key={m.title} item={m} onClick={()=>{go(d.page);setMega(null);}}/>)}
               </div>
             </div>
           </div>
@@ -250,7 +349,7 @@ function ExplorePage({go}:{go:(p:Page)=>void}) {
     {n:"Seedance 2.0",     d:"720p cinematic video",        i:"⚡",p:"cinema" as Page,a:"#6366f1"},
     {n:"Marketing Studio", d:"Product ads in seconds",      i:"📱",p:"marketing" as Page,a:M},
     {n:"AI Influencer",    d:"Build virtual creators",      i:"🤖",p:"influencer" as Page,a:"#10b981"},
-    {n:"Nano Visual Pro",  d:"Photorealistic images",       i:"🎨",p:"image" as Page,a:"#f59e0b"},
+    {n:"Lumenfield Visual Pro", d:"Photorealistic images",  i:"🎨",p:"image" as Page,a:"#f59e0b"},
     {n:"Audio Studio",     d:"Voices in 30+ languages",     i:"🎙",p:"audio" as Page,a:"#06b6d4"},
     {n:"Canvas",           d:"AI visual workspace",         i:"🖼",p:"canvas" as Page,a:"#8b5cf6"},
   ];
@@ -1081,7 +1180,7 @@ function LibraryPage({go}:{go:(p:Page)=>void}) {
 
 // ─── LOGIN ────────────────────────────────────────────────────────────────────
 function LoginPage({go}:{go:(p:Page)=>void}) {
-  const tabs = ["Nano Visual Pro","Kling 3.0","Lumenfield Soul","Cinema App","SeedMotion 2.0","VeoStyle 3.1"];
+  const tabs = ["Lumenfield Visual Pro","Kling 3.0","Lumenfield Soul","Cinema App","SeedMotion 2.0","VeoStyle 3.1"];
   const [tab,setTab] = useState(0);
   const bgs = [`linear-gradient(160deg,#1a0030,${MD},#0d0019)`,"linear-gradient(160deg,#001020,#003060,#001020)","linear-gradient(160deg,#200010,#600030,#200010)","linear-gradient(160deg,#001020,#002040,#001020)","linear-gradient(160deg,#102000,#205000,#102000)","linear-gradient(160deg,#001020,#003030,#001020)"];
   return (
@@ -1160,9 +1259,10 @@ function PricingPage() {
 // ─── IMAGE STUDIO ─────────────────────────────────────────────────────────────
 function ImagePage() {
   const [prompt,setPrompt] = useState("");
-  const [model,setModel]   = useState("Nano Visual Pro");
+  const [model,setModel]   = useState("Nano Banana Pro");
   const [loading,setLoading] = useState(false);
   const [imgs,setImgs]     = useState<number[]>([]);
+  const modelNames = IMG_M.map(m=>m.title);
   const ibgs = ["linear-gradient(135deg,#0d0019,#3a0060)","linear-gradient(135deg,#000d1a,#003060)","linear-gradient(135deg,#190000,#500010)","linear-gradient(135deg,#001900,#005020)"];
   const gen = async () => { if(!prompt.trim())return; setLoading(true); setImgs([]); await new Promise(r=>setTimeout(r,1800)); setLoading(false); setImgs([1,2,3,4]); };
   return (
@@ -1176,7 +1276,7 @@ function ImagePage() {
         <h2 style={{color:T1,fontSize:20,fontWeight:900,letterSpacing:-.5,marginBottom:20}}>Image Studio</h2>
         <div style={{display:"flex",gap:10,marginBottom:14,flexWrap:"wrap",alignItems:"flex-end"}}>
           <div style={{flex:1,minWidth:240}}><textarea className="inp" value={prompt} onChange={e=>setPrompt(e.target.value)} placeholder="Describe the image you want to create…" rows={2} style={{resize:"none"}}/></div>
-          <Sel label="Model" opts={IMG_M} val={model} set={setModel}/>
+          <Sel label="Model" opts={modelNames} val={model} set={setModel}/>
           <button className="bm" onClick={gen} disabled={loading} style={{padding:"10px 24px"}}>{loading?"Generating…":"Generate"}</button>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:10}}>
