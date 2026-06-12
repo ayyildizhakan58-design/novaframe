@@ -587,14 +587,57 @@ function CinemaPage() {
   const [loading,setLoading]   = useState(false);
   const [step,setStep]         = useState(0);
   const [results,setResults]   = useState<number[]>([]);
+  const [videoUrl,setVideoUrl] = useState("");
+  const [apiError,setApiError] = useState("");
   const [mode,setMode]         = useState<"image"|"video">("video");
 
   const gen = async () => {
     if (!prompt.trim()) return;
-    setLoading(true); setResults([]); setStep(0);
-    for (let i=0;i<LSTEPS.length;i++) { await new Promise(r=>setTimeout(r,750)); setStep(i+1); }
-    await new Promise(r=>setTimeout(r,300));
-    setLoading(false); setResults([1,2,3]);
+    setLoading(true); setResults([]); setVideoUrl(""); setApiError(""); setStep(0);
+    try {
+      if (mode === "video") {
+        const ratio = aspect === "9:16" ? "720:1280" : "1280:720";
+        const duration = dur === "12s" || dur === "15s" ? 10 : 5;
+        const start = await fetch("/api/generate-video", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({prompt, ratio, duration}),
+        });
+        const startData = await start.json() as {ok?:boolean; taskId?:string; error?:string};
+        if (!start.ok || !startData.taskId) throw new Error(startData.error || "Video generation could not start.");
+        setStep(1);
+        for (let attempt=1; attempt<=70; attempt++) {
+          await new Promise(r=>setTimeout(r,2400));
+          const check = await fetch(`/api/check-video?taskId=${encodeURIComponent(startData.taskId)}`, {cache:"no-store"});
+          const data = await check.json() as {ok?:boolean; status?:string; output?:unknown; failure?:unknown; error?:string};
+          if (!check.ok) throw new Error(data.error || "Video status could not be checked.");
+          setStep(Math.min(LSTEPS.length, 1 + Math.floor((attempt / 70) * (LSTEPS.length - 1))));
+          const status = String(data.status || "").toLowerCase();
+          if (status.includes("fail") || data.failure) throw new Error("Runway generation failed.");
+          if (status.includes("succeed") || status.includes("complete")) {
+            const output = Array.isArray(data.output) ? data.output : data.output ? [data.output] : [];
+            const url = output.find((item): item is string => typeof item === "string" && item.startsWith("http"));
+            if (url) {
+              setVideoUrl(url);
+              setResults([1]);
+              setStep(LSTEPS.length);
+              return;
+            }
+            throw new Error("Video finished, but no video URL was returned.");
+          }
+        }
+        throw new Error("Video is still rendering. Try again in a moment.");
+      }
+      for (let i=0;i<LSTEPS.length;i++) { await new Promise(r=>setTimeout(r,750)); setStep(i+1); }
+      await new Promise(r=>setTimeout(r,300));
+      setResults([1,2,3]);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Generation failed.";
+      setApiError(message);
+      setResults([1,2,3]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const vbgs = ["linear-gradient(135deg,#0d0019,#1a003a)","linear-gradient(135deg,#000d1a,#001f3f)","linear-gradient(135deg,#190000,#3a0018)"];
@@ -616,11 +659,18 @@ function CinemaPage() {
       <div style={{flex:1,display:"flex",flexDirection:"column",overflow:"hidden"}}>
         {/* Workspace */}
         <div style={{flex:1,background:BG,backgroundImage:`linear-gradient(${B1} 1px,transparent 1px),linear-gradient(90deg,${B1} 1px,transparent 1px)`,backgroundSize:"40px 40px",display:"flex",alignItems:"center",justifyContent:"center",padding:40,overflow:"auto"}}>
-          {!loading&&results.length===0&&(
+          {!loading&&results.length===0&&!apiError&&(
             <div style={{textAlign:"center"}} className="fu">
               <div style={{fontSize:"clamp(18px,4vw,52px)",fontWeight:900,color:B2,letterSpacing:-2,lineHeight:1,marginBottom:4,WebkitTextStroke:`1px ${B1}`}}>CREATE YOUR FIRST PROJECT.</div>
               <div style={{fontSize:"clamp(18px,4vw,52px)",fontWeight:900,background:`linear-gradient(90deg,${M},${ML})`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",letterSpacing:-2,lineHeight:1}}>GENERATE THE IMPOSSIBLE.</div>
               <p style={{color:T3,fontSize:13,marginTop:16}}>Type a prompt below and click Generate →</p>
+            </div>
+          )}
+          {!loading&&apiError&&results.length===0&&(
+            <div className="fi" style={{maxWidth:520,textAlign:"center",background:S1,border:`1px solid ${M}66`,borderRadius:14,padding:24}}>
+              <div style={{color:ML,fontSize:13,fontWeight:900,marginBottom:8}}>Runway connection needs attention</div>
+              <div style={{color:T2,fontSize:12,lineHeight:1.7}}>{apiError}</div>
+              <div style={{color:T3,fontSize:11,marginTop:12}}>Check `RUNWAYML_API_SECRET` in Vercel Environment Variables, then redeploy.</div>
             </div>
           )}
           {loading&&(
@@ -640,16 +690,27 @@ function CinemaPage() {
           )}
           {results.length>0&&(
             <div style={{display:"flex",gap:14,flexWrap:"wrap",justifyContent:"center"}} className="fi">
+              {apiError&&(
+                <div style={{width:"100%",maxWidth:760,background:`${M}12`,border:`1px solid ${M}55`,borderRadius:10,padding:"12px 14px",color:ML,fontSize:12,fontWeight:700,lineHeight:1.6}}>
+                  {apiError}<br/><span style={{color:T3,fontWeight:500}}>Demo previews are shown below so the studio stays usable.</span>
+                </div>
+              )}
               {results.map((_,i)=>(
                 <div key={i} style={{width:240,height:152,background:vbgs[i],borderRadius:10,border:`1px solid ${B1}`,position:"relative",overflow:"hidden",cursor:"pointer",transition:"transform .2s"}}
                   onMouseEnter={e=>(e.currentTarget.style.transform="scale(1.02)")}
                   onMouseLeave={e=>(e.currentTarget.style.transform="scale(1)")}
                 >
-                  <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(0,0,0,.6),transparent)"}}/>
-                  <button style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:38,height:38,borderRadius:"50%",background:"rgba(232,0,111,.8)",border:"none",color:"#fff",fontSize:13,cursor:"pointer"}}>▶</button>
+                  {videoUrl&&i===0 ? (
+                    <video src={videoUrl} controls playsInline style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",background:"#000"}}/>
+                  ) : (
+                    <>
+                      <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(0,0,0,.6),transparent)"}}/>
+                      <button style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:38,height:38,borderRadius:"50%",background:"rgba(232,0,111,.8)",border:"none",color:"#fff",fontSize:13,cursor:"pointer"}}>▶</button>
+                    </>
+                  )}
                   <div style={{position:"absolute",bottom:10,left:12}}>
                     <div style={{color:T1,fontSize:10,fontWeight:700}}>{model}</div>
-                    <div style={{color:T3,fontSize:9}}>{aspect} · {dur} · {res}</div>
+                    <div style={{color:T3,fontSize:9}}>{videoUrl&&i===0?"Runway Gen-4.5 · ":null}{aspect} · {dur} · {res}</div>
                   </div>
                   <div style={{position:"absolute",top:10,right:10,background:M,color:"#fff",fontSize:8,fontWeight:700,padding:"2px 6px",borderRadius:4}}>NEW</div>
                 </div>
