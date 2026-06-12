@@ -353,6 +353,34 @@ function ExplorePage({go}:{go:(p:Page)=>void}) {
     {n:"Audio Studio",     d:"Voices in 30+ languages",     i:"🎙",p:"audio" as Page,a:"#06b6d4"},
     {n:"Canvas",           d:"AI visual workspace",         i:"🖼",p:"canvas" as Page,a:"#8b5cf6"},
   ];
+  const showcase = [
+    {n:"Lumenfield Games", d:"Build playable concepts, art, sounds and characters from one creative brief.", p:"supercomputer" as Page, bg:"linear-gradient(135deg,#111827,#2a1020 48%,#050505)", glow:"#7dd3fc"},
+    {n:"DaVinci Resolve Plugin", d:"Generate, reframe and upscale footage directly inside your editing workflow.", p:"plugins" as Page, bg:"linear-gradient(135deg,#f8fafc,#e5e7eb)", light:true, glow:M},
+    {n:"Introducing Recraft 4.1", d:"Crisp vectors, refined aesthetics and controlled visual styles for campaigns.", p:"image" as Page, bg:"conic-gradient(from 120deg,#ccff00,#ff9f1c,#e8006f,#2563eb,#ccff00)", glow:"#ff4da6"},
+    {n:"Lumenfield Mod", d:"Create game worlds, props and cinematic scenes directly from prompts.", p:"apps" as Page, bg:"linear-gradient(135deg,#6ee7b7,#60a5fa 55%,#8b5cf6)", glow:"#60a5fa"},
+  ];
+  const productCards = [
+    {n:"MCP & CLI", d:"Turn your favorite AI assistant into a creative engine.", i:"</>", p:"mcp" as Page, b:"NEW"},
+    {n:"Marketing Studio", d:"Turn any product into a complete video ad campaign.", i:"▣", p:"marketing" as Page, b:"TRENDING"},
+    {n:"Cinema Studio 3.5", d:"Create cinematic shots with camera and model control.", i:"▥", p:"cinema" as Page, b:"TOP"},
+    {n:"Lumenfield Canvas", d:"Generate images, videos and ideas on one board.", i:"⌘", p:"canvas" as Page, b:"NEW"},
+    {n:"AI Influencer", d:"Build reusable virtual characters and creators.", i:"✦", p:"influencer" as Page, b:"TRENDING"},
+    {n:"Original Series", d:"Plan episodic AI stories, scenes and character arcs.", i:"▤", p:"apps" as Page, b:"NEW"},
+  ];
+  const platformFeatures = [
+    {n:"Cinema Studio", d:"Professional filmmaking workspace with camera direction, model selection and scene controls.", i:"▥", p:"cinema" as Page},
+    {n:"Lumenfield Soul", d:"Create consistent characters, fashion visuals and reusable identities for campaigns.", i:"∿", p:"image" as Page},
+    {n:"AI Video", d:"Generate cinematic clips with Runway, Kling, Veo, Seedance and future provider adapters.", i:"▶", p:"video" as Page},
+    {n:"Lip Sync & Avatars", d:"Build talking clips, UGC presenters and voice-led character content.", i:"♩", p:"audio" as Page},
+    {n:"Canvas & Editing", d:"Plan boards, edit images, relight scenes, upscale assets and organize references.", i:"⌘", p:"canvas" as Page},
+    {n:"Supercomputer", d:"Route one creative prompt into video, image, audio, marketing and automation workflows.", i:"✣", p:"supercomputer" as Page},
+  ];
+  const pricePreview = [
+    {n:"Starter", price:"$19", d:"For creators testing ideas.", f:["1,000 credits","Core image and video tools","Library access"], p:"pricing" as Page},
+    {n:"Pro", price:"$49", d:"For daily creative production.", f:["5,000 credits","Cinema Studio access","Priority generation"], p:"pricing" as Page, hot:true},
+    {n:"Enterprise", price:"Custom", d:"For teams and studios.", f:["Team workspace","Custom API access","Dedicated support"], p:"pricing" as Page},
+  ];
+  const gallery = ["Cinematic Scene","Portrait System","Product Visual","Video Clip","Editorial Story","Style Transfer"];
   return (
     <div style={{minHeight:"100vh",paddingTop:57,background:BG,overflowX:"hidden"}}>
       {/* HERO */}
@@ -382,6 +410,59 @@ function ExplorePage({go}:{go:(p:Page)=>void}) {
                 <div style={{fontSize:24,fontWeight:800,color:T1,letterSpacing:-1}}>{n}</div>
                 <div style={{fontSize:11,color:T3,marginTop:3}}>{l}</div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* EXPLORE HUB */}
+      <section style={{padding:"0 28px 26px",maxWidth:1440,margin:"0 auto"}}>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,minmax(0,1fr))",gap:14,marginBottom:18}}>
+          {showcase.map((s,i)=>(
+            <button key={s.n} onClick={()=>go(s.p)} className="card"
+              style={{minHeight:210,overflow:"hidden",padding:0,textAlign:"left",cursor:"pointer",borderRadius:14,background:S1,border:`1px solid ${B1}`,boxShadow:"0 16px 40px rgba(0,0,0,.22)"}}
+              onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-6px)";e.currentTarget.style.boxShadow=`0 24px 70px ${s.glow}33`;e.currentTarget.style.borderColor=`${s.glow}66`;}}
+              onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="0 16px 40px rgba(0,0,0,.22)";e.currentTarget.style.borderColor=B1;}}
+            >
+              <div style={{height:136,background:s.bg,position:"relative",borderRadius:"14px 14px 0 0",overflow:"hidden"}}>
+                <div style={{position:"absolute",inset:30,borderRadius:22,background:s.light?"rgba(255,255,255,.55)":"rgba(255,255,255,.08)",backdropFilter:"blur(12px)"}}/>
+                <div style={{position:"absolute",left:38+i*18,top:28,width:110,height:110,borderRadius:"50%",background:`radial-gradient(circle,${s.light?"#fff":s.glow},transparent 65%)`,filter:"blur(6px)",opacity:s.light ? .65 : .45}}/>
+                <div style={{position:"absolute",right:18,bottom:14,width:72,height:72,borderRadius:18,background:`linear-gradient(135deg,${M},${ML})`,transform:`rotate(${i%2?8:-8}deg)`,opacity:i===1 ? .12 : .8}}/>
+              </div>
+              <div style={{padding:"16px 16px 18px"}}>
+                <div style={{color:s.light?"#fff":T1,fontSize:15,fontWeight:900,textTransform:"uppercase",letterSpacing:-.3,marginBottom:8}}>{s.n}</div>
+                <div style={{color:T2,fontSize:13,lineHeight:1.45}}>{s.d}</div>
+              </div>
+            </button>
+          ))}
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"minmax(260px, .9fr) 1.6fr",gap:14,background:"rgba(18,20,25,.72)",border:`1px solid ${B1}`,borderRadius:24,padding:14,backdropFilter:"blur(20px)",boxShadow:"0 24px 80px rgba(0,0,0,.26)"}}>
+          <button onClick={()=>go("supercomputer")} className="card"
+            style={{minHeight:300,padding:26,textAlign:"left",cursor:"pointer",borderRadius:18,position:"relative",overflow:"hidden",background:`linear-gradient(135deg,rgba(232,0,111,.18),rgba(18,20,25,.95) 54%,rgba(232,0,111,.1))`,border:`1px solid ${M}44`}}>
+            <div style={{position:"absolute",inset:0,backgroundImage:`linear-gradient(${B1} 1px,transparent 1px),linear-gradient(90deg,${B1} 1px,transparent 1px)`,backgroundSize:"54px 54px",opacity:.28}}/>
+            <div style={{position:"relative",zIndex:1}}>
+              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:18}}>
+                <h3 style={{fontSize:26,fontWeight:950,letterSpacing:-1,textTransform:"uppercase"}}>Supercomputer</h3>
+                <Badge label="NEW"/>
+              </div>
+              <p style={{color:T2,fontSize:15,lineHeight:1.55,maxWidth:260,marginBottom:32}}>Agents, automation, skills, connectors and AI workflows in one command center.</p>
+              <span style={{display:"inline-flex",alignItems:"center",gap:8,background:"#fff",color:"#050505",borderRadius:10,padding:"12px 18px",fontSize:13,fontWeight:900}}>Try now ↗</span>
+            </div>
+            {[0,1,2].map(i=><span key={i} style={{position:"absolute",right:44+i*52,bottom:34+i*42,width:78,height:78,borderRadius:18,background:`linear-gradient(135deg,#ccff00,${M})`,transform:`rotate(${12+i*17}deg)`,boxShadow:`0 20px 50px ${M}33`}}/>)}
+          </button>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:12}}>
+            {productCards.map(p=>(
+              <button key={p.n} onClick={()=>go(p.p)} className="card"
+                style={{padding:22,minHeight:140,textAlign:"left",cursor:"pointer",borderRadius:14,background:S1,border:`1px solid ${B1}`,position:"relative",overflow:"hidden"}}
+                onMouseEnter={e=>{e.currentTarget.style.borderColor=`${M}66`;e.currentTarget.style.background=`linear-gradient(135deg,${S1},rgba(232,0,111,.08))`;}}
+                onMouseLeave={e=>{e.currentTarget.style.borderColor=B1;e.currentTarget.style.background=S1;}}
+              >
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:26}}>
+                  <span style={{width:42,height:42,borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",background:S2,color:T1,fontWeight:900}}>{p.i}</span>
+                  <Badge label={p.b}/>
+                </div>
+                <div style={{color:T1,fontSize:15,fontWeight:850,marginBottom:8}}>{p.n}</div>
+                <div style={{color:T3,fontSize:12,lineHeight:1.45}}>{p.d}</div>
+              </button>
             ))}
           </div>
         </div>
@@ -416,6 +497,69 @@ function ExplorePage({go}:{go:(p:Page)=>void}) {
               onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.background=`${M}10`;(e.currentTarget as HTMLButtonElement).style.color=ML;(e.currentTarget as HTMLButtonElement).style.borderColor=`${M}50`;}}
               onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.background=S1;(e.currentTarget as HTMLButtonElement).style.color=T3;(e.currentTarget as HTMLButtonElement).style.borderColor=B1;}}
             >{p}</button>
+          ))}
+        </div>
+      </section>
+      {/* PLATFORM */}
+      <section style={{padding:"0 48px 72px",maxWidth:1280,margin:"0 auto"}}>
+        <div style={{textAlign:"center",marginBottom:28}}>
+          <Lbl s="Platform"/>
+          <h2 style={{fontSize:"clamp(26px,4vw,48px)",fontWeight:900,letterSpacing:-1.8,marginTop:10,marginBottom:10}}>Everything you need to create</h2>
+          <p style={{color:T2,fontSize:15,lineHeight:1.65,maxWidth:680,margin:"0 auto"}}>From photorealistic images to cinematic videos, Lumenfield brings premium AI models, studio tools and automation into one original creative command center.</p>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:14}}>
+          {platformFeatures.map((f,i)=>(
+            <button key={f.n} onClick={()=>go(f.p)} className="card"
+              style={{padding:24,minHeight:170,textAlign:"left",cursor:"pointer",borderRadius:18,background:`linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015)),${S1}`,border:`1px solid ${B1}`,position:"relative",overflow:"hidden"}}
+              onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-4px)";e.currentTarget.style.borderColor=`${M}66`;e.currentTarget.style.boxShadow=`0 24px 60px rgba(232,0,111,.16)`;}}
+              onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.borderColor=B1;e.currentTarget.style.boxShadow="none";}}
+            >
+              <div style={{position:"absolute",right:-30,top:-30,width:120,height:120,borderRadius:"50%",background:`radial-gradient(circle,${i%2?ML:M}22,transparent 68%)`}}/>
+              <div style={{width:48,height:48,borderRadius:14,background:`linear-gradient(135deg,${M},${MD})`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,fontWeight:900,marginBottom:18,boxShadow:`0 16px 38px ${M}22`}}>{f.i}</div>
+              <h3 style={{fontSize:17,fontWeight:900,letterSpacing:-.4,marginBottom:8}}>{f.n}</h3>
+              <p style={{color:T2,fontSize:13,lineHeight:1.55}}>{f.d}</p>
+            </button>
+          ))}
+        </div>
+      </section>
+      {/* PRICING PREVIEW */}
+      <section style={{padding:"0 48px 72px",maxWidth:1280,margin:"0 auto"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"end",gap:20,marginBottom:22,flexWrap:"wrap"}}>
+          <div>
+            <Lbl s="Pricing"/>
+            <h2 style={{fontSize:"clamp(24px,3vw,40px)",fontWeight:900,letterSpacing:-1.4,marginTop:8}}>Simple creative power</h2>
+          </div>
+          <button className="bg" onClick={()=>go("pricing")} style={{padding:"10px 18px"}}>View full pricing →</button>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:14}}>
+          {pricePreview.map(plan=>(
+            <button key={plan.n} onClick={()=>go(plan.p)} className="card"
+              style={{padding:24,textAlign:"left",cursor:"pointer",borderRadius:18,background:plan.hot?`linear-gradient(180deg,rgba(232,0,111,.14),rgba(18,20,25,.88))`:S1,border:`1px solid ${plan.hot?M:B1}`,position:"relative",overflow:"hidden"}}
+            >
+              {plan.hot&&<span style={{position:"absolute",top:16,right:16}}><Badge label="TOP"/></span>}
+              <div style={{fontSize:18,fontWeight:900,marginBottom:10}}>{plan.n}</div>
+              <div style={{fontSize:36,fontWeight:950,letterSpacing:-1.6,marginBottom:8}}>{plan.price}<span style={{fontSize:13,color:T3,fontWeight:600}}>{plan.price==="Custom"?"":" /mo"}</span></div>
+              <p style={{color:T2,fontSize:13,lineHeight:1.5,marginBottom:18}}>{plan.d}</p>
+              <div style={{display:"grid",gap:8}}>
+                {plan.f.map(x=><span key={x} style={{color:T2,fontSize:12}}>✓ {x}</span>)}
+              </div>
+            </button>
+          ))}
+        </div>
+      </section>
+      {/* GALLERY */}
+      <section style={{padding:"0 48px 80px",maxWidth:1280,margin:"0 auto"}}>
+        <div style={{textAlign:"center",marginBottom:26}}>
+          <Lbl s="Gallery"/>
+          <h2 style={{fontSize:"clamp(24px,3vw,40px)",fontWeight:900,letterSpacing:-1.4,marginTop:8}}>What is possible with Lumenfield</h2>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:12}}>
+          {gallery.map((g,i)=>(
+            <button key={g} onClick={()=>go(i%2?"image":"cinema")} className="card"
+              style={{height:150,borderRadius:18,cursor:"pointer",border:`1px solid ${B1}`,background:`linear-gradient(135deg,rgba(232,0,111,${.14+i*.015}),rgba(255,77,166,.05)),radial-gradient(circle at ${20+i*13}% ${20+i*9}%,rgba(255,255,255,.22),transparent 25%),${S1}`,color:T1,fontSize:14,fontWeight:900,display:"flex",alignItems:"end",padding:18,textAlign:"left"}}
+              onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-5px)";e.currentTarget.style.borderColor=`${M}66`;}}
+              onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.borderColor=B1;}}
+            >{g}</button>
           ))}
         </div>
       </section>
