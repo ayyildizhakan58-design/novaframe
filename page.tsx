@@ -52,6 +52,7 @@ const navItems: { id: PageId; label: string; badge?: Badge }[] = [
   { id: "influencer", label: "AI Influencer" },
   { id: "canvas", label: "Canvas" },
   { id: "apps", label: "Apps" },
+  { id: "pricing", label: "Pricing" },
 ];
 
 const futureApiRoutes = [
@@ -349,7 +350,7 @@ function TopNav({
               type="button"
             >
               <span>{item.label}</span>
-              {item.badge ? <span className={`badge ${item.badge.toLowerCase()}`}>{item.badge}</span> : null}
+              {item.badge ? <span className={`badge nav-badge ${item.badge.toLowerCase()}`}>New</span> : null}
             </button>
           );
         })}
@@ -1329,6 +1330,7 @@ button { cursor: pointer; color: inherit; }
 .nav-item { display: inline-flex; align-items: center; gap: 8px; padding: 10px 12px; color: #c9ccd3; border-radius: 11px; font-size: 15px; font-weight: 800; white-space: nowrap; transition: .22s ease; }
 .nav-item:hover, .nav-item.active { color: #fff; background: rgba(255,255,255,.07); }
 .badge { display: inline-flex; align-items: center; justify-content: center; padding: 3px 7px; border-radius: 6px; background: var(--lime); color: #ffffff; font-size: 10px; font-style: italic; font-weight: 950; line-height: 1; text-transform: uppercase; }
+.nav-badge { font-style: normal; text-transform: none; letter-spacing: 0; font-size: 10px; padding: 3px 6px; }
 .badge.top, .badge.exclusive { background: var(--lime); }
 .badge.trending, .badge.pro { background: var(--pink); color: #fff; }
 .top-actions { display: flex; align-items: center; gap: 8px; }
