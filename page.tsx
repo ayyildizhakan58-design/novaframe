@@ -144,7 +144,7 @@ function Logo({sz=28}:{sz?:number}) {
   return (
     <div style={{display:"flex",alignItems:"center",gap:8}}>
       <div style={{width:sz,height:sz,borderRadius:7,background:`linear-gradient(135deg,${M},${MD})`,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:sz*.5,color:"#fff",flexShrink:0}}>L</div>
-      <span style={{color:T1,fontWeight:800,fontSize:sz*.5,letterSpacing:-.5}}>Lumen<span style={{color:M}}>field</span><span style={{color:T3,fontWeight:700}}> AI Studio</span></span>
+      <span style={{color:T1,fontWeight:800,fontSize:Math.max(12,sz*.42),letterSpacing:-.5}}>Lumen<span style={{color:M}}>field</span><span style={{color:T3,fontWeight:700}}>-AI-Studio</span></span>
     </div>
   );
 }
@@ -1101,7 +1101,7 @@ function LoginPage({go}:{go:(p:Page)=>void}) {
         <div style={{display:"flex",alignItems:"center",gap:10,margin:"20px 0"}}>
           <div style={{flex:1,height:1,background:B1}}/><span style={{color:T3,fontSize:11}}>or SSO</span><div style={{flex:1,height:1,background:B1}}/>
         </div>
-        <p style={{color:T3,fontSize:10,lineHeight:1.7}}>By continuing you agree to our Terms of Service and Privacy Policy. Lumenfield is an original, independently built platform.</p>
+        <p style={{color:T3,fontSize:10,lineHeight:1.7}}>By continuing you agree to our Terms of Service and Privacy Policy. Lumenfield-AI-Studio is an original, independently built platform.</p>
       </div>
       <div style={{flex:1,background:bgs[tab],position:"relative",transition:"background .5s ease",overflow:"hidden"}}>
         <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(0,0,0,.7),transparent)"}}/>
@@ -1216,4 +1216,5 @@ export default function Lumenfield() {
     </>
   );
 }
+
 
