@@ -1196,26 +1196,6 @@ export default function Lumenfield() {
   return (
     <>
       <style dangerouslySetInnerHTML={{__html:CSS}}/>
-      <div
-        style={{
-          position: "fixed",
-          right: 12,
-          top: 64,
-          zIndex: 2000,
-          background: "linear-gradient(135deg,#e8006f,#7c1dff)",
-          border: "1px solid rgba(255,255,255,.22)",
-          borderRadius: 999,
-          boxShadow: "0 12px 34px rgba(232,0,111,.35)",
-          color: "#fff",
-          fontSize: 11,
-          fontWeight: 900,
-          letterSpacing: 1,
-          padding: "8px 12px",
-          textTransform: "uppercase",
-        }}
-      >
-        Lumenfield Preview Active
-      </div>
       <Nav cur={page} go={setPage}/>
       <main>{pages[page]}</main>
     </>
