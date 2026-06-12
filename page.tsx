@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 
@@ -106,9 +106,9 @@ const imageFeatures: Item[] = [
 ];
 
 const imageModels: Item[] = [
-  { badge: "TOP", icon: "N", title: "Nova Soul 2.0", desc: "Next generation ultra-realistic fashion visuals" },
-  { icon: "N", title: "Nova Soul Cinema", desc: "Cinematic film-grade aesthetic" },
-  { icon: "▱", title: "Nova Popcorn", desc: "Storyboard, edit, create" },
+  { badge: "TOP", icon: "L", title: "Lumenfield Soul 2.0", desc: "Next generation ultra-realistic fashion visuals" },
+  { icon: "L", title: "Lumenfield Soul Cinema", desc: "Cinematic film-grade aesthetic" },
+  { icon: "▱", title: "Lumenfield Popcorn", desc: "Storyboard, edit, create" },
   { badge: "NEW", icon: "G", title: "GPT Image 2", desc: "4K images with near-perfect text rendering" },
   { badge: "NEW", icon: "R", title: "Recraft V4.1", desc: "Photorealistic and expressive image generation" },
   { icon: "B", title: "Nano Banana 2", desc: "Pro quality at Flash speed" },
@@ -153,7 +153,7 @@ const videoModels: Item[] = [
   { icon: "W", title: "Wan 2.7", desc: "AI video generation with first and end frame control" },
   { icon: "M", title: "Minimax Hailuo 2.3", desc: "Fastest high-dynamic video" },
   { icon: "▥", title: "Seedance 1.5 Pro", desc: "Pro-grade audio-visual sync" },
-  { icon: "N", title: "Nova DOP", desc: "VFX and camera control" },
+  { icon: "L", title: "Lumenfield DOP", desc: "VFX and camera control" },
 ];
 
 const apps = [
@@ -236,7 +236,7 @@ function slugify(value: string) {
     .replace(/(^-|-$)/g, "");
 }
 
-export default function NovaFrameAI() {
+export default function LumenfieldAI() {
   const [activePage, setActivePage] = useState<PageId>("explore");
   const [activeMega, setActiveMega] = useState<"image" | "video" | null>(null);
   const [detail, setDetail] = useState<DetailPage | null>(null);
@@ -259,7 +259,7 @@ export default function NovaFrameAI() {
     }
   };
 
-  const simulateGenerate = (key: string, label = "NovaFrame generation") => {
+  const simulateGenerate = (key: string, label = "Lumenfield generation") => {
     setLoadingKey(key);
     window.setTimeout(() => {
       setGenerated((prev) => [`${label} ready ${prev.length + 1}`, ...prev].slice(0, 6));
@@ -329,8 +329,8 @@ function TopNav({
   return (
     <header className="topbar">
       <button className="brand" onClick={onLogo} type="button">
-        <span className="brand-mark">N</span>
-        <span>NovaFrame AI</span>
+        <span className="brand-mark">L</span>
+        <span>Lumenfield AI Studio</span>
       </button>
       <nav className="nav-scroll">
         {navItems.map((item) => {
@@ -503,17 +503,17 @@ function ExploreHub({
     { icon: "▥", title: "Seedance 2.0", desc: "Create videos in seconds", category: "Video" },
     { badge: "TRENDING", icon: "▱", title: "Marketing Studio", desc: "Launch campaigns from one prompt" },
     { badge: "NEW", icon: "✳", title: "MCP & CLI", desc: "Turn AI into a creative engine" },
-    { badge: "NEW", icon: "⌘", title: "NovaFrame Canvas", desc: "Generate media on one canvas" },
+    { badge: "NEW", icon: "⌘", title: "Lumenfield Canvas", desc: "Generate media on one canvas" },
     { icon: "▥", title: "Cinema Studio 3.5", desc: "Create cinematic scenes" },
   ];
   return (
     <div className="hub page-pad fade-in">
       <section className="featured-strip">
         {[
-          ["NovaFrame Games", "Build interactive AI games using NovaFrame MCP.", "hero-game"],
-          ["NovaFrame Plugin for DaVinci Resolve", "Generate footage directly inside DaVinci Resolve.", "hero-white"],
+          ["Lumenfield Games", "Build interactive AI games using Lumenfield MCP.", "hero-game"],
+          ["Lumenfield Plugin for DaVinci Resolve", "Generate footage directly inside DaVinci Resolve.", "hero-white"],
           ["Introducing Recraft 4.1", "Crisp vectors and total style control.", "hero-art"],
-          ["NovaFrame Mod", "Create worlds directly from prompts.", "hero-minecraft"],
+          ["Lumenfield Mod", "Create worlds directly from prompts.", "hero-minecraft"],
         ].map(([title, desc, tone]) => (
           <button className={`feature-card ${tone}`} key={title} onClick={() => onOpenPage(title.includes("Plugin") ? "plugins" : "apps")} type="button">
             <div className="mock-media" />
@@ -529,7 +529,7 @@ function ExploreHub({
           <p>Agents, automation, skills, connectors and AI workflows.</p>
           <span className="white-cta">Try now ↗</span>
           <div className="floating-stickers">
-            <i>N</i><i>AI</i><i>CLI</i>
+            <i>L</i><i>AI</i><i>CLI</i>
           </div>
         </button>
         <div className="mini-products">
@@ -560,11 +560,11 @@ function AssetsHub({
   const [filter, setFilter] = useState("All");
   const products: Item[] = [
     { badge: "NEW", icon: "▣", title: "Supercomputer", desc: "AI workflows that think and act" },
-    { badge: "NEW", icon: "</>", title: "Nova CLI", desc: "Automate creative production" },
+    { badge: "NEW", icon: "</>", title: "Lumenfield CLI", desc: "Automate creative production" },
     { badge: "TRENDING", icon: "▱", title: "Marketing Studio", desc: "Turn any product into a high-converting ad" },
   ];
   const left: Item[] = [
-    { badge: "NEW", icon: "</>", title: "Nova CLI", desc: "Automate your production" },
+    { badge: "NEW", icon: "</>", title: "Lumenfield CLI", desc: "Automate your production" },
     { badge: "TRENDING", icon: "✦", title: "AI Influencer", desc: "Create and manage your AI influencer" },
     { icon: "✣", title: "Marketing Studio", desc: "Turn any product into a video ad" },
   ];
@@ -585,9 +585,9 @@ function AssetsHub({
           ))}
         </div>
         <p className="tiny">Recents</p>
-        <button className="recent-row" onClick={() => onDetail({ icon: "N", title: "NovaFrame Soul", desc: "Ultra-realistic character generation and consistency" }, "Model")} type="button">
-          <span className="iconbox">N</span>
-          <span><strong>NovaFrame Soul</strong><small>Ultra-realistic character generation and consistency</small></span>
+        <button className="recent-row" onClick={() => onDetail({ icon: "L", title: "Lumenfield Soul", desc: "Ultra-realistic character generation and consistency" }, "Model")} type="button">
+          <span className="iconbox">L</span>
+          <span><strong>Lumenfield Soul</strong><small>Ultra-realistic character generation and consistency</small></span>
         </button>
         <div className="section-head"><p>Popular products</p><button onClick={() => onOpenPage("apps")} type="button">See all</button></div>
         <div className="asset-products">
@@ -766,7 +766,7 @@ function SupercomputerPage({
   return (
     <div className="super-page fade-in">
       <aside className="super-sidebar">
-        <button className="side-brand" type="button"><span>N</span> Supercomputer⌄</button>
+        <button className="side-brand" type="button"><span>L</span> Supercomputer⌄</button>
         <button type="button">＋ New task</button>
         <button type="button">⌕ Search</button>
         <button type="button">▦ Marketplace <em className="badge new">NEW</em></button>
@@ -780,7 +780,7 @@ function SupercomputerPage({
       <section className="super-main">
         <button className="shortcuts" type="button">⌘ Shortcuts</button>
         <div className="super-hero">
-          <div className="super-icon">N</div>
+          <div className="super-icon">L</div>
           <h1>SUPERCOMPUTER FOR CREATIVE WORK</h1>
           <p>Turn a simple chat into production-ready content at scale.</p>
           <div className="prompt-bar">
@@ -849,7 +849,7 @@ function CinemaStudio({
             <p className="tiny">✦ Cinematic models</p>
             {cinematic.map(([title, desc, badge]) => (
               <button key={title} onClick={() => { setSelected(title); setDropdown(false); }} type="button">
-                <span className="iconbox">N</span><span><strong>{title}</strong><small>{desc}</small></span>
+                <span className="iconbox">L</span><span><strong>{title}</strong><small>{desc}</small></span>
                 {badge ? <em className="badge new">{badge}</em> : null}
                 {selected === title ? <b>✓</b> : null}
               </button>
@@ -962,7 +962,7 @@ function InfluencerStudio({
   return (
     <div className="influencer-layout page-pad fade-in">
       <aside className="glass create-side"><button type="button">＋ Create new</button><button type="button">Presets</button><button type="button">Character library</button></aside>
-      <section className="portrait-preview"><div className="portrait-card"><span>N</span><strong>NovaFrame Character</strong></div>{results[0] ? <p>{results[0]}</p> : null}</section>
+      <section className="portrait-preview"><div className="portrait-card"><span>L</span><strong>Lumenfield Character</strong></div>{results[0] ? <p>{results[0]}</p> : null}</section>
       <aside className="glass builder-side">
         {sections.map(([title, csv]) => (
           <div className="option-block" key={title}>
@@ -1003,7 +1003,7 @@ function AppsPage({ onDetail }: { onDetail: (item: Item, category: string) => vo
   const visible = apps.filter(([cat, , , badge]) => category === "All" || category === cat || (category === "Trending Templates" && badge === "TRENDING"));
   return (
     <div className="page-pad fade-in">
-      <section className="section-head wide"><div><p className="eyebrow">Apps</p><h1>NovaFrame Apps</h1></div></section>
+      <section className="section-head wide"><div><p className="eyebrow">Apps</p><h1>Lumenfield Apps</h1></div></section>
       <div className="filter-row wrap">
         {appCategories.map((cat) => <button className={category === cat ? "active" : ""} key={cat} onClick={() => setCategory(cat)} type="button">{cat}</button>)}
       </div>
@@ -1037,18 +1037,18 @@ function PluginsPage({
       <div className="filter-row wrap">{tabs.map((item) => <button className={tab === item ? "active" : ""} key={item} onClick={() => setTab(item)} type="button">{item}</button>)}</div>
       <section className="hero-panel plugin-hero">
         <p className="eyebrow">Plugins</p>
-        <h1>NovaFrame is now inside {tab}</h1>
+        <h1>Lumenfield is now inside {tab}</h1>
         <p>Generate, edit, reframe, upscale and remove backgrounds directly inside your timeline.</p>
         <div className="cta-row"><button className="lime-action" onClick={() => onGenerate("plugin", `${tab} installer`)} type="button">{loadingKey === "plugin" ? "Preparing..." : "Download for macOS"}</button><button type="button">Download for Windows</button></div>
       </section>
       <section className="three-grid">
-        {["Download the installer", "Run the installer", "Open your editing app and find NovaFrame under Extensions"].map((step, i) => <article className="tool-card" key={step}><span className="step">{i + 1}</span><h3>{step}</h3></article>)}
+        {["Download the installer", "Run the installer", "Open your editing app and find Lumenfield under Extensions"].map((step, i) => <article className="tool-card" key={step}><span className="step">{i + 1}</span><h3>{step}</h3></article>)}
       </section>
       <ToolGrid title="Meet Cinema Studio inside your editor" tools={["Generate AI Video", "Generate AI Image", "Reframe", "Remove Background", "Draw to Edit", "Upscale"]} />
       <section className="pricing-table">
         {["Adobe Premiere Pro 2024+", "Adobe After Effects 2024+", "DaVinci Resolve 18+", "macOS Apple Silicon / Intel", "Windows 10 / 11 64-bit"].map((item) => <span key={item}>✓ {item}</span>)}
       </section>
-      <Faq items={["How do I install it on macOS?", "How do I install it on Windows?", "Which versions are supported?", "Do I need internet?", "Do I need a NovaFrame subscription?"]} />
+      <Faq items={["How do I install it on macOS?", "How do I install it on Windows?", "Which versions are supported?", "Do I need internet?", "Do I need a Lumenfield subscription?"]} />
     </div>
   );
 }
@@ -1060,18 +1060,18 @@ function McpCliPage({ onDetail }: { onDetail: (item: Item, category: string) => 
   return (
     <div className="page-pad fade-in">
       <section className="hero-panel">
-        <p className="eyebrow">NovaFrame Marketplace</p>
+        <p className="eyebrow">Lumenfield Marketplace</p>
         <h1>CONNECTORS MARKETPLACE</h1>
-        <p>Connect NovaFrame with your favorite AI tools, productivity apps, and creative platforms.</p>
+        <p>Connect Lumenfield with your favorite AI tools, productivity apps, and creative platforms.</p>
         <div className="search-xl">⌕ <span>Search connectors...</span></div>
       </section>
       <div className="filter-row wrap">{["MCP", "CLI", "Skills"].map((item) => <button className={tab === item ? "active" : ""} key={item} onClick={() => setTab(item)} type="button">{item}</button>)}</div>
       {tab === "MCP" ? (
         <>
-          <div className="mcp-flow"><span>ChatGPT</span><span>Claude</span><span>Gemini</span><b>↓ Connector ↓</b><strong>NovaFrame</strong></div>
+          <div className="mcp-flow"><span>ChatGPT</span><span>Claude</span><span>Gemini</span><b>↓ Connector ↓</b><strong>Lumenfield</strong></div>
           <div className="client-grid">
             {clients.map((client) => (
-              <button className="connector-card" key={client} onClick={() => onDetail({ icon: client[0], title: client, desc: `${client} can send creative jobs into NovaFrame MCP.` }, "MCP client")} type="button">
+              <button className="connector-card" key={client} onClick={() => onDetail({ icon: client[0], title: client, desc: `${client} can send creative jobs into Lumenfield MCP.` }, "MCP client")} type="button">
                 <span className="iconbox">{client[0]}</span>
                 <strong>{client}</strong>
                 <small>Ready for MCP connector setup</small>
@@ -1085,7 +1085,7 @@ function McpCliPage({ onDetail }: { onDetail: (item: Item, category: string) => 
                 <h2>{section.title}</h2>
                 <div className="connector-grid">
                   {section.items.map((name, index) => (
-                    <button className="connector-card" key={name} onClick={() => onDetail({ icon: name[0], title: name, desc: `Connect ${name} to NovaFrame workflows.` }, "Connector")} type="button">
+                    <button className="connector-card" key={name} onClick={() => onDetail({ icon: name[0], title: name, desc: `Connect ${name} to Lumenfield workflows.` }, "Connector")} type="button">
                       <span className="iconbox">{name[0]}</span>
                       <strong>{name}</strong>
                       <small>{index % 3 === 0 ? "Connected" : "Not Connected"} • Last Sync {index + 1}h ago</small>
@@ -1099,9 +1099,9 @@ function McpCliPage({ onDetail }: { onDetail: (item: Item, category: string) => 
         </>
       ) : tab === "CLI" ? (
         <section className="hero-panel">
-          <h2>Connect NovaFrame to Any AI Agent</h2>
-          <code>https://mcp.novaframe.ai/mcp</code>
-          <pre>{`npm install -g @novaframe/cli\nnovaframe auth login\nnovaframe generate video --prompt "cinematic product shot"`}</pre>
+          <h2>Connect Lumenfield to Any AI Agent</h2>
+          <code>https://mcp.lumenfield.ai/mcp</code>
+          <pre>{`npm install -g @lumenfield/cli\nlumenfield auth login\nlumenfield generate video --prompt "cinematic product shot"`}</pre>
           <div className="tool-card-grid">{tools.map((tool) => <article className="tool-card" key={tool}><h3>{tool}</h3><p>CLI powered creative automation.</p></article>)}</div>
         </section>
       ) : (
@@ -1142,7 +1142,7 @@ function CollabPage() {
         <p>Bring your team into one creative workspace with comments, calls, assets, roles, and version history.</p>
       </section>
       <ToolGrid tools={["Shared Projects", "Built-in Calls", "Comments", "Asset Library", "Community Publishing", "Access Control", "Version History", "Team Roles"]} />
-      <section className="mini-products">{["Creative Teams", "Marketing", "Content Creators", "Educators", "AI Filmmakers"].map((item) => <article className="product-tile" key={item}><strong>{item}</strong><small>Use NovaFrame collaboration for {item.toLowerCase()}.</small></article>)}</section>
+      <section className="mini-products">{["Creative Teams", "Marketing", "Content Creators", "Educators", "AI Filmmakers"].map((item) => <article className="product-tile" key={item}><strong>{item}</strong><small>Use Lumenfield collaboration for {item.toLowerCase()}.</small></article>)}</section>
     </div>
   );
 }
@@ -1231,8 +1231,8 @@ function GamesBanner() {
       <span className="pixel potion">◈</span>
       <span className="pixel diamond">◆</span>
       <span className="pixel coin">●</span>
-      <p>Powered by NovaFrame MCP</p>
-      <h1>NOVAFRAME GAMES</h1>
+      <p>Powered by Lumenfield MCP</p>
+      <h1>LUMENFIELD GAMES</h1>
       <span>Create interactive experiences powered by AI.</span>
     </section>
   );
@@ -1250,7 +1250,7 @@ function ToolGrid({ title = "Popular Tools", tools }: { title?: string; tools?: 
 
 function LatestModels({ onDetail }: { onDetail: (item: Item, category: string) => void }) {
   const latest: Item[] = [
-    { badge: "TOP", icon: "N", title: "Nova Soul 2.0", desc: "Image model", category: "Image" },
+    { badge: "TOP", icon: "L", title: "Lumenfield Soul 2.0", desc: "Image model", category: "Image" },
     { badge: "NEW", icon: "▥", title: "Seedance 2.0", desc: "Video model", category: "Video" },
     { badge: "TOP", icon: "B", title: "Nano Banana Pro", desc: "Image model", category: "Image" },
     { badge: "NEW", icon: "R", title: "Recraft V4.1", desc: "Design model", category: "Image" },
@@ -1272,7 +1272,7 @@ function LatestModels({ onDetail }: { onDetail: (item: Item, category: string) =
 function StudioSidebar({ title }: { title: string }) {
   return (
     <aside className="studio-sidebar">
-      <button className="side-brand" type="button"><span>N</span> {title}⌄</button>
+      <button className="side-brand" type="button"><span>L</span> {title}⌄</button>
       <button className="active" type="button">Home</button>
       <button type="button">My Elements</button>
       <button type="button">My Favorites</button>
@@ -1298,7 +1298,7 @@ function ResultGallery({ results, title }: { results: string[]; title: string })
 }
 
 function Faq({ items }: { items: string[] }) {
-  return <section className="faq">{items.map((item) => <details key={item}><summary>{item}</summary><p>NovaFrame keeps this simple with clear usage, simulated checkout flows, and server-side API architecture for paid calls.</p></details>)}</section>;
+  return <section className="faq">{items.map((item) => <details key={item}><summary>{item}</summary><p>Lumenfield keeps this simple with clear usage, simulated checkout flows, and server-side API architecture for paid calls.</p></details>)}</section>;
 }
 
 const styles = `
@@ -1311,7 +1311,7 @@ const styles = `
   --border: rgba(255,255,255,0.08);
   --text: #ffffff;
   --muted: #9ca3af;
-  --lime: #ccff00;
+  --lime: #ff1f8f;
   --pink: #ff1f8f;
   --blue: #2563eb;
 }
@@ -1319,16 +1319,16 @@ const styles = `
 body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
 button, input, textarea { font: inherit; }
 button { cursor: pointer; color: inherit; }
-.nf-shell { min-height: 100vh; background: radial-gradient(circle at 50% -10%, rgba(204,255,0,.12), transparent 38%), linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px), var(--bg); background-size: auto, 56px 56px, 56px 56px, auto; }
+.nf-shell { min-height: 100vh; background: radial-gradient(circle at 50% -10%, rgba(255,31,143,.12), transparent 38%), linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px), var(--bg); background-size: auto, 56px 56px, 56px 56px, auto; }
 .topbar { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 14px; min-height: 68px; padding: 12px 18px; border-bottom: 1px solid var(--border); background: rgba(7,9,13,.84); backdrop-filter: blur(20px); }
 .brand, .nav-item, .top-actions button, .side-brand, .studio-sidebar button, .super-sidebar button { border: 0; background: transparent; }
 .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 900; font-size: 20px; white-space: nowrap; }
-.brand-mark, .super-icon, .avatar { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; background: #fff; color: #08090d; font-weight: 950; }
-.brand-mark { box-shadow: 0 0 18px rgba(204,255,0,.25); }
+.brand-mark, .super-icon, .avatar { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, #ff1f8f, #8b5cf6); color: #ffffff; font-weight: 950; }
+.brand-mark { box-shadow: 0 0 18px rgba(255,31,143,.25); }
 .nav-scroll { flex: 1; display: flex; align-items: center; gap: 4px; overflow-x: auto; scrollbar-width: thin; }
 .nav-item { display: inline-flex; align-items: center; gap: 8px; padding: 10px 12px; color: #c9ccd3; border-radius: 11px; font-size: 15px; font-weight: 800; white-space: nowrap; transition: .22s ease; }
 .nav-item:hover, .nav-item.active { color: #fff; background: rgba(255,255,255,.07); }
-.badge { display: inline-flex; align-items: center; justify-content: center; padding: 3px 7px; border-radius: 6px; background: var(--lime); color: #101400; font-size: 10px; font-style: italic; font-weight: 950; line-height: 1; text-transform: uppercase; }
+.badge { display: inline-flex; align-items: center; justify-content: center; padding: 3px 7px; border-radius: 6px; background: var(--lime); color: #ffffff; font-size: 10px; font-style: italic; font-weight: 950; line-height: 1; text-transform: uppercase; }
 .badge.top, .badge.exclusive { background: var(--lime); }
 .badge.trending, .badge.pro { background: var(--pink); color: #fff; }
 .top-actions { display: flex; align-items: center; gap: 8px; }
@@ -1336,7 +1336,7 @@ button { cursor: pointer; color: inherit; }
 .search-pill { color: var(--muted); display: inline-flex; gap: 9px; align-items: center; min-width: 190px; justify-content: flex-start; }
 kbd { background: rgba(255,255,255,.13); border-radius: 5px; padding: 2px 5px; font-size: 11px; }
 .upgrade span, .side-bottom em { display: block; margin-top: 2px; color: #fff; background: var(--pink); border-radius: 6px; padding: 2px 6px; font-size: 10px; }
-.login-btn, .lime-action { background: var(--lime) !important; color: #0b0d10 !important; border: 0 !important; font-weight: 950; }
+.login-btn, .lime-action { background: var(--lime) !important; color: #ffffff !important; border: 0 !important; font-weight: 950; }
 .avatar.open { outline: 2px solid var(--lime); }
 .nf-page { min-height: calc(100vh - 68px); }
 .page-pad { padding: 24px; }
@@ -1345,19 +1345,19 @@ kbd { background: rgba(255,255,255,.13); border-radius: 5px; padding: 2px 5px; f
 .glass, .hero-panel, .tool-card, .product-tile, .model-card, .price-card, .app-card, .connector-card, .assets-panel, .mega-panel, .account-menu, .feature-card, .super-card { background: rgba(18,20,25,.78); border: 1px solid var(--border); border-radius: 24px; backdrop-filter: blur(20px); box-shadow: inset 0 1px 0 rgba(255,255,255,.04); }
 .featured-strip { display: grid; grid-template-columns: repeat(4, minmax(220px, 1fr)); gap: 16px; }
 .feature-card { min-height: 258px; padding: 0; overflow: hidden; text-align: left; transition: .25s ease; }
-.feature-card:hover, .product-tile:hover, .tool-card:hover, .model-card:hover, .app-card:hover, .connector-card:hover, .asset-product:hover, .trend-row:hover, .mega-row:hover { transform: translateY(-6px); box-shadow: 0 18px 44px rgba(204,255,0,.09), 0 0 0 1px rgba(204,255,0,.16); }
+.feature-card:hover, .product-tile:hover, .tool-card:hover, .model-card:hover, .app-card:hover, .connector-card:hover, .asset-product:hover, .trend-row:hover, .mega-row:hover { transform: translateY(-6px); box-shadow: 0 18px 44px rgba(255,31,143,.09), 0 0 0 1px rgba(255,31,143,.16); }
 .feature-card strong, .feature-card span { display: block; padding: 0 16px; }
 .feature-card strong { margin-top: 13px; font-size: 17px; text-transform: uppercase; }
 .feature-card span { color: var(--muted); padding-bottom: 16px; }
-.mock-media { display: block; height: 185px; background: linear-gradient(135deg, rgba(204,255,0,.14), rgba(37,99,235,.26)), radial-gradient(circle at 70% 30%, rgba(255,255,255,.3), transparent 20%), #1b1f25; }
+.mock-media { display: block; height: 185px; background: linear-gradient(135deg, rgba(255,31,143,.14), rgba(37,99,235,.26)), radial-gradient(circle at 70% 30%, rgba(255,255,255,.3), transparent 20%), #1b1f25; }
 .hero-white .mock-media { background: #f4f4ef; }
 .hero-art .mock-media { background: conic-gradient(from 80deg, #e44, #16c7ff, #ffd166, #ff1f8f, #e44); }
 .hero-minecraft .mock-media { image-rendering: pixelated; background: linear-gradient(90deg, #4c8c3f 12px, #385d2e 12px 24px, #6da65a 24px 36px, #2b4827 36px 48px); background-size: 48px 48px; }
 .product-layout { display: grid; grid-template-columns: 1.1fr 2.9fr; gap: 16px; margin-top: 28px; }
-.super-card { position: relative; min-height: 270px; padding: 28px; text-align: left; overflow: hidden; background: linear-gradient(135deg, rgba(204,255,0,.14), rgba(18,20,25,.95)); }
+.super-card { position: relative; min-height: 270px; padding: 28px; text-align: left; overflow: hidden; background: linear-gradient(135deg, rgba(255,31,143,.14), rgba(18,20,25,.95)); }
 .super-card h2 { font-size: 32px; margin: 10px 0; letter-spacing: 0; }
 .super-card p, .tool-card p, .product-tile small, .model-card small, .connector-card small, .mega-row small, .recent-row small, .trend-row small { color: var(--muted); display: block; }
-.white-cta { position: absolute; left: 28px; bottom: 28px; background: #fff; color: #111; border-radius: 12px; padding: 12px 22px; font-weight: 900; }
+.white-cta { position: absolute; left: 28px; bottom: 28px; background: linear-gradient(135deg, #ff1f8f, #8b5cf6); color: #ffffff; border-radius: 12px; padding: 12px 22px; font-weight: 900; }
 .floating-stickers { position: absolute; right: 30px; bottom: 20px; display: flex; gap: 14px; transform: rotate(-12deg); }
 .floating-stickers i { display: grid; place-items: center; width: 70px; height: 70px; border-radius: 18px; background: rgba(255,255,255,.1); border: 2px solid rgba(255,255,255,.35); color: var(--lime); font-weight: 950; }
 .mini-products, .tool-card-grid, .latest-grid, .apps-grid, .connector-grid, .three-grid { display: grid; gap: 16px; }
@@ -1365,7 +1365,7 @@ kbd { background: rgba(255,255,255,.13); border-radius: 5px; padding: 2px 5px; f
 .product-tile, .model-card, .connector-card, .app-card { position: relative; min-height: 128px; padding: 24px; text-align: left; border: 1px solid var(--border); transition: .25s ease; }
 .product-tile .badge, .model-card .badge, .app-card .badge { position: absolute; right: 16px; top: 16px; }
 .iconbox { flex: 0 0 auto; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 12px; background: rgba(255,255,255,.06); font-weight: 950; }
-.games-banner { position: relative; overflow: hidden; margin-top: 28px; min-height: 500px; border-radius: 24px; border: 1px solid var(--border); display: grid; place-items: center; text-align: center; background: radial-gradient(circle at 50% 100%, rgba(204,255,0,.74), rgba(204,255,0,.22) 38%, rgba(18,20,25,.96) 72%), linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: auto, 28px 28px, 28px 28px; }
+.games-banner { position: relative; overflow: hidden; margin-top: 28px; min-height: 500px; border-radius: 24px; border: 1px solid var(--border); display: grid; place-items: center; text-align: center; background: radial-gradient(circle at 50% 100%, rgba(255,31,143,.74), rgba(255,31,143,.22) 38%, rgba(18,20,25,.96) 72%), linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: auto, 28px 28px, 28px 28px; }
 .games-banner h1 { margin: 0; font-size: clamp(42px, 8vw, 84px); line-height: .9; }
 .games-banner p { align-self: end; margin: 0; color: #ffb47a; font-weight: 900; }
 .games-banner > span:not(.pixel) { align-self: start; color: var(--muted); font-weight: 800; }
@@ -1412,7 +1412,7 @@ textarea { min-height: 140px; }
 .section-head.wide { margin: 0 0 20px; }
 .section-head button { border: 1px solid var(--border); background: rgba(255,255,255,.05); border-radius: 12px; padding: 10px 14px; }
 .asset-products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.asset-product { position: relative; min-height: 116px; border: 1px solid var(--border); border-radius: 14px; background: linear-gradient(135deg, rgba(37,99,235,.25), rgba(204,255,0,.12)); padding: 14px; text-align: left; transition: .2s ease; }
+.asset-product { position: relative; min-height: 116px; border: 1px solid var(--border); border-radius: 14px; background: linear-gradient(135deg, rgba(37,99,235,.25), rgba(255,31,143,.12)); padding: 14px; text-align: left; transition: .2s ease; }
 .asset-product:nth-child(3) { background: linear-gradient(135deg, rgba(255,31,143,.55), rgba(18,20,25,.9)); }
 .asset-kind { display: inline-block; color: #cbd5e1; font-size: 12px; margin-bottom: 18px; }
 .asset-product .badge { position: absolute; right: 12px; top: 16px; }
@@ -1442,13 +1442,13 @@ textarea { min-height: 140px; }
 .wave-card strong { color: var(--lime); font-size: 21px; font-family: monospace; }
 .wave-bars { display: flex; align-items: end; gap: 3px; height: 42px; margin-top: 12px; }
 .wave-bars span { width: 4px; background: #d9ff4b; }
-.generate-square { min-height: 118px; background: linear-gradient(135deg, var(--lime), #6f7d1e); color: #14160c; font-weight: 950; }
+.generate-square { min-height: 118px; background: linear-gradient(135deg, var(--lime), #6f7d1e); color: #ffffff; font-weight: 950; }
 .result-dock { position: absolute; right: 24px; bottom: 20px; display: flex; gap: 10px; }
 .result-dock span { background: rgba(255,255,255,.08); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; }
 .super-main { padding: 18px; background: #101216; }
 .shortcuts { position: absolute; right: 26px; top: 24px; z-index: 2; border: 0; border-radius: 18px; padding: 10px 14px; background: rgba(255,255,255,.09); }
-.super-hero { min-height: 620px; border-radius: 28px; display: grid; place-items: center; align-content: center; text-align: center; background: radial-gradient(circle at 50% 90%, rgba(204,255,0,1), rgba(204,255,0,.45) 35%, rgba(24,27,23,.9) 70%), radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1px); background-size: auto, 12px 12px; }
-.super-icon { width: 88px; height: 88px; border-radius: 22px; background: linear-gradient(135deg, #f1ff8a, var(--lime)); box-shadow: 0 18px 60px rgba(204,255,0,.38); }
+.super-hero { min-height: 620px; border-radius: 28px; display: grid; place-items: center; align-content: center; text-align: center; background: radial-gradient(circle at 50% 90%, rgba(255,31,143,1), rgba(255,31,143,.45) 35%, rgba(24,27,23,.9) 70%), radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1px); background-size: auto, 12px 12px; }
+.super-icon { width: 88px; height: 88px; border-radius: 22px; background: linear-gradient(135deg, #ff7ac8, var(--lime)); box-shadow: 0 18px 60px rgba(255,31,143,.38); }
 .super-hero h1 { font-size: clamp(38px, 6vw, 64px); margin: 22px 0 8px; }
 .super-hero p { color: #d7e0b0; font-weight: 850; }
 .prompt-bar { width: min(960px, 86%); margin-top: 28px; background: rgba(18,20,25,.96); border: 2px solid rgba(0,0,0,.55); border-radius: 24px; padding: 14px; }
@@ -1457,7 +1457,7 @@ textarea { min-height: 140px; }
 .round-submit { margin-left: auto; width: 42px; height: 42px; border-radius: 50% !important; background: var(--lime) !important; color: #111; }
 .empty-task { margin-top: 50px; display: grid; place-items: center; gap: 8px; color: var(--muted); }
 .empty-task b { width: 78px; height: 58px; border-radius: 16px; background: rgba(255,255,255,.07); display: grid; place-items: center; font-size: 22px; }
-.thumb-grad { display: grid; place-items: center; height: 110px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,31,143,.5), rgba(37,99,235,.45), rgba(204,255,0,.25)); color: #fff; font-size: 34px; font-weight: 950; }
+.thumb-grad { display: grid; place-items: center; height: 110px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,31,143,.5), rgba(37,99,235,.45), rgba(255,31,143,.25)); color: #fff; font-size: 34px; font-weight: 950; }
 .cinema-stage { display: grid; place-items: center; text-align: center; background: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px), #101216; background-size: 32px 32px; }
 .cinema-stage h1 { font-size: clamp(36px, 5vw, 70px); line-height: .95; }
 .cinema-stage h1 span { color: var(--lime); }
@@ -1489,8 +1489,8 @@ textarea { min-height: 140px; }
 .create-side, .builder-side { padding: 18px; }
 .create-side button { width: 100%; margin-bottom: 10px; border: 1px solid var(--border); background: rgba(255,255,255,.06); border-radius: 12px; padding: 12px; }
 .portrait-preview { display: grid; place-items: center; min-height: calc(100vh - 116px); border-radius: 28px; background: radial-gradient(circle, rgba(255,31,143,.18), transparent 35%), rgba(255,255,255,.025); }
-.portrait-card { display: grid; place-items: center; gap: 16px; width: min(360px, 90%); aspect-ratio: 3/4; border-radius: 34px; background: linear-gradient(180deg, rgba(204,255,0,.25), rgba(37,99,235,.22)), #171a20; border: 1px solid var(--border); }
-.portrait-card span { width: 96px; height: 96px; display: grid; place-items: center; border-radius: 24px; background: #fff; color: #111; font-size: 48px; font-weight: 950; }
+.portrait-card { display: grid; place-items: center; gap: 16px; width: min(360px, 90%); aspect-ratio: 3/4; border-radius: 34px; background: linear-gradient(180deg, rgba(255,31,143,.25), rgba(37,99,235,.22)), #171a20; border: 1px solid var(--border); }
+.portrait-card span { width: 96px; height: 96px; display: grid; place-items: center; border-radius: 24px; background: linear-gradient(135deg, #ff1f8f, #8b5cf6); color: #ffffff; font-size: 48px; font-weight: 950; }
 .builder-side { max-height: calc(100vh - 116px); overflow: auto; }
 .canvas-page { position: relative; min-height: calc(100vh - 68px); background: radial-gradient(circle at 50% 30%, rgba(37,99,235,.22), transparent 33%), #06101f; }
 .canvas-board { position: relative; min-height: 650px; display: grid; place-items: center; text-align: center; background-image: radial-gradient(rgba(37,99,235,.7) 1px, transparent 1px); background-size: 24px 24px; overflow: hidden; }
@@ -1499,12 +1499,12 @@ textarea { min-height: 140px; }
 .empty-board button, .credit-toast button { border: 0; background: var(--lime); color: #111; border-radius: 12px; padding: 10px 14px; font-weight: 950; }
 .float-media { position: absolute; border-radius: 18px; padding: 28px; background: rgba(255,255,255,.08); border: 1px solid var(--border); animation: float 5s ease-in-out infinite; }
 .one { left: 16%; top: 22%; } .two { right: 18%; top: 26%; animation-delay: .8s; } .three { left: 28%; bottom: 18%; animation-delay: 1.3s; }
-.comment-bubble { position: absolute; right: 26%; bottom: 24%; background: #fff; color: #111; border-radius: 999px; padding: 12px 18px; font-weight: 900; }
+.comment-bubble { position: absolute; right: 26%; bottom: 24%; background: linear-gradient(135deg, #ff1f8f, #8b5cf6); color: #ffffff; border-radius: 999px; padding: 12px 18px; font-weight: 900; }
 .credit-toast { position: fixed; right: 18px; bottom: 18px; z-index: 20; background: rgba(23,26,32,.95); border: 1px solid var(--border); border-radius: 16px; padding: 14px; display: flex; gap: 12px; align-items: center; }
 .template-grid { grid-template-columns: repeat(3, 1fr); }
 .apps-grid { grid-template-columns: repeat(5, minmax(170px, 1fr)); margin-top: 16px; }
 .app-card { min-height: 260px; }
-.app-thumb { display: block; height: 100px; border-radius: 16px; background: linear-gradient(135deg, rgba(204,255,0,.28), rgba(255,31,143,.22), rgba(37,99,235,.3)); margin-bottom: 16px; }
+.app-thumb { display: block; height: 100px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,31,143,.28), rgba(255,31,143,.22), rgba(37,99,235,.3)); margin-bottom: 16px; }
 .connector-sections { display: grid; gap: 28px; }
 .client-grid { display: grid; grid-template-columns: repeat(5, minmax(150px, 1fr)); gap: 12px; margin: 18px 0 28px; }
 .connector-grid { grid-template-columns: repeat(4, minmax(190px, 1fr)); }
@@ -1532,7 +1532,7 @@ pre, code { display: block; white-space: pre-wrap; background: #05070a; border: 
 .account-card { display: grid; grid-template-columns: 50px 1fr; gap: 10px; align-items: center; }
 .avatar.big { width: 50px; height: 50px; }
 .account-card em { grid-column: 2; color: var(--lime); font-style: normal; }
-.credits { padding: 14px; border-radius: 14px; background: rgba(204,255,0,.08); }
+.credits { padding: 14px; border-radius: 14px; background: rgba(255,31,143,.08); }
 .credits i { display: block; height: 8px; margin-top: 10px; border-radius: 999px; background: linear-gradient(90deg, var(--lime) 72%, rgba(255,255,255,.1) 72%); }
 @media (max-width: 1280px) {
   .top-actions .search-pill { display: none; }
@@ -1565,3 +1565,5 @@ pre, code { display: block; white-space: pre-wrap; background: #05070a; border: 
   .account-menu { left: 14px; right: 14px; width: auto; }
 }
 `;
+
+
