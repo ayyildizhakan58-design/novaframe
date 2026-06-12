@@ -1028,8 +1028,36 @@ function CollabPage() {
 // ─── SUPERCOMPUTER ────────────────────────────────────────────────────────────
 function SuperPage() {
   const [prompt,setPrompt] = useState("");
+  const [tab,setTab] = useState("Marketplace");
   const [loading,setLoading] = useState(false);
   const [result,setResult] = useState("");
+  const marketplace = [
+    {i:"🎬",t:"Video Generator",d:"Turn one prompt into ready-to-edit cinematic footage.",tag:"Try in chat"},
+    {i:"🖼",t:"Image Generator",d:"Create campaign images, product shots and style frames.",tag:"Try in chat"},
+    {i:"📣",t:"Ad Creative",d:"Build ad hooks, scripts, cuts and platform variants.",tag:"Install"},
+    {i:"🧠",t:"Memory Agent",d:"Remember brand rules, characters and reusable workflows.",tag:"New"},
+    {i:"🛍",t:"Product Agent",d:"Read product details and generate shopping content.",tag:"Beta"},
+    {i:"⚙",t:"Workflow Builder",d:"Connect models, tools, files and studio actions.",tag:"New"},
+  ];
+  const tabCards: Record<string,{i:string;t:string;d:string}[]> = {
+    Memory: [
+      {i:"🧠",t:"Brand Memory",d:"Save tone, colors, products and rules for future generations."},
+      {i:"👤",t:"Character Memory",d:"Keep Lumenfield Soul identities consistent across campaigns."},
+      {i:"📁",t:"Project Memory",d:"Reuse successful prompts, model choices and asset references."},
+    ],
+    Gaming: [
+      {i:"🎮",t:"Game Concepts",d:"Build playable concepts with art, sound and characters."},
+      {i:"🧱",t:"World Builder",d:"Generate props, scenes and prompt-ready environments."},
+      {i:"⚡",t:"Interactive Ads",d:"Turn products into mini experiences and viral demos."},
+    ],
+    Office: [
+      {i:"📊",t:"Pitch Decks",d:"Create investor and client-ready creative presentations."},
+      {i:"📝",t:"Campaign Briefs",d:"Turn rough ideas into structured production briefs."},
+      {i:"📅",t:"Content Calendar",d:"Plan launches, posts, hooks and deliverables."},
+    ],
+    Marketplace: marketplace.map(m=>({i:m.i,t:m.t,d:m.d})),
+  };
+  const quick = ["Cinematic trailer","Social media ad","Unboxing video","Product showcase","Virtual try-on","Animated infographic"];
   const run = async () => {
     if (!prompt.trim()) return;
     setLoading(true); setResult("");
@@ -1038,40 +1066,107 @@ function SuperPage() {
     setResult("✓ Task queued · Cinema Studio · Marketing Studio · Audio Studio · 3 agents activated");
   };
   return (
-    <div style={{minHeight:"100vh",paddingTop:57,background:BG}}>
-      <div style={{background:"linear-gradient(160deg,rgba(204,255,0,.04),transparent)",borderBottom:`1px solid ${B1}`,padding:"60px 48px",textAlign:"center"}}>
-        <div style={{display:"inline-block",background:"rgba(204,255,0,.1)",border:"1px solid rgba(204,255,0,.3)",borderRadius:20,padding:"4px 14px",fontSize:11,color:"#ccff00",marginBottom:20,fontWeight:700,letterSpacing:.5}}>⚡ NEW</div>
-        <h1 style={{fontSize:"clamp(28px,5vw,60px)",fontWeight:900,letterSpacing:-2,marginBottom:12}}>SUPERCOMPUTER<br/><span style={{color:"#ccff00"}}>FOR CREATIVE WORK</span></h1>
-        <p style={{color:T2,fontSize:16,marginBottom:36,maxWidth:480,margin:"0 auto 36px",lineHeight:1.6}}>Turn a simple conversation into production-ready content at scale.</p>
-        <div style={{maxWidth:640,margin:"0 auto"}}>
-          <textarea className="inp" value={prompt} onChange={e=>setPrompt(e.target.value)} placeholder="Create a TikTok ad for my fitness product with an AI influencer…" rows={3} style={{resize:"none",lineHeight:1.5,marginBottom:12,fontSize:14,border:"1px solid rgba(204,255,0,.2)"}}/>
-          <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap",marginBottom:16}}>
-            {["Ask","Create","Research","Build"].map(a=>(
-              <button key={a} style={{background:S2,border:`1px solid ${B1}`,color:T2,borderRadius:8,padding:"7px 18px",fontSize:12,cursor:"pointer",fontWeight:600,transition:"all .15s"}}
-                onMouseEnter={e=>{e.currentTarget.style.borderColor="#ccff00";e.currentTarget.style.color="#ccff00";}}
-                onMouseLeave={e=>{e.currentTarget.style.borderColor=B1;e.currentTarget.style.color=T2;}}
-              >{a}</button>
+    <div style={{minHeight:"100vh",paddingTop:57,background:BG,display:"grid",gridTemplateColumns:"220px minmax(0,1fr) 320px"}}>
+      <aside style={{borderRight:`1px solid ${B1}`,background:S1,padding:"16px 12px",display:"flex",flexDirection:"column",gap:8,minHeight:"calc(100vh - 57px)"}}>
+        <div style={{display:"flex",alignItems:"center",gap:10,padding:"8px 10px",background:S2,border:`1px solid ${B1}`,borderRadius:10}}>
+          <Logo sz={26}/>
+          <div>
+            <div style={{fontSize:12,fontWeight:900,color:T1}}>Supercomputer</div>
+            <div style={{fontSize:10,color:T3}}>Creative agents</div>
+          </div>
+        </div>
+        <button className="sb">＋ New task</button>
+        <button className="sb">⌕ Search</button>
+        <button className="sb">▣ Marketplace <span className="tn" style={{marginLeft:6}}>NEW</span></button>
+        <Hr/>
+        <Lbl s="Tasks"/>
+        <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",textAlign:"center",color:T3}}>
+          <div>
+            <div style={{width:62,height:52,borderRadius:14,background:S2,border:`1px solid ${B1}`,margin:"0 auto 12px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24}}>＋</div>
+            <div style={{fontSize:13,color:T1,fontWeight:800}}>No tasks yet</div>
+            <div style={{fontSize:11,marginTop:4}}>Create one to get started</div>
+          </div>
+        </div>
+        <button className="bm" style={{padding:"10px 12px",fontSize:12}}>Pricing <span style={{fontSize:10,marginLeft:6}}>30% OFF</span></button>
+        <button className="bg" style={{padding:"10px 12px",fontSize:12}}>Log in</button>
+      </aside>
+
+      <main style={{minWidth:0,overflow:"auto"}}>
+        <section style={{minHeight:560,margin:22,border:`1px solid ${B1}`,borderRadius:24,background:`radial-gradient(circle at 50% 80%,${M}55,transparent 36%),linear-gradient(180deg,#141416 0%,#11120f 45%,#3b001d 100%)`,position:"relative",overflow:"hidden",display:"flex",alignItems:"center",justifyContent:"center",textAlign:"center",padding:"70px 32px"}}>
+          <div style={{position:"absolute",inset:0,opacity:.28,backgroundImage:`radial-gradient(${ML} 1px, transparent 1px)`,backgroundSize:"18px 18px"}}/>
+          <button style={{position:"absolute",top:18,right:18,background:"rgba(0,0,0,.35)",border:`1px solid ${B1}`,borderRadius:999,color:T2,padding:"8px 14px",fontSize:12,fontWeight:700}}>⌘ Shortcuts</button>
+          <div style={{position:"relative",zIndex:1,width:"min(780px,100%)"}} className="fu">
+            <div style={{width:74,height:74,borderRadius:18,margin:"0 auto 26px",background:`linear-gradient(135deg,${ML},${M},${MD})`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:34,fontWeight:950,color:"#fff",boxShadow:`0 22px 70px ${M}55`}}>L</div>
+            <h1 style={{fontSize:"clamp(28px,5vw,62px)",fontWeight:950,letterSpacing:-2.3,marginBottom:12}}>SUPERCOMPUTER FOR CREATIVE WORK</h1>
+            <p style={{color:T2,fontSize:15,marginBottom:34,lineHeight:1.65}}>Turn a simple chat into production-ready content at scale.</p>
+            <div style={{background:"rgba(10,10,10,.82)",border:`1px solid ${M}55`,borderRadius:20,padding:16,boxShadow:"0 28px 80px rgba(0,0,0,.7)",backdropFilter:"blur(18px)"}}>
+              <textarea className="inp" value={prompt} onChange={e=>setPrompt(e.target.value)} placeholder="Create a cinematic trailer for my brand..." rows={2} style={{resize:"none",lineHeight:1.55,marginBottom:12,fontSize:14,border:"none",background:"transparent"}}/>
+              <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
+                {["＋","⌘","🎙","⚙"].map(x=><button key={x} className="bg" style={{width:34,height:34,padding:0,borderRadius:10}}>{x}</button>)}
+                <button className="bg" style={{fontSize:12}}>Google Gemini 3.5 Flash ▾</button>
+                <div style={{flex:1}}/>
+                <button className="bg" style={{fontSize:12}}>Ask ▾</button>
+                <button onClick={run} disabled={loading} style={{width:42,height:42,borderRadius:"50%",border:"none",background:M,color:"#fff",fontWeight:950,cursor:loading?"wait":"pointer",boxShadow:`0 0 34px ${M}88`}}>{loading?"…":"↑"}</button>
+              </div>
+            </div>
+            <div style={{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap",marginTop:18}}>
+              {quick.map(q=><button key={q} onClick={()=>setPrompt(q)} className="bg" style={{fontSize:11,padding:"7px 12px"}}>{q}</button>)}
+            </div>
+            {result&&<div className="fi" style={{marginTop:14,padding:"10px 16px",background:`${M}18`,border:`1px solid ${M}55`,borderRadius:8,color:ML,fontSize:12,fontWeight:700}}>{result}</div>}
+          </div>
+        </section>
+
+        <section style={{padding:"14px 28px 48px"}}>
+          <div style={{display:"flex",alignItems:"end",justifyContent:"space-between",gap:16,marginBottom:18,flexWrap:"wrap"}}>
+            <div>
+              <Lbl s="Supercomputer modules"/>
+              <h2 style={{fontSize:"clamp(22px,3vw,38px)",fontWeight:950,letterSpacing:-1.5,marginTop:8}}>What can the Supercomputer do?</h2>
+              <p style={{color:T3,fontSize:13,marginTop:6}}>Videos, ads, product shots, avatars, voice generation and automation.</p>
+            </div>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+              {Object.keys(tabCards).map(t=><button key={t} onClick={()=>setTab(t)} className={tab===t?"bm":"bg"} style={{padding:"8px 14px",fontSize:12}}>{t}</button>)}
+            </div>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(210px,1fr))",gap:12}}>
+            {tabCards[tab].map(item=>(
+              <div key={item.t} className="card" style={{padding:"18px 16px",cursor:"pointer"}}
+                onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-4px)";e.currentTarget.style.borderColor=M;}}
+                onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.borderColor=B1;}}
+              >
+                <div style={{width:38,height:38,borderRadius:12,background:S2,border:`1px solid ${B1}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,marginBottom:12}}>{item.i}</div>
+                <div style={{color:T1,fontSize:13,fontWeight:850,marginBottom:5}}>{item.t}</div>
+                <div style={{color:T3,fontSize:11,lineHeight:1.55,marginBottom:12}}>{item.d}</div>
+                <button className="bg" style={{fontSize:11,padding:"7px 12px"}}>Try →</button>
+              </div>
             ))}
           </div>
-          <button onClick={run} disabled={loading} style={{background:"#ccff00",color:"#000",border:"none",borderRadius:10,padding:"13px 40px",fontSize:14,fontWeight:900,cursor:loading?"not-allowed":"pointer",opacity:loading?.6:1,transition:"all .2s"}}>
-            {loading?"Processing…":"Run Supercomputer →"}
-          </button>
-          {result&&<div className="fi" style={{marginTop:14,padding:"10px 16px",background:"rgba(204,255,0,.08)",border:"1px solid rgba(204,255,0,.2)",borderRadius:8,color:"#ccff00",fontSize:12,fontWeight:600}}>{result}</div>}
+        </section>
+      </main>
+
+      <aside style={{borderLeft:`1px solid ${B1}`,background:S1,padding:"18px 14px",overflow:"auto",minHeight:"calc(100vh - 57px)"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+          <h3 style={{fontSize:16,fontWeight:900}}>Marketplace</h3>
+          <span className="tn">LIVE</span>
         </div>
-      </div>
-      <div style={{padding:"48px",maxWidth:1200,margin:"0 auto"}}>
-        <Lbl s="What can the Supercomputer do?"/>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:10,marginTop:16}}>
-          {["Video Ads","Product Photography","UGC Videos","AI Influencers","Fashion Campaigns","Voice Generation","Storyboards","Marketing Automation"].map(item=>(
-            <div key={item} className="card" style={{padding:"20px 16px",textAlign:"center",cursor:"pointer"}}
-              onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.borderColor="#ccff00";}}
-              onMouseLeave={e=>{(e.currentTarget as HTMLDivElement).style.borderColor=B1;}}
+        <input className="inp" placeholder="Search agents, tools..." style={{height:38,fontSize:12,marginBottom:14}}/>
+        <div style={{display:"grid",gap:10}}>
+          {marketplace.map(m=>(
+            <button key={m.t} style={{textAlign:"left",background:S2,border:`1px solid ${B1}`,borderRadius:14,padding:12,cursor:"pointer",transition:"all .18s"}}
+              onMouseEnter={e=>{e.currentTarget.style.borderColor=M;e.currentTarget.style.transform="translateY(-2px)";}}
+              onMouseLeave={e=>{e.currentTarget.style.borderColor=B1;e.currentTarget.style.transform="translateY(0)";}}
             >
-              <div style={{color:T1,fontSize:12,fontWeight:700}}>{item}</div>
-            </div>
+              <div style={{display:"flex",gap:10,alignItems:"center",marginBottom:8}}>
+                <div style={{width:36,height:36,borderRadius:10,background:`${M}18`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>{m.i}</div>
+                <div>
+                  <div style={{color:T1,fontSize:12,fontWeight:850}}>{m.t}</div>
+                  <span style={{fontSize:9,color:ML,fontWeight:800,textTransform:"uppercase"}}>{m.tag}</span>
+                </div>
+              </div>
+              <div style={{color:T3,fontSize:11,lineHeight:1.5}}>{m.d}</div>
+            </button>
           ))}
         </div>
-      </div>
+      </aside>
     </div>
   );
 }
