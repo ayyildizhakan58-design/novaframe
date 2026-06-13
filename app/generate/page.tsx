@@ -121,7 +121,7 @@ function GenerateStudio() {
       <aside className="cs-side">
         <div className="cs-brand">
           <span>Cinema Studio</span>
-          <span>LF</span>
+          <span>L</span>
         </div>
         <Link className={`cs-navitem ${!view ? "active" : ""}`} href="/generate">
           <span className="cs-navicon">H</span> Home
@@ -246,7 +246,7 @@ function GenerateStudio() {
                               setMenuOpen(false);
                             }}
                           >
-                            <span className="cs-mico">LF</span>
+                            <span className="cs-mico">L</span>
                             <span>
                               <strong>
                                 {model.name}
