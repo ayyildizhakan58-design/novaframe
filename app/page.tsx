@@ -130,20 +130,26 @@ const AVTS    = ["Male","Female","Influencer","Fitness Coach","Business Owner","
 const PLATS   = ["TikTok","Instagram","YouTube","Facebook"];
 const VOCS    = ["Calm & Clear","Energetic","Professional","Friendly","Authoritative","Warm"];
 const CTAS    = ["Shop Now","Learn More","Get Started","Order Today","Try for Free","Book a Call","Download Now"];
-const AIENGS  = ["Seedance 2.0","Kling 3.0","Google Veo 3.1","OpenAI GPT-4.1","Runway Gen-4","ElevenLabs"];
+const AIENGS  = ["Runway Gen-4.5","Seedance 2.0 · Coming soon","Kling 3.0 · Coming soon","Google Veo 3.1 · Coming soon","OpenAI GPT-4.1 · Coming soon","ElevenLabs · Coming soon"];
 
 const CHAR_T  = ["Human","Ant","Bee","Octopus","Crocodile","Alien","Beetle","Elf","Mantis"];
 const GENS    = ["Female","Male","Trans man","Trans woman","Non-binary"];
 const ETHS    = ["African","Asian","European","Indian","Middle Eastern","Mixed"];
 const SKINS   = ["black","dark brown","white","purple","tan","olive","grey","green","metallic","iridescent"];
 const EYES    = ["Black","Purple","Green","White","Brown","Deep Brown","Blue","Amber","Red","Grey"];
+const HAIRS   = ["Short","Long","Curly","Bald","Braided","Wavy","Cyber Cut","Editorial"];
+const MATS    = ["Human Skin","Scales","Fur","Metallic","Amphibian Skin","Iridescent","Soft Porcelain"];
+const PATS    = ["Solid","Stripes","Spots","Chess Pattern","Visible Veins","Gradient Glow","Freckles"];
 
 const APPS_D: Record<string,{name:string;desc:string;icon:string}[]> = {
   "Professional":       [{name:"Virality Predictor",desc:"Predict viral potential",icon:"📊"},{name:"Similarity Score",desc:"Visual likeness",icon:"🔍"},{name:"Expand Image",desc:"AI outpainting",icon:"↔"},{name:"Angles 2.0",desc:"Multi-angle shots",icon:"📐"},{name:"Shots",desc:"Cinematic composer",icon:"🎬"}],
   "Enhance & Style":    [{name:"Skin Enhancer",desc:"AI skin retouching",icon:"✨"},{name:"AI Stylist",desc:"Fashion recommendations",icon:"👗"},{name:"Relight",desc:"Pro lighting adj.",icon:"💡"},{name:"Outfit Swap",desc:"Virtual outfit",icon:"🔄"},{name:"Style Snap",desc:"Snap & style",icon:"📸"}],
   "Face & Identity":    [{name:"Face Swap",desc:"Seamless face replace",icon:"🎭"},{name:"Headshot Gen",desc:"Pro headshots",icon:"🖼"},{name:"Character Swap",desc:"Full character replace",icon:"🔀"},{name:"Recast",desc:"Scene character swap",icon:"🎬"},{name:"Video Face Swap",desc:"Video face swap",icon:"📹"}],
+  "Video Editing":      [{name:"ClipCut",desc:"Auto edit viral clips",icon:"✂️"},{name:"Urban Cuts",desc:"Street-style video edits",icon:"🏙️"},{name:"Video Background Remover",desc:"Remove backgrounds from clips",icon:"▧"},{name:"Breakdown",desc:"Turn scenes into edit steps",icon:"🧩"},{name:"Japanese Show",desc:"Fast-paced show template",icon:"📺"}],
   "Ads & Products":     [{name:"Click to Ad",desc:"URL to video ad",icon:"🎯"},{name:"Billboard Ad",desc:"Billboard creator",icon:"🏙"},{name:"Bullet Time",desc:"Matrix bullet time",icon:"⚡"},{name:"Truck Ad",desc:"Vehicle ad creator",icon:"🚛"},{name:"UGC Factory",desc:"UGC content gen",icon:"📱"}],
   "Games & Characters": [{name:"Game Dump",desc:"Game-style scenes",icon:"🎮"},{name:"Nano Strike",desc:"Action sequences",icon:"⚔"},{name:"Nano Theft",desc:"Heist cinematic",icon:"🎰"},{name:"Simlife",desc:"Life simulation",icon:"🌍"},{name:"Plushies",desc:"Cute characters",icon:"🧸"}],
+  "Extras":             [{name:"AI Meme Generator",desc:"Create memes from prompts",icon:"😄"},{name:"Background Remover",desc:"Clean transparent cutouts",icon:"◌"},{name:"Micro-Beasts",desc:"Tiny creature concepts",icon:"🔬"},{name:"Signboard",desc:"Text and sign mockups",icon:"🪧"},{name:"Paint App",desc:"Sketch into polished art",icon:"🎨"}],
+  "Trending Templates": [{name:"On Fire",desc:"High-energy viral look",icon:"🔥"},{name:"Skibidi",desc:"Fast meme template",icon:"🎛️"},{name:"Mukbang",desc:"Food creator format",icon:"🍜"},{name:"Cloud Surf",desc:"Dreamlike motion shot",icon:"☁️"},{name:"Idol",desc:"Music star portrait style",icon:"🎤"}],
 };
 
 // ─── GLOBAL CSS ───────────────────────────────────────────────────────────────
@@ -232,7 +238,7 @@ function Logo({sz=28}:{sz?:number}) {
   return (
     <div style={{display:"flex",alignItems:"center",gap:8}}>
       <div style={{width:sz,height:sz,borderRadius:7,background:`linear-gradient(135deg,${M},${MD})`,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:sz*.5,color:"#fff",flexShrink:0}}>L</div>
-      <span style={{color:T1,fontWeight:800,fontSize:Math.max(12,sz*.42),letterSpacing:-.5}}>Lumen<span style={{color:M}}>field</span><span style={{color:T3,fontWeight:700}}>-AI-Studio</span></span>
+      <span style={{fontWeight:800,fontSize:Math.max(12,sz*.42),letterSpacing:-.5,whiteSpace:"nowrap",background:`linear-gradient(90deg,${T1} 0%,${T1} 42%,${M} 43%,${ML} 62%,${T3} 63%)`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Lumenfield-AI-Studio</span>
     </div>
   );
 }
@@ -563,6 +569,10 @@ function ExplorePage({go}:{go:(p:Page)=>void}) {
           ))}
         </div>
       </section>
+      <AIStudioWorkspace/>
+      <AIEngineRoadmap/>
+      <WorkflowControlRoom/>
+
       {/* CTA */}
       <section style={{margin:"0 auto 80px",background:S1,border:`1px solid ${B1}`,borderRadius:16,padding:"52px",textAlign:"center",position:"relative",overflow:"hidden",maxWidth:1184}}>
         <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:`linear-gradient(90deg,transparent,${M},transparent)`}}/>
@@ -571,6 +581,446 @@ function ExplorePage({go}:{go:(p:Page)=>void}) {
         <button className="bm" onClick={()=>go("login")} style={{padding:"14px 36px",fontSize:14}}>Start for free →</button>
       </section>
     </div>
+  );
+}
+
+// ─── AI STUDIO WORKSPACE ─────────────────────────────────────────────────────
+function AIStudioWorkspace() {
+  type WorkspaceMode = "supercomputer" | "cinema";
+  type StudioTask = {
+    id: string;
+    prompt: string;
+    model: string;
+    status: "queued" | "running" | "completed" | "failed";
+    createdAt: string;
+    videoUrl?: string;
+    error?: string;
+  };
+
+  const [active,setActive] = useState<WorkspaceMode>("supercomputer");
+  const [prompt,setPrompt] = useState("");
+  const [model,setModel] = useState("Runway Gen-4.5");
+  const [ratio,setRatio] = useState("1280:720");
+  const [duration,setDuration] = useState<5 | 10>(5);
+  const [plusOpen,setPlusOpen] = useState(false);
+  const [status,setStatus] = useState("Ready");
+  const [preview,setPreview] = useState("");
+  const [tasks,setTasks] = useState<StudioTask[]>([]);
+  const [working,setWorking] = useState(false);
+
+  const models = [
+    {n:"Runway Gen-4.5", live:true},
+    {n:"Runway Gen-4 Turbo · Coming soon", live:false},
+    {n:"Google Veo 3.1 · Coming soon", live:false},
+    {n:"Kling 3.0 · Coming soon", live:false},
+    {n:"Seedance 2.0 · Coming soon", live:false},
+  ];
+  const attach = ["Upload image","Image","Video","Product photo","Character","Audio"];
+  const modes = [
+    {id:"supercomputer" as const, label:"Supercomputer"},
+    {id:"cinema" as const, label:"Cinema Studio"},
+  ];
+
+  const updateTask = (id:string, patch:Partial<StudioTask>) => {
+    setTasks(prev=>prev.map(t=>t.id===id ? {...t,...patch} : t));
+  };
+
+  const startGeneration = async () => {
+    if (!prompt.trim()) {
+      setStatus("Prompt required");
+      return;
+    }
+    const id = `${Date.now()}`;
+    const createdAt = new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+    const nextTask: StudioTask = {id,prompt:prompt.trim(),model,status:"queued",createdAt};
+    setTasks(prev=>[nextTask,...prev].slice(0,8));
+    setPreview("");
+    setWorking(true);
+
+    if (model !== "Runway Gen-4.5") {
+      const message = `${model} is coming soon. Runway Gen-4.5 is active now.`;
+      setStatus(message);
+      updateTask(id,{status:"failed",error:message});
+      setWorking(false);
+      return;
+    }
+
+    try {
+      setStatus("Starting Runway generation...");
+      const start = await fetch("/api/generate-video", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({prompt:prompt.trim(), ratio, duration}),
+      });
+      const startData = await start.json() as {ok?:boolean; taskId?:string; status?:string; error?:string};
+      if (!start.ok || !startData.taskId) throw new Error(startData.error || "Runway task could not start.");
+
+      updateTask(id,{status:"running"});
+      setStatus(`Runway task ${startData.status || "queued"}`);
+
+      for (let attempt=1; attempt<=72; attempt++) {
+        await new Promise(r=>setTimeout(r,5000));
+        const check = await fetch(`/api/check-video?taskId=${encodeURIComponent(startData.taskId)}`, {cache:"no-store"});
+        const data = await check.json() as {ok?:boolean; status?:string; output?:unknown; failure?:unknown; error?:string};
+        if (!check.ok) throw new Error(data.error || "Runway status could not be checked.");
+
+        const nextStatus = String(data.status || "running");
+        setStatus(`Rendering: ${nextStatus}`);
+        const lower = nextStatus.toLowerCase();
+        if (lower.includes("fail") || data.failure) throw new Error("Runway generation failed.");
+
+        if (lower.includes("succeed") || lower.includes("complete")) {
+          const output = Array.isArray(data.output) ? data.output : data.output ? [data.output] : [];
+          const url = output.find((item): item is string => typeof item === "string" && item.startsWith("http"));
+          if (!url) throw new Error("Video completed, but no video URL was returned.");
+          setPreview(url);
+          updateTask(id,{status:"completed",videoUrl:url});
+          setStatus("Completed");
+          setWorking(false);
+          return;
+        }
+      }
+      throw new Error("Video is still rendering. Open history and try again in a moment.");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Generation failed.";
+      setStatus(message);
+      updateTask(id,{status:"failed",error:message});
+      setWorking(false);
+    }
+  };
+
+  return (
+    <section id="studio-workspace" style={{maxWidth:1280,margin:"0 auto 56px",padding:"0 16px"}}>
+      <div style={{display:"flex",alignItems:"end",justifyContent:"space-between",gap:16,marginBottom:18,flexWrap:"wrap"}}>
+        <div>
+          <Lbl s="Live workspace"/>
+          <h2 style={{fontSize:"clamp(26px,4vw,48px)",fontWeight:950,letterSpacing:-1.6,marginTop:8}}>Lumenfield AI Studio</h2>
+          <p style={{color:T2,fontSize:14,lineHeight:1.7,maxWidth:620,marginTop:8}}>A real creative workspace with Runway video generation, task history, preview and model routing.</p>
+        </div>
+        <div style={{display:"flex",gap:8,background:S1,border:`1px solid ${B1}`,borderRadius:14,padding:5}}>
+          {modes.map(m=>(
+            <button key={m.id} onClick={()=>setActive(m.id)} className={active===m.id?"bm":"bg"} style={{padding:"9px 16px",fontSize:12,borderRadius:10}}>
+              {m.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{display:"grid",gridTemplateColumns:"250px minmax(0,1fr)",minHeight:720,border:`1px solid ${B1}`,borderRadius:26,overflow:"hidden",background:"#08090b",boxShadow:"0 30px 110px rgba(0,0,0,.42)"}}>
+        <aside style={{background:"#111216",borderRight:`1px solid ${B1}`,padding:16,display:"flex",flexDirection:"column",gap:8}}>
+          <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 10px 16px"}}>
+            <Logo sz={34}/>
+            <div>
+              <div style={{color:T1,fontSize:13,fontWeight:900}}>Lumenfield</div>
+              <div style={{color:T3,fontSize:10}}>AI Studio</div>
+            </div>
+          </div>
+          {["New task","Search","Marketplace  NEW","My Generations","Projects","New project"].map(item=>(
+            <button key={item} className="sb" style={{fontSize:13,padding:"10px 12px",color:item.includes("NEW")?ML:T2}}>
+              {item}
+            </button>
+          ))}
+          <div style={{flex:1}}/>
+          <button className="bm" style={{fontSize:12,padding:"10px 12px"}}>Pricing</button>
+          <button className="bg" style={{fontSize:12,padding:"10px 12px"}}>Log in</button>
+        </aside>
+
+        <div style={{display:"grid",gridTemplateRows:"minmax(0,1fr) auto",minWidth:0}}>
+          <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) 300px",minHeight:0}}>
+            <main style={{position:"relative",overflow:"auto",padding:24,backgroundImage:`linear-gradient(${B1} 1px,transparent 1px),linear-gradient(90deg,${B1} 1px,transparent 1px)`,backgroundSize:"36px 36px"}}>
+              {active==="supercomputer" ? (
+                <div style={{minHeight:450,display:"flex",alignItems:"center",justifyContent:"center",textAlign:"center",position:"relative"}}>
+                  <div style={{position:"absolute",inset:"12% 10%",background:`radial-gradient(circle at 50% 50%,${M}33,transparent 35%),radial-gradient(circle at 30% 35%,rgba(199,255,0,.14),transparent 24%)`,filter:"blur(4px)"}}/>
+                  <div style={{position:"relative",zIndex:1}}>
+                    <div style={{width:150,height:150,borderRadius:"50%",margin:"0 auto 28px",background:`radial-gradient(circle, #c7ff00 0%, ${M} 42%, transparent 68%)`,boxShadow:`0 0 90px ${M}66`,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <div style={{width:72,height:72,borderRadius:"50%",background:"#c7ff00",boxShadow:"0 0 44px rgba(199,255,0,.95)"}}/>
+                    </div>
+                    {[
+                      ["14%","24%"],["78%","18%"],["18%","74%"],["82%","70%"],["50%","14%"],
+                    ].map(([l,t],i)=>(
+                      <div key={i} style={{position:"absolute",left:l,top:t,width:10,height:10,borderRadius:"50%",background:i%2?M:"#c7ff00",boxShadow:`0 0 20px ${i%2?M:"#c7ff00"}`}}/>
+                    ))}
+                    <h3 style={{fontSize:"clamp(28px,4vw,48px)",fontWeight:950,letterSpacing:-1.5}}>Supercomputer memory</h3>
+                    <p style={{color:T2,fontSize:15,marginTop:10}}>Learning from every generation.</p>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,marginBottom:16,flexWrap:"wrap"}}>
+                    <div>
+                      <h3 style={{fontSize:32,fontWeight:950,letterSpacing:-1.2}}>Cinema Studio</h3>
+                      <p style={{color:T2,fontSize:14,marginTop:6}}>Create cinematic AI videos from prompts, references and product shots.</p>
+                    </div>
+                    <span className="tn">Runway active</span>
+                  </div>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:12,marginBottom:16}}>
+                    <div className="card" style={{padding:16}}>
+                      <Lbl s="Aspect ratio"/>
+                      <div style={{display:"flex",gap:8,marginTop:10,flexWrap:"wrap"}}>
+                        {[["16:9","1280:720"],["9:16","720:1280"],["1:1","1280:720"]].map(([label,value])=>(
+                          <button key={label} onClick={()=>setRatio(value)} className={ratio===value?"bm":"bg"} style={{fontSize:12,padding:"8px 12px"}}>{label}</button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="card" style={{padding:16}}>
+                      <Lbl s="Duration"/>
+                      <div style={{display:"flex",gap:8,marginTop:10}}>
+                        {([5,10] as const).map(d=>(
+                          <button key={d} onClick={()=>setDuration(d)} className={duration===d?"bm":"bg"} style={{fontSize:12,padding:"8px 12px"}}>{d}s</button>
+                        ))}
+                      </div>
+                    </div>
+                    <UZ label="Start Frame" h={96}/>
+                    <UZ label="End Frame" h={96}/>
+                  </div>
+                  <div className="card" style={{minHeight:300,padding:18,display:"flex",alignItems:"center",justifyContent:"center",background:"radial-gradient(circle at 50% 30%,rgba(232,0,111,.18),transparent 34%),#0b0c0f"}}>
+                    {preview ? (
+                      <video src={preview} controls playsInline style={{width:"100%",maxHeight:420,borderRadius:14,background:"#000"}}/>
+                    ) : (
+                      <div style={{textAlign:"center"}}>
+                        <div style={{fontSize:42,marginBottom:10}}>▶</div>
+                        <div style={{fontSize:18,fontWeight:900}}>Video preview</div>
+                        <div style={{color:T3,fontSize:12,marginTop:6}}>Your generated Runway result will appear here.</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </main>
+
+            <aside style={{borderLeft:`1px solid ${B1}`,background:S1,padding:16,overflow:"auto"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+                <h3 style={{fontSize:15,fontWeight:900}}>Generation history</h3>
+                <span style={{fontSize:11,color:T3}}>{tasks.length} tasks</span>
+              </div>
+              <div style={{display:"grid",gap:10}}>
+                {tasks.length===0&&(
+                  <div className="card" style={{padding:16,textAlign:"center",color:T3,fontSize:12,lineHeight:1.6}}>
+                    Your generations will appear here.
+                  </div>
+                )}
+                {tasks.map(t=>(
+                  <div key={t.id} className="card" style={{padding:12}}>
+                    <div style={{display:"flex",justifyContent:"space-between",gap:10,marginBottom:7}}>
+                      <span style={{color:T1,fontSize:12,fontWeight:800}}>{t.model}</span>
+                      <span style={{fontSize:10,color:t.status==="completed"?"#c7ff00":t.status==="failed"?ML:T3,textTransform:"uppercase",fontWeight:900}}>{t.status}</span>
+                    </div>
+                    <div style={{color:T2,fontSize:11,lineHeight:1.45,marginBottom:8}}>{t.prompt.length>78?t.prompt.slice(0,78)+"...":t.prompt}</div>
+                    <div style={{color:T3,fontSize:10,marginBottom:t.videoUrl?8:0}}>{t.createdAt}</div>
+                    {t.videoUrl&&<video src={t.videoUrl} controls playsInline style={{width:"100%",borderRadius:8,background:"#000",marginTop:6}}/>}
+                    {t.error&&<div style={{color:ML,fontSize:10,lineHeight:1.4,marginTop:6}}>{t.error}</div>}
+                  </div>
+                ))}
+              </div>
+            </aside>
+          </div>
+
+          <div style={{borderTop:`1px solid ${B1}`,background:"#111216",padding:16}}>
+            <div style={{display:"grid",gridTemplateColumns:"auto minmax(0,1fr) 220px auto",gap:10,alignItems:"end"}}>
+              <div style={{position:"relative"}}>
+                <button onClick={()=>setPlusOpen(v=>!v)} className="bg" style={{width:44,height:44,padding:0,borderRadius:14,fontSize:20}}>+</button>
+                {plusOpen&&(
+                  <div style={{position:"absolute",bottom:"115%",left:0,width:180,background:S1,border:`1px solid ${B1}`,borderRadius:12,padding:8,boxShadow:"0 20px 60px rgba(0,0,0,.65)",zIndex:20}}>
+                    {attach.map(a=><button key={a} onClick={()=>setPlusOpen(false)} className="sb" style={{color:T2}}>{a}</button>)}
+                  </div>
+                )}
+              </div>
+              <textarea className="inp" value={prompt} onChange={e=>setPrompt(e.target.value)} rows={2} placeholder="Make a cinematic product video from this idea..." style={{resize:"none",minHeight:58,lineHeight:1.5}}/>
+              <select className="sel" value={model} onChange={e=>setModel(e.target.value)} style={{height:44}}>
+                {models.map(m=><option key={m.n} value={m.n}>{m.n}{m.live?"":" — Coming soon"}</option>)}
+              </select>
+              <button className="bm" onClick={startGeneration} disabled={working} style={{height:44,minWidth:124}}>
+                {working?"Generating...":"Generate"}
+              </button>
+            </div>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,marginTop:10,flexWrap:"wrap"}}>
+              <div style={{color:status==="Prompt required" || status.toLowerCase().includes("failed") || status.toLowerCase().includes("secret") ? ML : T3,fontSize:12}}>{status}</div>
+              <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                <span className="chip">Ratio: {ratio==="720:1280"?"9:16":"16:9"}</span>
+                <span className="chip">Duration: {duration}s</span>
+                <span className="chip">Functional: Runway Gen-4.5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AIEngineRoadmap() {
+  const engines = [
+    {i:"🎬",t:"Video Engine",d:"Runway Gen-4.5 active now. Kling, Veo and Seedance adapters prepared as staged providers.",s:"ACTIVE"},
+    {i:"🖼",t:"Image Engine",d:"Unified image route for prompt, reference, inpaint, upscale and product photography workflows.",s:"READY"},
+    {i:"🎙",t:"Audio Engine",d:"Voiceover, translation, lipsync audio and studio narration can run behind protected server routes.",s:"NEXT"},
+    {i:"📣",t:"Marketing Engine",d:"Product URL intake, hook generation, UGC scripts, avatar selection and ad variation builder.",s:"READY"},
+    {i:"👤",t:"Influencer Engine",d:"Character builder, identity memory, reusable style profiles and campaign-ready talent cards.",s:"READY"},
+    {i:"💳",t:"Credits & Payments",d:"Stripe-ready credit logic with protected paid calls and server-side secret handling.",s:"PLANNED"},
+  ];
+  const routes = [
+    "/api/generate-video",
+    "/api/check-video",
+    "/api/generate/image",
+    "/api/generate/audio",
+    "/api/generate/marketing",
+    "/api/generate/influencer",
+  ];
+  const stack = ["Next.js App Router","TypeScript-safe UI","Server API routes","Runway API secret protected","Generation history","Future Stripe credits"];
+  return (
+    <section style={{maxWidth:1280,margin:"0 auto 56px",padding:"0 16px"}}>
+      <div style={{background:`linear-gradient(135deg,rgba(232,0,111,.12),rgba(255,77,166,.04) 42%,rgba(255,255,255,.02))`,border:`1px solid ${B1}`,borderRadius:26,padding:"28px",position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",inset:0,backgroundImage:`radial-gradient(${M}55 1px, transparent 1px)`,backgroundSize:"22px 22px",opacity:.16}}/>
+        <div style={{position:"relative",zIndex:1}}>
+          <div style={{display:"flex",alignItems:"end",justifyContent:"space-between",gap:18,flexWrap:"wrap",marginBottom:22}}>
+            <div>
+              <Lbl s="AI engine layer"/>
+              <h2 style={{fontSize:"clamp(24px,4vw,44px)",fontWeight:950,letterSpacing:-1.4,marginTop:8}}>Lumenfield production backend map</h2>
+              <p style={{color:T2,fontSize:14,lineHeight:1.7,maxWidth:680,marginTop:8}}>A safe, original architecture for routing image, video, audio, marketing and influencer generation through protected server routes.</p>
+            </div>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+              {stack.map(s=><span key={s} className="chip" style={{cursor:"default"}}>{s}</span>)}
+            </div>
+          </div>
+
+          <div style={{display:"grid",gridTemplateColumns:"minmax(0,1.35fr) minmax(280px,.65fr)",gap:18}}>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:12}}>
+              {engines.map(e=>(
+                <div key={e.t} className="card" style={{padding:18,minHeight:164,position:"relative",overflow:"hidden"}}>
+                  <div style={{position:"absolute",right:-18,top:-18,width:92,height:92,borderRadius:"50%",background:`${M}18`,filter:"blur(8px)"}}/>
+                  <div style={{position:"relative"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",gap:10,alignItems:"center",marginBottom:14}}>
+                      <div style={{width:42,height:42,borderRadius:13,background:S2,border:`1px solid ${B1}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>{e.i}</div>
+                      <span className={e.s==="ACTIVE"?"tn":"tx"}>{e.s}</span>
+                    </div>
+                    <div style={{color:T1,fontSize:14,fontWeight:900,marginBottom:7}}>{e.t}</div>
+                    <div style={{color:T3,fontSize:12,lineHeight:1.65}}>{e.d}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="card" style={{padding:20,background:"rgba(5,5,5,.72)",backdropFilter:"blur(18px)"}}>
+              <Lbl s="Protected routes"/>
+              <div style={{display:"grid",gap:8,marginTop:14}}>
+                {routes.map(r=>(
+                  <div key={r} style={{display:"flex",alignItems:"center",gap:10,background:S2,border:`1px solid ${B1}`,borderRadius:10,padding:"10px 12px"}}>
+                    <span style={{width:8,height:8,borderRadius:"50%",background:M,boxShadow:`0 0 16px ${M}`}}/>
+                    <code style={{color:T2,fontSize:12,wordBreak:"break-all"}}>{r}</code>
+                  </div>
+                ))}
+              </div>
+              <div style={{marginTop:18,padding:14,borderRadius:14,background:`${M}12`,border:`1px solid ${M}33`}}>
+                <div style={{color:ML,fontSize:12,fontWeight:900,marginBottom:6}}>Security rule</div>
+                <p style={{color:T2,fontSize:12,lineHeight:1.6}}>API keys stay server-side. Client buttons call Lumenfield routes, and paid provider calls run only through protected backend endpoints.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function WorkflowControlRoom() {
+  const phases = [
+    {n:"1",t:"Analyze",d:"Prompt, product URL, image, video or brand material enters the workspace.",i:"⌕"},
+    {n:"2",t:"Route",d:"Lumenfield selects the best studio, model, aspect ratio and creative path.",i:"⇄"},
+    {n:"3",t:"Render",d:"Runway and future engines process the job behind protected server routes.",i:"▶"},
+    {n:"4",t:"Deliver",d:"Outputs move into history, library, campaign cards and reusable workflows.",i:"✓"},
+  ];
+  const queue = [
+    {t:"9:16 product ad",s:"Rendering",p:"68%",c:M},
+    {t:"AI influencer intro",s:"Queued",p:"12%",c:ML},
+    {t:"Voiceover draft",s:"Ready",p:"100%",c:"#c7ff00"},
+    {t:"Image upscale",s:"Review",p:"92%",c:"#60a5fa"},
+  ];
+  const scenes = [
+    {t:"Hook shot",d:"Close product reveal, fast push-in, magenta rim light",g:"linear-gradient(135deg,#2a0014,#e8006f)"},
+    {t:"Creator proof",d:"UGC angle, handheld camera, natural desk setup",g:"linear-gradient(135deg,#111827,#6d28d9)"},
+    {t:"Offer frame",d:"Animated typography, brand colors, final CTA",g:"linear-gradient(135deg,#020617,#0ea5e9)"},
+  ];
+  const featureMap = [
+    "Video analysis checklist",
+    "Design adaptation layer",
+    "Page and feature map",
+    "One-screen deep dive",
+    "Generate queue",
+    "Reusable prompt presets",
+    "Asset history",
+    "Model status badges",
+  ];
+  return (
+    <section style={{maxWidth:1280,margin:"0 auto 56px",padding:"0 16px"}}>
+      <div style={{display:"grid",gridTemplateColumns:"minmax(0,.9fr) minmax(0,1.1fr)",gap:18}}>
+        <div className="card" style={{padding:24,borderRadius:24,background:"linear-gradient(180deg,#111216,#08090b)",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",inset:0,backgroundImage:`linear-gradient(${B1} 1px,transparent 1px),linear-gradient(90deg,${B1} 1px,transparent 1px)`,backgroundSize:"34px 34px",opacity:.35}}/>
+          <div style={{position:"relative",zIndex:1}}>
+            <Lbl s="Workflow control room"/>
+            <h2 style={{fontSize:"clamp(24px,3.5vw,42px)",fontWeight:950,letterSpacing:-1.4,marginTop:8,lineHeight:1.04}}>From idea to production asset in one controlled flow.</h2>
+            <p style={{color:T2,fontSize:14,lineHeight:1.7,marginTop:12,maxWidth:560}}>This keeps the current Lumenfield format but adds the professional studio workflow: analysis, routing, rendering, history and delivery.</p>
+            <div style={{display:"grid",gap:10,marginTop:22}}>
+              {phases.map(p=>(
+                <div key={p.t} style={{display:"grid",gridTemplateColumns:"46px 1fr auto",gap:12,alignItems:"center",background:S1,border:`1px solid ${B1}`,borderRadius:14,padding:12}}>
+                  <div style={{width:46,height:46,borderRadius:14,background:`${M}18`,border:`1px solid ${M}33`,display:"flex",alignItems:"center",justifyContent:"center",color:ML,fontWeight:950}}>{p.i}</div>
+                  <div>
+                    <div style={{color:T1,fontSize:13,fontWeight:900}}>{p.t}</div>
+                    <div style={{color:T3,fontSize:11,lineHeight:1.5,marginTop:2}}>{p.d}</div>
+                  </div>
+                  <span style={{width:26,height:26,borderRadius:"50%",background:M,color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:950}}>{p.n}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div style={{display:"grid",gridTemplateRows:"auto auto",gap:18}}>
+          <div className="card" style={{padding:20,borderRadius:24,background:S1}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,marginBottom:14}}>
+              <div>
+                <Lbl s="Live queue"/>
+                <h3 style={{color:T1,fontSize:20,fontWeight:950,marginTop:5}}>Generation timeline</h3>
+              </div>
+              <span className="tn">LIVE</span>
+            </div>
+            <div style={{display:"grid",gap:10}}>
+              {queue.map(q=>(
+                <div key={q.t} style={{background:S2,border:`1px solid ${B1}`,borderRadius:14,padding:12}}>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:12,marginBottom:8}}>
+                    <span style={{color:T1,fontWeight:850}}>{q.t}</span>
+                    <span style={{color:q.c,fontWeight:900}}>{q.s}</span>
+                  </div>
+                  <div style={{height:6,background:BG,borderRadius:999,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:q.p,background:`linear-gradient(90deg,${q.c},${ML})`,borderRadius:999}}/>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:12}}>
+            {scenes.map(s=>(
+              <div key={s.t} className="card" style={{minHeight:178,borderRadius:20,overflow:"hidden",position:"relative",background:s.g}}>
+                <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(0,0,0,.82),rgba(0,0,0,.08))"}}/>
+                <div style={{position:"absolute",left:14,right:14,bottom:14}}>
+                  <div style={{color:T1,fontSize:13,fontWeight:950}}>{s.t}</div>
+                  <div style={{color:"rgba(255,255,255,.68)",fontSize:11,lineHeight:1.45,marginTop:5}}>{s.d}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="card" style={{marginTop:18,padding:18,borderRadius:22,display:"flex",gap:10,alignItems:"center",justifyContent:"space-between",flexWrap:"wrap"}}>
+        <div>
+          <Lbl s="1 + 2 + 3 + 4 checklist"/>
+          <div style={{color:T1,fontSize:16,fontWeight:950,marginTop:5}}>Video review, design adaptation, feature map and deep-dive planning are now represented in the interface.</div>
+        </div>
+        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+          {featureMap.map(f=><span key={f} className="chip" style={{cursor:"default"}}>{f}</span>)}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -588,53 +1038,35 @@ function CinemaPage() {
   const [step,setStep]         = useState(0);
   const [results,setResults]   = useState<number[]>([]);
   const [videoUrl,setVideoUrl] = useState("");
+  const [imageUrl,setImageUrl] = useState("");
   const [apiError,setApiError] = useState("");
   const [mode,setMode]         = useState<"image"|"video">("video");
 
   const gen = async () => {
     if (!prompt.trim()) return;
-    setLoading(true); setResults([]); setVideoUrl(""); setApiError(""); setStep(0);
+    setLoading(true); setResults([]); setVideoUrl(""); setImageUrl(""); setApiError(""); setStep(0);
     try {
-      if (mode === "video") {
-        const ratio = aspect === "9:16" ? "720:1280" : "1280:720";
-        const duration = dur === "12s" || dur === "15s" ? 10 : 5;
-        const start = await fetch("/api/generate-video", {
-          method: "POST",
-          headers: {"Content-Type":"application/json"},
-          body: JSON.stringify({prompt, ratio, duration}),
-        });
-        const startData = await start.json() as {ok?:boolean; taskId?:string; error?:string};
-        if (!start.ok || !startData.taskId) throw new Error(startData.error || "Video generation could not start.");
-        setStep(1);
-        for (let attempt=1; attempt<=70; attempt++) {
-          await new Promise(r=>setTimeout(r,2400));
-          const check = await fetch(`/api/check-video?taskId=${encodeURIComponent(startData.taskId)}`, {cache:"no-store"});
-          const data = await check.json() as {ok?:boolean; status?:string; output?:unknown; failure?:unknown; error?:string};
-          if (!check.ok) throw new Error(data.error || "Video status could not be checked.");
-          setStep(Math.min(LSTEPS.length, 1 + Math.floor((attempt / 70) * (LSTEPS.length - 1))));
-          const status = String(data.status || "").toLowerCase();
-          if (status.includes("fail") || data.failure) throw new Error("Runway generation failed.");
-          if (status.includes("succeed") || status.includes("complete")) {
-            const output = Array.isArray(data.output) ? data.output : data.output ? [data.output] : [];
-            const url = output.find((item): item is string => typeof item === "string" && item.startsWith("http"));
-            if (url) {
-              setVideoUrl(url);
-              setResults([1]);
-              setStep(LSTEPS.length);
-              return;
-            }
-            throw new Error("Video finished, but no video URL was returned.");
-          }
-        }
-        throw new Error("Video is still rendering. Try again in a moment.");
-      }
-      for (let i=0;i<LSTEPS.length;i++) { await new Promise(r=>setTimeout(r,750)); setStep(i+1); }
-      await new Promise(r=>setTimeout(r,300));
-      setResults([1,2,3]);
+      const duration = dur === "12s" || dur === "15s" ? 10 : 5;
+      const modelId = mode === "video" ? "cs35" : "flux-2";
+      setStep(1);
+      const response = await fetch("/api/studio-generate", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({
+          modelId,
+          params: {aspect_ratio: aspect, duration, resolution: res},
+          prompt,
+        }),
+      });
+      const data = await response.json() as {ok?:boolean; type?:string; url?:string; error?:string};
+      setStep(LSTEPS.length);
+      if (!response.ok || !data.url) throw new Error(data.error || "Generation did not return a media URL.");
+      if (data.type === "video") setVideoUrl(data.url);
+      else setImageUrl(data.url);
+      setResults([1]);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Generation failed.";
       setApiError(message);
-      setResults([1,2,3]);
     } finally {
       setLoading(false);
     }
@@ -702,6 +1134,9 @@ function CinemaPage() {
                 >
                   {videoUrl&&i===0 ? (
                     <video src={videoUrl} controls playsInline style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",background:"#000"}}/>
+                  ) : imageUrl&&i===0 ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={imageUrl} alt="Generated result" style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",background:"#000"}}/>
                   ) : (
                     <>
                       <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(0,0,0,.6),transparent)"}}/>
@@ -710,7 +1145,7 @@ function CinemaPage() {
                   )}
                   <div style={{position:"absolute",bottom:10,left:12}}>
                     <div style={{color:T1,fontSize:10,fontWeight:700}}>{model}</div>
-                    <div style={{color:T3,fontSize:9}}>{videoUrl&&i===0?"Runway Gen-4.5 · ":null}{aspect} · {dur} · {res}</div>
+                    <div style={{color:T3,fontSize:9}}>{videoUrl&&i===0?"FAL video · ":imageUrl&&i===0?"FAL image · ":null}{aspect} · {dur} · {res}</div>
                   </div>
                   <div style={{position:"absolute",top:10,right:10,background:M,color:"#fff",fontSize:8,fontWeight:700,padding:"2px 6px",borderRadius:4}}>NEW</div>
                 </div>
@@ -875,7 +1310,7 @@ function MarketingPage() {
   const [avatar,setAvatar]     = useState("Female");
   const [voice,setVoice]       = useState("Calm & Clear");
   const [cta,setCta]           = useState("Shop Now");
-  const [engine,setEngine]     = useState("Seedance 2.0");
+  const [engine,setEngine]     = useState("Runway Gen-4.5");
   const [plats,setPlats]       = useState<string[]>(["TikTok"]);
   const [tab,setTab]           = useState<"product"|"app">("product");
   const [loading,setLoading]   = useState(false);
@@ -902,6 +1337,14 @@ function MarketingPage() {
 
   const adBgs = [`linear-gradient(160deg,${MD},${M},#ff6bb5)`,"linear-gradient(160deg,#1a0030,#4a0080,#8000ff)","linear-gradient(160deg,#001a30,#003f80,#0080ff)"];
   const pIcons: Record<string,string> = {TikTok:"🎵",Instagram:"📸",YouTube:"▶️",Facebook:"👤"};
+  const modelPower = [
+    {name:"Runway Gen-4.5", role:"Active video route", note:"Connected through protected server routes", icon:"▶"},
+    {name:"Lumenfield Soul · Coming soon", role:"Character consistency", note:"Will keep avatars and brand faces stable", icon:"∿"},
+    {name:"Flux Creative · Coming soon", role:"Product stills", note:"Will generate clean campaign visuals", icon:"△"},
+    {name:"Kling Motion · Coming soon", role:"Cinematic video", note:"Will add camera movement and sound-ready timing", icon:"◓"},
+    {name:"Seedance 2.0 · Coming soon", role:"Fast social ads", note:"Will build short clips for TikTok and Reels", icon:"▥"},
+    {name:"Voice Studio · Coming soon", role:"Voiceover layer", note:"Will prepare narration and translated versions", icon:"≋"},
+  ];
 
   return (
     <div style={{display:"flex",height:"100vh",paddingTop:57,background:BG}}>
@@ -963,6 +1406,21 @@ function MarketingPage() {
             <Lbl s="AI Engine"/>
             <div style={{display:"flex",gap:6,flexWrap:"wrap",marginTop:8}}>
               {AIENGS.map(e=><button key={e} className={`mc${engine===e?" on":""}`} onClick={()=>setEngine(e)}>{e}</button>)}
+            </div>
+          </div>
+          <div style={{marginBottom:18}}>
+            <Lbl s="Production engine stack"/>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(210px,1fr))",gap:10,marginTop:8}}>
+              {modelPower.map((m,i)=>(
+                <button key={m.name} onClick={()=>setEngine(m.name)} className="card" style={{padding:"14px 14px",textAlign:"left",cursor:"pointer",background:engine===m.name?`linear-gradient(145deg,${M}18,${S1})`:S1,border:`1px solid ${engine===m.name?`${M}80`:B1}`}}>
+                  <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:9}}>
+                    <span style={{width:34,height:34,borderRadius:9,display:"grid",placeItems:"center",background:S2,color:ML,fontWeight:900,fontSize:16}}>{m.icon}</span>
+                    <span style={{color:T1,fontSize:12,fontWeight:800}}>{m.name}</span>
+                  </div>
+                  <div style={{color:ML,fontSize:10,fontWeight:800,textTransform:"uppercase",letterSpacing:.7,marginBottom:4}}>{m.role}</div>
+                  <div style={{color:T3,fontSize:11,lineHeight:1.45}}>{m.note}</div>
+                </button>
+              ))}
             </div>
           </div>
           {/* Platform */}
@@ -1329,7 +1787,7 @@ function InfluencerOptionGrid({
 }
 
 function InfluencerPage() {
-  const [sel,setSel] = useState<Record<string,string>>({char:"Human",gender:"Female",eth:"African",skin:"dark brown",eyes:"Brown",age:"Adult"});
+  const [sel,setSel] = useState<Record<string,string>>({char:"Human",gender:"Female",eth:"African",skin:"dark brown",eyes:"Brown",age:"Adult",hair:"Short",material:"Human Skin",pattern:"Solid"});
   const [loading,setLoading] = useState(false);
   const [done,setDone] = useState(false);
   const up = (k:string,v:string) => setSel(s=>({...s,[k]:v}));
@@ -1353,7 +1811,7 @@ function InfluencerPage() {
       <div style={{width:268,flexShrink:0,borderRight:`1px solid ${B1}`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:20,background:`radial-gradient(ellipse at center,${M}04,transparent)`}}>
         <div style={{width:196,height:256,borderRadius:16,background:done?`linear-gradient(160deg,#0d0019,#1a003a)`:S1,border:`1px solid ${done?M:B1}`,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",overflow:"hidden",transition:"all .4s"}}>
           {loading&&<div style={{textAlign:"center"}}><div style={{width:28,height:28,border:`2px solid ${M}`,borderTopColor:"transparent",borderRadius:"50%",animation:"spin 1s linear infinite",margin:"0 auto 8px"}}/><div style={{color:T3,fontSize:11}}>Generating…</div></div>}
-          {done&&!loading&&<><div style={{width:72,height:92,borderRadius:36,background:`linear-gradient(160deg,${M},${ML})`,position:"absolute",top:"18%"}}/><div style={{position:"absolute",bottom:0,left:0,right:0,height:"40%",background:"linear-gradient(to top,#0d0019,transparent)"}}/><div style={{position:"absolute",bottom:14,color:T1,fontSize:11,textAlign:"center"}}><div style={{fontWeight:700}}>Lumenfield Character</div><div style={{color:T3,fontSize:9}}>{sel.char} · {sel.gender}</div></div></>}
+          {done&&!loading&&<><div style={{width:72,height:92,borderRadius:36,background:`linear-gradient(160deg,${M},${ML})`,position:"absolute",top:"18%"}}/><div style={{position:"absolute",bottom:0,left:0,right:0,height:"40%",background:"linear-gradient(to top,#0d0019,transparent)"}}/><div style={{position:"absolute",bottom:14,color:T1,fontSize:11,textAlign:"center"}}><div style={{fontWeight:700}}>Lumenfield Character</div><div style={{color:T3,fontSize:9}}>{sel.char} · {sel.gender} · {sel.hair}</div></div></>}
           {!done&&!loading&&<div style={{color:T3,fontSize:11,textAlign:"center"}}>Preview<br/>appears here</div>}
         </div>
         <button className="bm" onClick={gen} disabled={loading} style={{marginTop:16,width:"100%",padding:"11px",animation:!loading&&!done?"glow 2.5s ease-in-out infinite":"none"}}>{loading?"Generating…":done?"Regenerate →":"Generate Influencer →"}</button>
@@ -1366,6 +1824,15 @@ function InfluencerPage() {
         <InfluencerOptionGrid label="Skin Color"     field="skin"   opts={SKINS} sel={sel} up={up}/>
         <InfluencerOptionGrid label="Eye Color"      field="eyes"   opts={EYES} sel={sel} up={up}/>
         <InfluencerOptionGrid label="Age"            field="age"    opts={["Adult","Mature","Senior"]} sel={sel} up={up}/>
+        <InfluencerOptionGrid label="Hair Style"     field="hair"   opts={HAIRS} sel={sel} up={up}/>
+        <InfluencerOptionGrid label="Face Skin Material" field="material" opts={MATS} sel={sel} up={up}/>
+        <InfluencerOptionGrid label="Surface Pattern" field="pattern" opts={PATS} sel={sel} up={up}/>
+        <div style={{marginTop:22,padding:16,border:`1px solid ${B1}`,borderRadius:12,background:`linear-gradient(145deg,${M}10,${S1})`}}>
+          <div style={{fontSize:10,color:ML,fontWeight:800,textTransform:"uppercase",letterSpacing:.9,marginBottom:8}}>Character prompt summary</div>
+          <div style={{color:T2,fontSize:12,lineHeight:1.7}}>
+            {sel.age} {sel.gender.toLowerCase()} {sel.char.toLowerCase()} influencer with {sel.skin} skin, {sel.eyes.toLowerCase()} eyes, {sel.hair.toLowerCase()} hair, {sel.material.toLowerCase()} material and {sel.pattern.toLowerCase()} surface pattern.
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -1617,4 +2084,5 @@ export default function Lumenfield() {
     </>
   );
 }
+
 
