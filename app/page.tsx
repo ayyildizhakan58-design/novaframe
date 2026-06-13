@@ -130,7 +130,7 @@ const AVTS    = ["Male","Female","Influencer","Fitness Coach","Business Owner","
 const PLATS   = ["TikTok","Instagram","YouTube","Facebook"];
 const VOCS    = ["Calm & Clear","Energetic","Professional","Friendly","Authoritative","Warm"];
 const CTAS    = ["Shop Now","Learn More","Get Started","Order Today","Try for Free","Book a Call","Download Now"];
-const AIENGS  = ["Seedance 2.0","Kling 3.0","Google Veo 3.1","OpenAI GPT-4.1","Runway Gen-4","ElevenLabs"];
+const AIENGS  = ["Runway Gen-4.5","Seedance 2.0 · Coming soon","Kling 3.0 · Coming soon","Google Veo 3.1 · Coming soon","OpenAI GPT-4.1 · Coming soon","ElevenLabs · Coming soon"];
 
 const CHAR_T  = ["Human","Ant","Bee","Octopus","Crocodile","Alien","Beetle","Elf","Mantis"];
 const GENS    = ["Female","Male","Trans man","Trans woman","Non-binary"];
@@ -610,10 +610,10 @@ function AIStudioWorkspace() {
 
   const models = [
     {n:"Runway Gen-4.5", live:true},
-    {n:"Runway Gen-4 Turbo", live:false},
-    {n:"Google Veo 3.1", live:false},
-    {n:"Kling 3.0", live:false},
-    {n:"Seedance 2.0", live:false},
+    {n:"Runway Gen-4 Turbo · Coming soon", live:false},
+    {n:"Google Veo 3.1 · Coming soon", live:false},
+    {n:"Kling 3.0 · Coming soon", live:false},
+    {n:"Seedance 2.0 · Coming soon", live:false},
   ];
   const attach = ["Upload image","Image","Video","Product photo","Character","Audio"];
   const modes = [
@@ -1325,7 +1325,7 @@ function MarketingPage() {
   const [avatar,setAvatar]     = useState("Female");
   const [voice,setVoice]       = useState("Calm & Clear");
   const [cta,setCta]           = useState("Shop Now");
-  const [engine,setEngine]     = useState("Seedance 2.0");
+  const [engine,setEngine]     = useState("Runway Gen-4.5");
   const [plats,setPlats]       = useState<string[]>(["TikTok"]);
   const [tab,setTab]           = useState<"product"|"app">("product");
   const [loading,setLoading]   = useState(false);
@@ -1353,12 +1353,12 @@ function MarketingPage() {
   const adBgs = [`linear-gradient(160deg,${MD},${M},#ff6bb5)`,"linear-gradient(160deg,#1a0030,#4a0080,#8000ff)","linear-gradient(160deg,#001a30,#003f80,#0080ff)"];
   const pIcons: Record<string,string> = {TikTok:"🎵",Instagram:"📸",YouTube:"▶️",Facebook:"👤"};
   const modelPower = [
-    {name:"Lumenfield Soul", role:"Character consistency", note:"Keeps avatars and brand faces stable", icon:"∿"},
-    {name:"Flux Creative", role:"Product stills", note:"Generates clean campaign visuals", icon:"△"},
-    {name:"Kling Motion", role:"Cinematic video", note:"Adds camera movement and sound-ready timing", icon:"◓"},
-    {name:"Seedance 2.0", role:"Fast social ads", note:"Builds short clips for TikTok and Reels", icon:"▥"},
-    {name:"Runway Gen-4", role:"Live API route", note:"Connected through protected server routes", icon:"▶"},
-    {name:"Voice Studio", role:"Voiceover layer", note:"Prepares narration and translated versions", icon:"≋"},
+    {name:"Runway Gen-4.5", role:"Active video route", note:"Connected through protected server routes", icon:"▶"},
+    {name:"Lumenfield Soul · Coming soon", role:"Character consistency", note:"Will keep avatars and brand faces stable", icon:"∿"},
+    {name:"Flux Creative · Coming soon", role:"Product stills", note:"Will generate clean campaign visuals", icon:"△"},
+    {name:"Kling Motion · Coming soon", role:"Cinematic video", note:"Will add camera movement and sound-ready timing", icon:"◓"},
+    {name:"Seedance 2.0 · Coming soon", role:"Fast social ads", note:"Will build short clips for TikTok and Reels", icon:"▥"},
+    {name:"Voice Studio · Coming soon", role:"Voiceover layer", note:"Will prepare narration and translated versions", icon:"≋"},
   ];
 
   return (
@@ -1427,7 +1427,7 @@ function MarketingPage() {
             <Lbl s="Production engine stack"/>
             <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(210px,1fr))",gap:10,marginTop:8}}>
               {modelPower.map((m,i)=>(
-                <button key={m.name} onClick={()=>setEngine(i===4?"Runway Gen-4":m.name)} className="card" style={{padding:"14px 14px",textAlign:"left",cursor:"pointer",background:engine===m.name||engine==="Runway Gen-4"&&i===4?`linear-gradient(145deg,${M}18,${S1})`:S1,border:`1px solid ${engine===m.name||engine==="Runway Gen-4"&&i===4?`${M}80`:B1}`}}>
+                <button key={m.name} onClick={()=>setEngine(m.name)} className="card" style={{padding:"14px 14px",textAlign:"left",cursor:"pointer",background:engine===m.name?`linear-gradient(145deg,${M}18,${S1})`:S1,border:`1px solid ${engine===m.name?`${M}80`:B1}`}}>
                   <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:9}}>
                     <span style={{width:34,height:34,borderRadius:9,display:"grid",placeItems:"center",background:S2,color:ML,fontWeight:900,fontSize:16}}>{m.icon}</span>
                     <span style={{color:T1,fontSize:12,fontWeight:800}}>{m.name}</span>
