@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Lumenfield AI Studio",
+  title: "Lumenfield-AI-Studio",
   description:
     "A premium AI production workspace for image, video, audio, marketing, plugins, credits and multilingual creative teams.",
-  keywords: ["Lumenfield", "AI studio", "image generation", "video generation", "AI marketing"],
+  keywords: ["Lumenfield-AI-Studio", "Lumenfield", "AI studio", "image generation", "video generation", "AI marketing"],
 };
 
 export default function RootLayout({
@@ -19,3 +19,4 @@ export default function RootLayout({
     </html>
   );
 }
+
