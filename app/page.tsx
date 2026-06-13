@@ -238,7 +238,7 @@ function Logo({sz=28}:{sz?:number}) {
   return (
     <div style={{display:"flex",alignItems:"center",gap:8}}>
       <div style={{width:sz,height:sz,borderRadius:7,background:`linear-gradient(135deg,${M},${MD})`,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:sz*.5,color:"#fff",flexShrink:0}}>L</div>
-      <span style={{fontWeight:800,fontSize:Math.max(12,sz*.42),letterSpacing:-.5,whiteSpace:"nowrap",background:`linear-gradient(90deg,${T1} 0%,${T1} 42%,${M} 43%,${ML} 62%,${T3} 63%)`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Lumenfield-AI-Studio</span>
+      <span style={{fontWeight:800,fontSize:Math.max(12,sz*.42),letterSpacing:-.5,whiteSpace:"nowrap",background:`linear-gradient(90deg,${T1} 0%,${T1} 42%,${M} 43%,${ML} 62%,${T3} 63%)`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Lumenfield AI Studio</span>
     </div>
   );
 }
@@ -1477,45 +1477,146 @@ function MarketingPage() {
 
 // ─── MCP & CLI ───────────────────────────────────────────────────────────────
 function McpPage() {
+  const clients = [
+    {name:"ChatGPT", desc:"Plan prompts, request image/video jobs and save outputs.", status:"Coming soon", icon:"◎"},
+    {name:"Claude", desc:"Use Lumenfield tools inside long creative planning sessions.", status:"Coming soon", icon:"◇"},
+    {name:"Gemini", desc:"Route research, scripts and production briefs to studio actions.", status:"Coming soon", icon:"G"},
+    {name:"Cursor", desc:"Generate assets from inside development workflows.", status:"Coming soon", icon:"⌁"},
+    {name:"VS Code Agent", desc:"Create media tasks while building campaigns and sites.", status:"Coming soon", icon:"</>"},
+    {name:"OpenCode", desc:"Connect custom agents to the Lumenfield production layer.", status:"Coming soon", icon:"⌘"},
+  ];
+  const commands = [
+    "npm install -g @lumenfield/cli",
+    "lumenfield auth login",
+    "lumenfield models list --type video",
+    'lumenfield generate image --prompt "magenta cinematic product shot"',
+    'lumenfield generate video --prompt "slow orbit around a luxury bottle"',
+  ];
+  const tools = [
+    {i:"▶",t:"Video Generator",d:"Send a prompt to the active protected generation route."},
+    {i:"▧",t:"Image Generator",d:"Create campaign visuals and product shots from one command."},
+    {i:"📣",t:"Marketing Brief",d:"Turn URLs, hooks and CTAs into ad concepts."},
+    {i:"∿",t:"Character Memory",d:"Prepare consistent influencer and character references."},
+    {i:"▣",t:"Asset Library",d:"Store generated files in one reusable workspace."},
+    {i:"🔒",t:"Server-Side Keys",d:"Provider keys stay protected in backend routes only."},
+  ];
   return (
     <div style={{minHeight:"100vh",paddingTop:57,background:BG}}>
-      <div style={{padding:"80px 48px",maxWidth:900,margin:"0 auto"}}>
-        <div style={{display:"inline-flex",alignItems:"center",gap:8,border:`1px solid ${B2}`,borderRadius:20,padding:"5px 14px",fontSize:11,color:T3,background:S1,marginBottom:28}}>
-          <span style={{width:6,height:6,borderRadius:"50%",background:"#10b981"}}/>Developer Tools
-        </div>
-        <h1 style={{fontSize:"clamp(32px,5vw,64px)",fontWeight:900,letterSpacing:-2.5,lineHeight:1.05,marginBottom:16}}>
-          MCP & CLI<br/><span style={{color:M}}>for developers.</span>
-        </h1>
-        <p style={{color:T2,fontSize:16,lineHeight:1.7,marginBottom:40,maxWidth:560}}>Integrate Lumenfield directly into your workflow. Automate creative production at scale.</p>
-        <div style={{background:S1,border:`1px solid ${B1}`,borderRadius:12,padding:"20px 24px",marginBottom:16,fontFamily:"monospace"}}>
-          <div style={{fontSize:10,color:T3,marginBottom:10,textTransform:"uppercase",letterSpacing:1}}>Install CLI</div>
-          <div style={{color:"#10b981",fontSize:14}}>$ npm install -g @lumenfield/cli</div>
-          <div style={{color:T3,fontSize:14,marginTop:6}}>$ lumenfield login</div>
-          <div style={{color:T3,fontSize:14,marginTop:6}}>$ lumenfield generate --model seedance-2 --prompt &quot;cinematic sunset&quot;</div>
-        </div>
-        <div style={{background:S1,border:`1px solid ${B1}`,borderRadius:12,padding:"20px 24px",marginBottom:32,fontFamily:"monospace"}}>
-          <div style={{fontSize:10,color:T3,marginBottom:10,textTransform:"uppercase",letterSpacing:1}}>MCP Config</div>
-          <div style={{color:"#f59e0b",fontSize:13}}>{"{"}</div>
-          <div style={{color:T2,fontSize:13,paddingLeft:20}}>&quot;mcpServers&quot;: {"{"}</div>
-          <div style={{color:T2,fontSize:13,paddingLeft:40}}>&quot;lumenfield&quot;: {"{"}</div>
-          <div style={{color:"#10b981",fontSize:13,paddingLeft:60}}>&quot;command&quot;: &quot;npx @lumenfield/mcp&quot;</div>
-          <div style={{color:T2,fontSize:13,paddingLeft:40}}>{"}"}</div>
-          <div style={{color:T2,fontSize:13,paddingLeft:20}}>{"}"}</div>
-          <div style={{color:"#f59e0b",fontSize:13}}>{"}"}</div>
-        </div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:12}}>
-          {[{i:"⚡",t:"Fast API",d:"Sub-second response times"},{i:"🔧",t:"Full SDK",d:"TypeScript & Python"},{i:"🔄",t:"Webhooks",d:"Real-time job updates"},{i:"📦",t:"Batch Jobs",d:"Process thousands at once"},{i:"🔐",t:"Secure",d:"API key authentication"},{i:"📊",t:"Analytics",d:"Usage & cost tracking"}].map(f=>(
-            <div key={f.t} className="card" style={{padding:"18px 16px"}}>
-              <div style={{fontSize:24,marginBottom:8}}>{f.i}</div>
-              <div style={{color:T1,fontSize:12,fontWeight:700,marginBottom:3}}>{f.t}</div>
-              <div style={{color:T3,fontSize:11}}>{f.d}</div>
+      <div style={{padding:"56px 32px 80px",maxWidth:1220,margin:"0 auto"}}>
+        <div className="fu" style={{display:"grid",gridTemplateColumns:"minmax(0,1.05fr) minmax(320px,.95fr)",gap:18,alignItems:"stretch"}}>
+          <div style={{background:`radial-gradient(circle at 15% 10%,rgba(232,0,111,.22),transparent 34%),linear-gradient(145deg,#0f0f0f,#070707)`,border:`1px solid ${B1}`,borderRadius:24,padding:"38px 34px",position:"relative",overflow:"hidden"}}>
+            <div style={{position:"absolute",inset:0,backgroundImage:"linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px)",backgroundSize:"34px 34px",opacity:.32}}/>
+            <div style={{position:"relative"}}>
+              <div style={{display:"inline-flex",alignItems:"center",gap:8,border:`1px solid ${B2}`,borderRadius:999,padding:"7px 14px",fontSize:11,color:T2,background:"rgba(255,255,255,.04)",marginBottom:24}}>
+                <span style={{width:7,height:7,borderRadius:"50%",background:M,boxShadow:`0 0 20px ${M}`}}/>Developer Tools
+              </div>
+              <h1 style={{fontSize:"clamp(38px,6vw,82px)",fontWeight:950,letterSpacing:-3.2,lineHeight:.94,marginBottom:18}}>
+                MCP & CLI<br/><span style={{background:`linear-gradient(90deg,${M},${ML})`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>creative engine.</span>
+              </h1>
+              <p style={{color:T2,fontSize:16,lineHeight:1.75,maxWidth:650,marginBottom:28}}>
+                Connect Lumenfield AI Studio to agents, code editors and automation tools. Keep provider keys protected while agents request image, video, marketing and asset tasks through one workspace.
+              </p>
+              <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+                {["MCP server","CLI commands","Protected API routes","Coming soon connectors"].map(x=>(
+                  <span key={x} className="chip on" style={{background:"rgba(232,0,111,.08)"}}>{x}</span>
+                ))}
+              </div>
             </div>
-          ))}
+          </div>
+          <div style={{background:"rgba(15,15,15,.78)",border:`1px solid ${B1}`,borderRadius:24,padding:22,backdropFilter:"blur(20px)"}}>
+            <Lbl s="Connection Flow"/>
+            <div style={{display:"grid",gap:12,marginTop:16}}>
+              {["AI assistant or editor","Lumenfield connector","Protected server route","Generated asset in Library"].map((step,i)=>(
+                <div key={step} style={{display:"grid",gridTemplateColumns:"42px 1fr",gap:12,alignItems:"center"}}>
+                  <div style={{width:42,height:42,borderRadius:12,background:i===1?`linear-gradient(135deg,${M},${MD})`:S2,border:`1px solid ${B1}`,display:"grid",placeItems:"center",fontWeight:900}}>{i+1}</div>
+                  <div>
+                    <div style={{fontSize:14,fontWeight:850,color:T1}}>{step}</div>
+                    <div style={{fontSize:12,color:T3,marginTop:3}}>{i===2?"Keys stay server-side. No secret is exposed in the browser.":"Ready for staged rollout inside Lumenfield."}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button className="bm" style={{width:"100%",marginTop:20}}>Open connector setup</button>
+          </div>
         </div>
-        <div style={{marginTop:32,display:"flex",gap:12}}>
-          <button className="bm" style={{padding:"12px 28px"}}>Get API Key →</button>
-          <button className="bg" style={{padding:"12px 28px"}}>View Docs</button>
+
+        <div style={{display:"grid",gridTemplateColumns:"minmax(280px,.85fr) minmax(0,1.15fr)",gap:18,marginTop:18}}>
+          <div style={{background:S1,border:`1px solid ${B1}`,borderRadius:22,padding:22}}>
+            <Lbl s="CLI Quickstart"/>
+            <div style={{background:"#070707",border:`1px solid ${B1}`,borderRadius:16,padding:18,marginTop:16,fontFamily:"ui-monospace, SFMono-Regular, Menlo, monospace",overflowX:"auto"}}>
+              {commands.map((cmd,i)=>(
+                <div key={cmd} style={{color:i<2?ML:T2,fontSize:13,lineHeight:1.9,whiteSpace:"nowrap"}}><span style={{color:T3}}>$ </span>{cmd}</div>
+              ))}
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginTop:14}}>
+              <button className="bm">Copy setup</button>
+              <button className="bg">View docs</button>
+            </div>
+          </div>
+          <div style={{background:S1,border:`1px solid ${B1}`,borderRadius:22,padding:22}}>
+            <Lbl s="MCP Config"/>
+            <div style={{background:"#070707",border:`1px solid ${B1}`,borderRadius:16,padding:18,marginTop:16,fontFamily:"ui-monospace, SFMono-Regular, Menlo, monospace",overflowX:"auto"}}>
+              <div style={{color:T2,fontSize:13,lineHeight:1.8}}>{"{"}</div>
+              <div style={{color:T2,fontSize:13,lineHeight:1.8,paddingLeft:18}}>&quot;mcpServers&quot;: {"{"}</div>
+              <div style={{color:T2,fontSize:13,lineHeight:1.8,paddingLeft:36}}>&quot;lumenfield&quot;: {"{"}</div>
+              <div style={{color:ML,fontSize:13,lineHeight:1.8,paddingLeft:54}}>&quot;command&quot;: &quot;npx&quot;,</div>
+              <div style={{color:ML,fontSize:13,lineHeight:1.8,paddingLeft:54}}>&quot;args&quot;: [&quot;@lumenfield/mcp&quot;],</div>
+              <div style={{color:ML,fontSize:13,lineHeight:1.8,paddingLeft:54}}>&quot;env&quot;: {"{"} &quot;LUMENFIELD_API_KEY&quot;: &quot;server-side&quot; {"}"}</div>
+              <div style={{color:T2,fontSize:13,lineHeight:1.8,paddingLeft:36}}>{"}"}</div>
+              <div style={{color:T2,fontSize:13,lineHeight:1.8,paddingLeft:18}}>{"}"}</div>
+              <div style={{color:T2,fontSize:13,lineHeight:1.8}}>{"}"}</div>
+            </div>
+          </div>
         </div>
+
+        <div style={{marginTop:32}}>
+          <Lbl s="Featured Connectors"/>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:12,marginTop:14}}>
+            {clients.map(c=>(
+              <button key={c.name} className="card" style={{padding:16,textAlign:"left",cursor:"pointer",background:"rgba(18,20,25,.82)"}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,marginBottom:18}}>
+                  <div style={{width:42,height:42,borderRadius:12,background:S2,border:`1px solid ${B1}`,display:"grid",placeItems:"center",fontWeight:900,color:T1}}>{c.icon}</div>
+                  <span className="tx">{c.status}</span>
+                </div>
+                <div style={{color:T1,fontSize:15,fontWeight:850,marginBottom:6}}>{c.name}</div>
+                <div style={{color:T3,fontSize:12,lineHeight:1.55,minHeight:38}}>{c.desc}</div>
+                <div style={{marginTop:14,color:ML,fontSize:12,fontWeight:800}}>Configure →</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div style={{marginTop:32}}>
+          <Lbl s="Lumenfield Agent Tools"/>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:12,marginTop:14}}>
+            {tools.map(f=>(
+              <div key={f.t} className="card" style={{padding:"18px 16px"}}>
+                <div style={{fontSize:24,marginBottom:10}}>{f.i}</div>
+                <div style={{color:T1,fontSize:13,fontWeight:850,marginBottom:5}}>{f.t}</div>
+                <div style={{color:T3,fontSize:12,lineHeight:1.55}}>{f.d}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{marginTop:32,background:`linear-gradient(135deg,rgba(232,0,111,.18),rgba(255,77,166,.05))`,border:`1px solid rgba(232,0,111,.26)`,borderRadius:22,padding:24,display:"flex",justifyContent:"space-between",gap:16,alignItems:"center",flexWrap:"wrap"}}>
+          <div>
+            <div style={{color:T1,fontSize:20,fontWeight:900}}>Current active route</div>
+            <div style={{color:T2,fontSize:13,marginTop:6}}>The studio keeps using protected backend calls. No provider secret is exposed in the browser.</div>
+          </div>
+          <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+            <span className="chip on">POST /api/studio-generate</span>
+            <span className="chip">POST /api/generate-video</span>
+            <span className="chip">GET /api/check-video</span>
+          </div>
+        </div>
+
+        <style jsx>{`
+          @media (max-width: 900px) {
+            div[style*="grid-template-columns: minmax(0px, 1.05fr)"] { grid-template-columns: 1fr !important; }
+            div[style*="grid-template-columns: minmax(280px, 0.85fr)"] { grid-template-columns: 1fr !important; }
+          }
+        `}</style>
       </div>
     </div>
   );
@@ -1968,7 +2069,7 @@ function LoginPage({go}:{go:(p:Page)=>void}) {
         <div style={{display:"flex",alignItems:"center",gap:10,margin:"20px 0"}}>
           <div style={{flex:1,height:1,background:B1}}/><span style={{color:T3,fontSize:11}}>or SSO</span><div style={{flex:1,height:1,background:B1}}/>
         </div>
-        <p style={{color:T3,fontSize:10,lineHeight:1.7}}>By continuing you agree to our Terms of Service and Privacy Policy. Lumenfield-AI-Studio is an original, independently built platform.</p>
+        <p style={{color:T3,fontSize:10,lineHeight:1.7}}>By continuing you agree to our Terms of Service and Privacy Policy. Lumenfield AI Studio is an original, independently built platform.</p>
       </div>
       <div style={{flex:1,background:bgs[tab],position:"relative",transition:"background .5s ease",overflow:"hidden"}}>
         <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(0,0,0,.7),transparent)"}}/>
