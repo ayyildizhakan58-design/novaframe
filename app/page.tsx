@@ -137,13 +137,19 @@ const GENS    = ["Female","Male","Trans man","Trans woman","Non-binary"];
 const ETHS    = ["African","Asian","European","Indian","Middle Eastern","Mixed"];
 const SKINS   = ["black","dark brown","white","purple","tan","olive","grey","green","metallic","iridescent"];
 const EYES    = ["Black","Purple","Green","White","Brown","Deep Brown","Blue","Amber","Red","Grey"];
+const HAIRS   = ["Short","Long","Curly","Bald","Braided","Wavy","Cyber Cut","Editorial"];
+const MATS    = ["Human Skin","Scales","Fur","Metallic","Amphibian Skin","Iridescent","Soft Porcelain"];
+const PATS    = ["Solid","Stripes","Spots","Chess Pattern","Visible Veins","Gradient Glow","Freckles"];
 
 const APPS_D: Record<string,{name:string;desc:string;icon:string}[]> = {
   "Professional":       [{name:"Virality Predictor",desc:"Predict viral potential",icon:"📊"},{name:"Similarity Score",desc:"Visual likeness",icon:"🔍"},{name:"Expand Image",desc:"AI outpainting",icon:"↔"},{name:"Angles 2.0",desc:"Multi-angle shots",icon:"📐"},{name:"Shots",desc:"Cinematic composer",icon:"🎬"}],
   "Enhance & Style":    [{name:"Skin Enhancer",desc:"AI skin retouching",icon:"✨"},{name:"AI Stylist",desc:"Fashion recommendations",icon:"👗"},{name:"Relight",desc:"Pro lighting adj.",icon:"💡"},{name:"Outfit Swap",desc:"Virtual outfit",icon:"🔄"},{name:"Style Snap",desc:"Snap & style",icon:"📸"}],
   "Face & Identity":    [{name:"Face Swap",desc:"Seamless face replace",icon:"🎭"},{name:"Headshot Gen",desc:"Pro headshots",icon:"🖼"},{name:"Character Swap",desc:"Full character replace",icon:"🔀"},{name:"Recast",desc:"Scene character swap",icon:"🎬"},{name:"Video Face Swap",desc:"Video face swap",icon:"📹"}],
+  "Video Editing":      [{name:"ClipCut",desc:"Auto edit viral clips",icon:"✂️"},{name:"Urban Cuts",desc:"Street-style video edits",icon:"🏙️"},{name:"Video Background Remover",desc:"Remove backgrounds from clips",icon:"▧"},{name:"Breakdown",desc:"Turn scenes into edit steps",icon:"🧩"},{name:"Japanese Show",desc:"Fast-paced show template",icon:"📺"}],
   "Ads & Products":     [{name:"Click to Ad",desc:"URL to video ad",icon:"🎯"},{name:"Billboard Ad",desc:"Billboard creator",icon:"🏙"},{name:"Bullet Time",desc:"Matrix bullet time",icon:"⚡"},{name:"Truck Ad",desc:"Vehicle ad creator",icon:"🚛"},{name:"UGC Factory",desc:"UGC content gen",icon:"📱"}],
   "Games & Characters": [{name:"Game Dump",desc:"Game-style scenes",icon:"🎮"},{name:"Nano Strike",desc:"Action sequences",icon:"⚔"},{name:"Nano Theft",desc:"Heist cinematic",icon:"🎰"},{name:"Simlife",desc:"Life simulation",icon:"🌍"},{name:"Plushies",desc:"Cute characters",icon:"🧸"}],
+  "Extras":             [{name:"AI Meme Generator",desc:"Create memes from prompts",icon:"😄"},{name:"Background Remover",desc:"Clean transparent cutouts",icon:"◌"},{name:"Micro-Beasts",desc:"Tiny creature concepts",icon:"🔬"},{name:"Signboard",desc:"Text and sign mockups",icon:"🪧"},{name:"Paint App",desc:"Sketch into polished art",icon:"🎨"}],
+  "Trending Templates": [{name:"On Fire",desc:"High-energy viral look",icon:"🔥"},{name:"Skibidi",desc:"Fast meme template",icon:"🎛️"},{name:"Mukbang",desc:"Food creator format",icon:"🍜"},{name:"Cloud Surf",desc:"Dreamlike motion shot",icon:"☁️"},{name:"Idol",desc:"Music star portrait style",icon:"🎤"}],
 };
 
 // ─── GLOBAL CSS ───────────────────────────────────────────────────────────────
@@ -1346,6 +1352,14 @@ function MarketingPage() {
 
   const adBgs = [`linear-gradient(160deg,${MD},${M},#ff6bb5)`,"linear-gradient(160deg,#1a0030,#4a0080,#8000ff)","linear-gradient(160deg,#001a30,#003f80,#0080ff)"];
   const pIcons: Record<string,string> = {TikTok:"🎵",Instagram:"📸",YouTube:"▶️",Facebook:"👤"};
+  const modelPower = [
+    {name:"Lumenfield Soul", role:"Character consistency", note:"Keeps avatars and brand faces stable", icon:"∿"},
+    {name:"Flux Creative", role:"Product stills", note:"Generates clean campaign visuals", icon:"△"},
+    {name:"Kling Motion", role:"Cinematic video", note:"Adds camera movement and sound-ready timing", icon:"◓"},
+    {name:"Seedance 2.0", role:"Fast social ads", note:"Builds short clips for TikTok and Reels", icon:"▥"},
+    {name:"Runway Gen-4", role:"Live API route", note:"Connected through protected server routes", icon:"▶"},
+    {name:"Voice Studio", role:"Voiceover layer", note:"Prepares narration and translated versions", icon:"≋"},
+  ];
 
   return (
     <div style={{display:"flex",height:"100vh",paddingTop:57,background:BG}}>
@@ -1407,6 +1421,21 @@ function MarketingPage() {
             <Lbl s="AI Engine"/>
             <div style={{display:"flex",gap:6,flexWrap:"wrap",marginTop:8}}>
               {AIENGS.map(e=><button key={e} className={`mc${engine===e?" on":""}`} onClick={()=>setEngine(e)}>{e}</button>)}
+            </div>
+          </div>
+          <div style={{marginBottom:18}}>
+            <Lbl s="Production engine stack"/>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(210px,1fr))",gap:10,marginTop:8}}>
+              {modelPower.map((m,i)=>(
+                <button key={m.name} onClick={()=>setEngine(i===4?"Runway Gen-4":m.name)} className="card" style={{padding:"14px 14px",textAlign:"left",cursor:"pointer",background:engine===m.name||engine==="Runway Gen-4"&&i===4?`linear-gradient(145deg,${M}18,${S1})`:S1,border:`1px solid ${engine===m.name||engine==="Runway Gen-4"&&i===4?`${M}80`:B1}`}}>
+                  <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:9}}>
+                    <span style={{width:34,height:34,borderRadius:9,display:"grid",placeItems:"center",background:S2,color:ML,fontWeight:900,fontSize:16}}>{m.icon}</span>
+                    <span style={{color:T1,fontSize:12,fontWeight:800}}>{m.name}</span>
+                  </div>
+                  <div style={{color:ML,fontSize:10,fontWeight:800,textTransform:"uppercase",letterSpacing:.7,marginBottom:4}}>{m.role}</div>
+                  <div style={{color:T3,fontSize:11,lineHeight:1.45}}>{m.note}</div>
+                </button>
+              ))}
             </div>
           </div>
           {/* Platform */}
@@ -1773,7 +1802,7 @@ function InfluencerOptionGrid({
 }
 
 function InfluencerPage() {
-  const [sel,setSel] = useState<Record<string,string>>({char:"Human",gender:"Female",eth:"African",skin:"dark brown",eyes:"Brown",age:"Adult"});
+  const [sel,setSel] = useState<Record<string,string>>({char:"Human",gender:"Female",eth:"African",skin:"dark brown",eyes:"Brown",age:"Adult",hair:"Short",material:"Human Skin",pattern:"Solid"});
   const [loading,setLoading] = useState(false);
   const [done,setDone] = useState(false);
   const up = (k:string,v:string) => setSel(s=>({...s,[k]:v}));
@@ -1797,7 +1826,7 @@ function InfluencerPage() {
       <div style={{width:268,flexShrink:0,borderRight:`1px solid ${B1}`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:20,background:`radial-gradient(ellipse at center,${M}04,transparent)`}}>
         <div style={{width:196,height:256,borderRadius:16,background:done?`linear-gradient(160deg,#0d0019,#1a003a)`:S1,border:`1px solid ${done?M:B1}`,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",overflow:"hidden",transition:"all .4s"}}>
           {loading&&<div style={{textAlign:"center"}}><div style={{width:28,height:28,border:`2px solid ${M}`,borderTopColor:"transparent",borderRadius:"50%",animation:"spin 1s linear infinite",margin:"0 auto 8px"}}/><div style={{color:T3,fontSize:11}}>Generating…</div></div>}
-          {done&&!loading&&<><div style={{width:72,height:92,borderRadius:36,background:`linear-gradient(160deg,${M},${ML})`,position:"absolute",top:"18%"}}/><div style={{position:"absolute",bottom:0,left:0,right:0,height:"40%",background:"linear-gradient(to top,#0d0019,transparent)"}}/><div style={{position:"absolute",bottom:14,color:T1,fontSize:11,textAlign:"center"}}><div style={{fontWeight:700}}>Lumenfield Character</div><div style={{color:T3,fontSize:9}}>{sel.char} · {sel.gender}</div></div></>}
+          {done&&!loading&&<><div style={{width:72,height:92,borderRadius:36,background:`linear-gradient(160deg,${M},${ML})`,position:"absolute",top:"18%"}}/><div style={{position:"absolute",bottom:0,left:0,right:0,height:"40%",background:"linear-gradient(to top,#0d0019,transparent)"}}/><div style={{position:"absolute",bottom:14,color:T1,fontSize:11,textAlign:"center"}}><div style={{fontWeight:700}}>Lumenfield Character</div><div style={{color:T3,fontSize:9}}>{sel.char} · {sel.gender} · {sel.hair}</div></div></>}
           {!done&&!loading&&<div style={{color:T3,fontSize:11,textAlign:"center"}}>Preview<br/>appears here</div>}
         </div>
         <button className="bm" onClick={gen} disabled={loading} style={{marginTop:16,width:"100%",padding:"11px",animation:!loading&&!done?"glow 2.5s ease-in-out infinite":"none"}}>{loading?"Generating…":done?"Regenerate →":"Generate Influencer →"}</button>
@@ -1810,6 +1839,15 @@ function InfluencerPage() {
         <InfluencerOptionGrid label="Skin Color"     field="skin"   opts={SKINS} sel={sel} up={up}/>
         <InfluencerOptionGrid label="Eye Color"      field="eyes"   opts={EYES} sel={sel} up={up}/>
         <InfluencerOptionGrid label="Age"            field="age"    opts={["Adult","Mature","Senior"]} sel={sel} up={up}/>
+        <InfluencerOptionGrid label="Hair Style"     field="hair"   opts={HAIRS} sel={sel} up={up}/>
+        <InfluencerOptionGrid label="Face Skin Material" field="material" opts={MATS} sel={sel} up={up}/>
+        <InfluencerOptionGrid label="Surface Pattern" field="pattern" opts={PATS} sel={sel} up={up}/>
+        <div style={{marginTop:22,padding:16,border:`1px solid ${B1}`,borderRadius:12,background:`linear-gradient(145deg,${M}10,${S1})`}}>
+          <div style={{fontSize:10,color:ML,fontWeight:800,textTransform:"uppercase",letterSpacing:.9,marginBottom:8}}>Character prompt summary</div>
+          <div style={{color:T2,fontSize:12,lineHeight:1.7}}>
+            {sel.age} {sel.gender.toLowerCase()} {sel.char.toLowerCase()} influencer with {sel.skin} skin, {sel.eyes.toLowerCase()} eyes, {sel.hair.toLowerCase()} hair, {sel.material.toLowerCase()} material and {sel.pattern.toLowerCase()} surface pattern.
+          </div>
+        </div>
       </div>
     </div>
   );
