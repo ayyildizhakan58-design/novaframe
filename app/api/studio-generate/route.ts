@@ -1,27 +1,19 @@
-// =============================================================================
-// STÜDYO ÜRETİM ENDPOINT'İ  (src/app/api/studio-generate/route.ts)
-// =============================================================================
-// Seçilen modeli GERÇEKTEN kullanır (models.ts'ten endpoint'i bulur).
-// Sadece FAL_KEY ister — auth/kredi/depolama YOK (onları sonra ekleriz).
-// Görsel: saniyeler. Video: dakikalar (Vercel ücretsiz planda zaman aşımı
-// olabilir; uzun video için fal queue + polling gerekir).
-// =============================================================================
-
 import { NextRequest, NextResponse } from "next/server";
 import { fal } from "@fal-ai/client";
 import { getModel } from "@/lib/models";
 
 fal.config({ credentials: process.env.FAL_KEY });
 
+export const runtime = "nodejs";
+
 export async function POST(req: NextRequest) {
   try {
     const { modelId, prompt, params } = await req.json();
     const model = getModel(modelId) ?? getModel("flux-2")!;
 
-    // ElevenLabs ayrı API; bu basit endpoint sadece fal modellerini çağırır
     if (model.provider !== "fal") {
       return NextResponse.json(
-        { error: `${model.label} için ayrı entegrasyon gerekir (şimdilik fal modelleri)` },
+        { error: `${model.label} için ayrı entegrasyon gerekir` },
         { status: 400 }
       );
     }
@@ -42,7 +34,7 @@ export async function POST(req: NextRequest) {
   } catch (err: any) {
     console.error("Stüdyo üretim hatası:", err);
     return NextResponse.json(
-      { error: err?.message ?? "Üretim başarısız (endpoint slug'ını fal.ai/models'tan doğrula)" },
+      { error: err?.message ?? "Üretim başarısız" },
       { status: 500 }
     );
   }
