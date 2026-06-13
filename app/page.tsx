@@ -565,6 +565,7 @@ function ExplorePage({go}:{go:(p:Page)=>void}) {
       </section>
       <AIStudioWorkspace/>
       <AIEngineRoadmap/>
+      <WorkflowControlRoom/>
 
       {/* CTA */}
       <section style={{margin:"0 auto 80px",background:S1,border:`1px solid ${B1}`,borderRadius:16,padding:"52px",textAlign:"center",position:"relative",overflow:"hidden",maxWidth:1184}}>
@@ -908,6 +909,109 @@ function AIEngineRoadmap() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function WorkflowControlRoom() {
+  const phases = [
+    {n:"1",t:"Analyze",d:"Prompt, product URL, image, video or brand material enters the workspace.",i:"⌕"},
+    {n:"2",t:"Route",d:"Lumenfield selects the best studio, model, aspect ratio and creative path.",i:"⇄"},
+    {n:"3",t:"Render",d:"Runway and future engines process the job behind protected server routes.",i:"▶"},
+    {n:"4",t:"Deliver",d:"Outputs move into history, library, campaign cards and reusable workflows.",i:"✓"},
+  ];
+  const queue = [
+    {t:"9:16 product ad",s:"Rendering",p:"68%",c:M},
+    {t:"AI influencer intro",s:"Queued",p:"12%",c:ML},
+    {t:"Voiceover draft",s:"Ready",p:"100%",c:"#c7ff00"},
+    {t:"Image upscale",s:"Review",p:"92%",c:"#60a5fa"},
+  ];
+  const scenes = [
+    {t:"Hook shot",d:"Close product reveal, fast push-in, magenta rim light",g:"linear-gradient(135deg,#2a0014,#e8006f)"},
+    {t:"Creator proof",d:"UGC angle, handheld camera, natural desk setup",g:"linear-gradient(135deg,#111827,#6d28d9)"},
+    {t:"Offer frame",d:"Animated typography, brand colors, final CTA",g:"linear-gradient(135deg,#020617,#0ea5e9)"},
+  ];
+  const featureMap = [
+    "Video analysis checklist",
+    "Design adaptation layer",
+    "Page and feature map",
+    "One-screen deep dive",
+    "Generate queue",
+    "Reusable prompt presets",
+    "Asset history",
+    "Model status badges",
+  ];
+  return (
+    <section style={{maxWidth:1280,margin:"0 auto 56px",padding:"0 16px"}}>
+      <div style={{display:"grid",gridTemplateColumns:"minmax(0,.9fr) minmax(0,1.1fr)",gap:18}}>
+        <div className="card" style={{padding:24,borderRadius:24,background:"linear-gradient(180deg,#111216,#08090b)",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",inset:0,backgroundImage:`linear-gradient(${B1} 1px,transparent 1px),linear-gradient(90deg,${B1} 1px,transparent 1px)`,backgroundSize:"34px 34px",opacity:.35}}/>
+          <div style={{position:"relative",zIndex:1}}>
+            <Lbl s="Workflow control room"/>
+            <h2 style={{fontSize:"clamp(24px,3.5vw,42px)",fontWeight:950,letterSpacing:-1.4,marginTop:8,lineHeight:1.04}}>From idea to production asset in one controlled flow.</h2>
+            <p style={{color:T2,fontSize:14,lineHeight:1.7,marginTop:12,maxWidth:560}}>This keeps the current Lumenfield format but adds the professional studio workflow: analysis, routing, rendering, history and delivery.</p>
+            <div style={{display:"grid",gap:10,marginTop:22}}>
+              {phases.map(p=>(
+                <div key={p.t} style={{display:"grid",gridTemplateColumns:"46px 1fr auto",gap:12,alignItems:"center",background:S1,border:`1px solid ${B1}`,borderRadius:14,padding:12}}>
+                  <div style={{width:46,height:46,borderRadius:14,background:`${M}18`,border:`1px solid ${M}33`,display:"flex",alignItems:"center",justifyContent:"center",color:ML,fontWeight:950}}>{p.i}</div>
+                  <div>
+                    <div style={{color:T1,fontSize:13,fontWeight:900}}>{p.t}</div>
+                    <div style={{color:T3,fontSize:11,lineHeight:1.5,marginTop:2}}>{p.d}</div>
+                  </div>
+                  <span style={{width:26,height:26,borderRadius:"50%",background:M,color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:950}}>{p.n}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div style={{display:"grid",gridTemplateRows:"auto auto",gap:18}}>
+          <div className="card" style={{padding:20,borderRadius:24,background:S1}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,marginBottom:14}}>
+              <div>
+                <Lbl s="Live queue"/>
+                <h3 style={{color:T1,fontSize:20,fontWeight:950,marginTop:5}}>Generation timeline</h3>
+              </div>
+              <span className="tn">LIVE</span>
+            </div>
+            <div style={{display:"grid",gap:10}}>
+              {queue.map(q=>(
+                <div key={q.t} style={{background:S2,border:`1px solid ${B1}`,borderRadius:14,padding:12}}>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:12,marginBottom:8}}>
+                    <span style={{color:T1,fontWeight:850}}>{q.t}</span>
+                    <span style={{color:q.c,fontWeight:900}}>{q.s}</span>
+                  </div>
+                  <div style={{height:6,background:BG,borderRadius:999,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:q.p,background:`linear-gradient(90deg,${q.c},${ML})`,borderRadius:999}}/>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:12}}>
+            {scenes.map(s=>(
+              <div key={s.t} className="card" style={{minHeight:178,borderRadius:20,overflow:"hidden",position:"relative",background:s.g}}>
+                <div style={{position:"absolute",inset:0,background:"linear-gradient(to top,rgba(0,0,0,.82),rgba(0,0,0,.08))"}}/>
+                <div style={{position:"absolute",left:14,right:14,bottom:14}}>
+                  <div style={{color:T1,fontSize:13,fontWeight:950}}>{s.t}</div>
+                  <div style={{color:"rgba(255,255,255,.68)",fontSize:11,lineHeight:1.45,marginTop:5}}>{s.d}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="card" style={{marginTop:18,padding:18,borderRadius:22,display:"flex",gap:10,alignItems:"center",justifyContent:"space-between",flexWrap:"wrap"}}>
+        <div>
+          <Lbl s="1 + 2 + 3 + 4 checklist"/>
+          <div style={{color:T1,fontSize:16,fontWeight:950,marginTop:5}}>Video review, design adaptation, feature map and deep-dive planning are now represented in the interface.</div>
+        </div>
+        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+          {featureMap.map(f=><span key={f} className="chip" style={{cursor:"default"}}>{f}</span>)}
         </div>
       </div>
     </section>
