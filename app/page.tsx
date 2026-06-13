@@ -563,6 +563,8 @@ function ExplorePage({go}:{go:(p:Page)=>void}) {
           ))}
         </div>
       </section>
+      <AIStudioWorkspace/>
+
       {/* CTA */}
       <section style={{margin:"0 auto 80px",background:S1,border:`1px solid ${B1}`,borderRadius:16,padding:"52px",textAlign:"center",position:"relative",overflow:"hidden",maxWidth:1184}}>
         <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:`linear-gradient(90deg,transparent,${M},transparent)`}}/>
@@ -571,6 +573,270 @@ function ExplorePage({go}:{go:(p:Page)=>void}) {
         <button className="bm" onClick={()=>go("login")} style={{padding:"14px 36px",fontSize:14}}>Start for free →</button>
       </section>
     </div>
+  );
+}
+
+// ─── AI STUDIO WORKSPACE ─────────────────────────────────────────────────────
+function AIStudioWorkspace() {
+  type WorkspaceMode = "supercomputer" | "cinema";
+  type StudioTask = {
+    id: string;
+    prompt: string;
+    model: string;
+    status: "queued" | "running" | "completed" | "failed";
+    createdAt: string;
+    videoUrl?: string;
+    error?: string;
+  };
+
+  const [active,setActive] = useState<WorkspaceMode>("supercomputer");
+  const [prompt,setPrompt] = useState("");
+  const [model,setModel] = useState("Runway Gen-4.5");
+  const [ratio,setRatio] = useState("1280:720");
+  const [duration,setDuration] = useState<5 | 10>(5);
+  const [plusOpen,setPlusOpen] = useState(false);
+  const [status,setStatus] = useState("Ready");
+  const [preview,setPreview] = useState("");
+  const [tasks,setTasks] = useState<StudioTask[]>([]);
+  const [working,setWorking] = useState(false);
+
+  const models = [
+    {n:"Runway Gen-4.5", live:true},
+    {n:"Runway Gen-4 Turbo", live:false},
+    {n:"Google Veo 3.1", live:false},
+    {n:"Kling 3.0", live:false},
+    {n:"Seedance 2.0", live:false},
+  ];
+  const attach = ["Upload image","Image","Video","Product photo","Character","Audio"];
+  const modes = [
+    {id:"supercomputer" as const, label:"Supercomputer"},
+    {id:"cinema" as const, label:"Cinema Studio"},
+  ];
+
+  const updateTask = (id:string, patch:Partial<StudioTask>) => {
+    setTasks(prev=>prev.map(t=>t.id===id ? {...t,...patch} : t));
+  };
+
+  const startGeneration = async () => {
+    if (!prompt.trim()) {
+      setStatus("Prompt required");
+      return;
+    }
+    const id = `${Date.now()}`;
+    const createdAt = new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+    const nextTask: StudioTask = {id,prompt:prompt.trim(),model,status:"queued",createdAt};
+    setTasks(prev=>[nextTask,...prev].slice(0,8));
+    setPreview("");
+    setWorking(true);
+
+    if (model !== "Runway Gen-4.5") {
+      const message = `${model} is coming soon. Runway Gen-4.5 is active now.`;
+      setStatus(message);
+      updateTask(id,{status:"failed",error:message});
+      setWorking(false);
+      return;
+    }
+
+    try {
+      setStatus("Starting Runway generation...");
+      const start = await fetch("/api/generate-video", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({prompt:prompt.trim(), ratio, duration}),
+      });
+      const startData = await start.json() as {ok?:boolean; taskId?:string; status?:string; error?:string};
+      if (!start.ok || !startData.taskId) throw new Error(startData.error || "Runway task could not start.");
+
+      updateTask(id,{status:"running"});
+      setStatus(`Runway task ${startData.status || "queued"}`);
+
+      for (let attempt=1; attempt<=72; attempt++) {
+        await new Promise(r=>setTimeout(r,5000));
+        const check = await fetch(`/api/check-video?taskId=${encodeURIComponent(startData.taskId)}`, {cache:"no-store"});
+        const data = await check.json() as {ok?:boolean; status?:string; output?:unknown; failure?:unknown; error?:string};
+        if (!check.ok) throw new Error(data.error || "Runway status could not be checked.");
+
+        const nextStatus = String(data.status || "running");
+        setStatus(`Rendering: ${nextStatus}`);
+        const lower = nextStatus.toLowerCase();
+        if (lower.includes("fail") || data.failure) throw new Error("Runway generation failed.");
+
+        if (lower.includes("succeed") || lower.includes("complete")) {
+          const output = Array.isArray(data.output) ? data.output : data.output ? [data.output] : [];
+          const url = output.find((item): item is string => typeof item === "string" && item.startsWith("http"));
+          if (!url) throw new Error("Video completed, but no video URL was returned.");
+          setPreview(url);
+          updateTask(id,{status:"completed",videoUrl:url});
+          setStatus("Completed");
+          setWorking(false);
+          return;
+        }
+      }
+      throw new Error("Video is still rendering. Open history and try again in a moment.");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Generation failed.";
+      setStatus(message);
+      updateTask(id,{status:"failed",error:message});
+      setWorking(false);
+    }
+  };
+
+  return (
+    <section id="studio-workspace" style={{maxWidth:1280,margin:"0 auto 56px",padding:"0 16px"}}>
+      <div style={{display:"flex",alignItems:"end",justifyContent:"space-between",gap:16,marginBottom:18,flexWrap:"wrap"}}>
+        <div>
+          <Lbl s="Live workspace"/>
+          <h2 style={{fontSize:"clamp(26px,4vw,48px)",fontWeight:950,letterSpacing:-1.6,marginTop:8}}>Lumenfield AI Studio</h2>
+          <p style={{color:T2,fontSize:14,lineHeight:1.7,maxWidth:620,marginTop:8}}>A real creative workspace with Runway video generation, task history, preview and model routing.</p>
+        </div>
+        <div style={{display:"flex",gap:8,background:S1,border:`1px solid ${B1}`,borderRadius:14,padding:5}}>
+          {modes.map(m=>(
+            <button key={m.id} onClick={()=>setActive(m.id)} className={active===m.id?"bm":"bg"} style={{padding:"9px 16px",fontSize:12,borderRadius:10}}>
+              {m.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{display:"grid",gridTemplateColumns:"250px minmax(0,1fr)",minHeight:720,border:`1px solid ${B1}`,borderRadius:26,overflow:"hidden",background:"#08090b",boxShadow:"0 30px 110px rgba(0,0,0,.42)"}}>
+        <aside style={{background:"#111216",borderRight:`1px solid ${B1}`,padding:16,display:"flex",flexDirection:"column",gap:8}}>
+          <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 10px 16px"}}>
+            <Logo sz={34}/>
+            <div>
+              <div style={{color:T1,fontSize:13,fontWeight:900}}>Lumenfield</div>
+              <div style={{color:T3,fontSize:10}}>AI Studio</div>
+            </div>
+          </div>
+          {["New task","Search","Marketplace  NEW","My Generations","Projects","New project"].map(item=>(
+            <button key={item} className="sb" style={{fontSize:13,padding:"10px 12px",color:item.includes("NEW")?ML:T2}}>
+              {item}
+            </button>
+          ))}
+          <div style={{flex:1}}/>
+          <button className="bm" style={{fontSize:12,padding:"10px 12px"}}>Pricing</button>
+          <button className="bg" style={{fontSize:12,padding:"10px 12px"}}>Log in</button>
+        </aside>
+
+        <div style={{display:"grid",gridTemplateRows:"minmax(0,1fr) auto",minWidth:0}}>
+          <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) 300px",minHeight:0}}>
+            <main style={{position:"relative",overflow:"auto",padding:24,backgroundImage:`linear-gradient(${B1} 1px,transparent 1px),linear-gradient(90deg,${B1} 1px,transparent 1px)`,backgroundSize:"36px 36px"}}>
+              {active==="supercomputer" ? (
+                <div style={{minHeight:450,display:"flex",alignItems:"center",justifyContent:"center",textAlign:"center",position:"relative"}}>
+                  <div style={{position:"absolute",inset:"12% 10%",background:`radial-gradient(circle at 50% 50%,${M}33,transparent 35%),radial-gradient(circle at 30% 35%,rgba(199,255,0,.14),transparent 24%)`,filter:"blur(4px)"}}/>
+                  <div style={{position:"relative",zIndex:1}}>
+                    <div style={{width:150,height:150,borderRadius:"50%",margin:"0 auto 28px",background:`radial-gradient(circle, #c7ff00 0%, ${M} 42%, transparent 68%)`,boxShadow:`0 0 90px ${M}66`,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      <div style={{width:72,height:72,borderRadius:"50%",background:"#c7ff00",boxShadow:"0 0 44px rgba(199,255,0,.95)"}}/>
+                    </div>
+                    {[
+                      ["14%","24%"],["78%","18%"],["18%","74%"],["82%","70%"],["50%","14%"],
+                    ].map(([l,t],i)=>(
+                      <div key={i} style={{position:"absolute",left:l,top:t,width:10,height:10,borderRadius:"50%",background:i%2?M:"#c7ff00",boxShadow:`0 0 20px ${i%2?M:"#c7ff00"}`}}/>
+                    ))}
+                    <h3 style={{fontSize:"clamp(28px,4vw,48px)",fontWeight:950,letterSpacing:-1.5}}>Supercomputer memory</h3>
+                    <p style={{color:T2,fontSize:15,marginTop:10}}>Learning from every generation.</p>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,marginBottom:16,flexWrap:"wrap"}}>
+                    <div>
+                      <h3 style={{fontSize:32,fontWeight:950,letterSpacing:-1.2}}>Cinema Studio</h3>
+                      <p style={{color:T2,fontSize:14,marginTop:6}}>Create cinematic AI videos from prompts, references and product shots.</p>
+                    </div>
+                    <span className="tn">Runway active</span>
+                  </div>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:12,marginBottom:16}}>
+                    <div className="card" style={{padding:16}}>
+                      <Lbl s="Aspect ratio"/>
+                      <div style={{display:"flex",gap:8,marginTop:10,flexWrap:"wrap"}}>
+                        {[["16:9","1280:720"],["9:16","720:1280"],["1:1","1280:720"]].map(([label,value])=>(
+                          <button key={label} onClick={()=>setRatio(value)} className={ratio===value?"bm":"bg"} style={{fontSize:12,padding:"8px 12px"}}>{label}</button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="card" style={{padding:16}}>
+                      <Lbl s="Duration"/>
+                      <div style={{display:"flex",gap:8,marginTop:10}}>
+                        {([5,10] as const).map(d=>(
+                          <button key={d} onClick={()=>setDuration(d)} className={duration===d?"bm":"bg"} style={{fontSize:12,padding:"8px 12px"}}>{d}s</button>
+                        ))}
+                      </div>
+                    </div>
+                    <UZ label="Start Frame" h={96}/>
+                    <UZ label="End Frame" h={96}/>
+                  </div>
+                  <div className="card" style={{minHeight:300,padding:18,display:"flex",alignItems:"center",justifyContent:"center",background:"radial-gradient(circle at 50% 30%,rgba(232,0,111,.18),transparent 34%),#0b0c0f"}}>
+                    {preview ? (
+                      <video src={preview} controls playsInline style={{width:"100%",maxHeight:420,borderRadius:14,background:"#000"}}/>
+                    ) : (
+                      <div style={{textAlign:"center"}}>
+                        <div style={{fontSize:42,marginBottom:10}}>▶</div>
+                        <div style={{fontSize:18,fontWeight:900}}>Video preview</div>
+                        <div style={{color:T3,fontSize:12,marginTop:6}}>Your generated Runway result will appear here.</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </main>
+
+            <aside style={{borderLeft:`1px solid ${B1}`,background:S1,padding:16,overflow:"auto"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+                <h3 style={{fontSize:15,fontWeight:900}}>Generation history</h3>
+                <span style={{fontSize:11,color:T3}}>{tasks.length} tasks</span>
+              </div>
+              <div style={{display:"grid",gap:10}}>
+                {tasks.length===0&&(
+                  <div className="card" style={{padding:16,textAlign:"center",color:T3,fontSize:12,lineHeight:1.6}}>
+                    Your generations will appear here.
+                  </div>
+                )}
+                {tasks.map(t=>(
+                  <div key={t.id} className="card" style={{padding:12}}>
+                    <div style={{display:"flex",justifyContent:"space-between",gap:10,marginBottom:7}}>
+                      <span style={{color:T1,fontSize:12,fontWeight:800}}>{t.model}</span>
+                      <span style={{fontSize:10,color:t.status==="completed"?"#c7ff00":t.status==="failed"?ML:T3,textTransform:"uppercase",fontWeight:900}}>{t.status}</span>
+                    </div>
+                    <div style={{color:T2,fontSize:11,lineHeight:1.45,marginBottom:8}}>{t.prompt.length>78?t.prompt.slice(0,78)+"...":t.prompt}</div>
+                    <div style={{color:T3,fontSize:10,marginBottom:t.videoUrl?8:0}}>{t.createdAt}</div>
+                    {t.videoUrl&&<video src={t.videoUrl} controls playsInline style={{width:"100%",borderRadius:8,background:"#000",marginTop:6}}/>}
+                    {t.error&&<div style={{color:ML,fontSize:10,lineHeight:1.4,marginTop:6}}>{t.error}</div>}
+                  </div>
+                ))}
+              </div>
+            </aside>
+          </div>
+
+          <div style={{borderTop:`1px solid ${B1}`,background:"#111216",padding:16}}>
+            <div style={{display:"grid",gridTemplateColumns:"auto minmax(0,1fr) 220px auto",gap:10,alignItems:"end"}}>
+              <div style={{position:"relative"}}>
+                <button onClick={()=>setPlusOpen(v=>!v)} className="bg" style={{width:44,height:44,padding:0,borderRadius:14,fontSize:20}}>+</button>
+                {plusOpen&&(
+                  <div style={{position:"absolute",bottom:"115%",left:0,width:180,background:S1,border:`1px solid ${B1}`,borderRadius:12,padding:8,boxShadow:"0 20px 60px rgba(0,0,0,.65)",zIndex:20}}>
+                    {attach.map(a=><button key={a} onClick={()=>setPlusOpen(false)} className="sb" style={{color:T2}}>{a}</button>)}
+                  </div>
+                )}
+              </div>
+              <textarea className="inp" value={prompt} onChange={e=>setPrompt(e.target.value)} rows={2} placeholder="Make a cinematic product video from this idea..." style={{resize:"none",minHeight:58,lineHeight:1.5}}/>
+              <select className="sel" value={model} onChange={e=>setModel(e.target.value)} style={{height:44}}>
+                {models.map(m=><option key={m.n} value={m.n}>{m.n}{m.live?"":" — Coming soon"}</option>)}
+              </select>
+              <button className="bm" onClick={startGeneration} disabled={working} style={{height:44,minWidth:124}}>
+                {working?"Generating...":"Generate"}
+              </button>
+            </div>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,marginTop:10,flexWrap:"wrap"}}>
+              <div style={{color:status==="Prompt required" || status.toLowerCase().includes("failed") || status.toLowerCase().includes("secret") ? ML : T3,fontSize:12}}>{status}</div>
+              <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                <span className="chip">Ratio: {ratio==="720:1280"?"9:16":"16:9"}</span>
+                <span className="chip">Duration: {duration}s</span>
+                <span className="chip">Functional: Runway Gen-4.5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
