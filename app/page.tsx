@@ -564,6 +564,7 @@ function ExplorePage({go}:{go:(p:Page)=>void}) {
         </div>
       </section>
       <AIStudioWorkspace/>
+      <AIEngineRoadmap/>
 
       {/* CTA */}
       <section style={{margin:"0 auto 80px",background:S1,border:`1px solid ${B1}`,borderRadius:16,padding:"52px",textAlign:"center",position:"relative",overflow:"hidden",maxWidth:1184}}>
@@ -831,6 +832,79 @@ function AIStudioWorkspace() {
                 <span className="chip">Ratio: {ratio==="720:1280"?"9:16":"16:9"}</span>
                 <span className="chip">Duration: {duration}s</span>
                 <span className="chip">Functional: Runway Gen-4.5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AIEngineRoadmap() {
+  const engines = [
+    {i:"🎬",t:"Video Engine",d:"Runway Gen-4.5 active now. Kling, Veo and Seedance adapters prepared as staged providers.",s:"ACTIVE"},
+    {i:"🖼",t:"Image Engine",d:"Unified image route for prompt, reference, inpaint, upscale and product photography workflows.",s:"READY"},
+    {i:"🎙",t:"Audio Engine",d:"Voiceover, translation, lipsync audio and studio narration can run behind protected server routes.",s:"NEXT"},
+    {i:"📣",t:"Marketing Engine",d:"Product URL intake, hook generation, UGC scripts, avatar selection and ad variation builder.",s:"READY"},
+    {i:"👤",t:"Influencer Engine",d:"Character builder, identity memory, reusable style profiles and campaign-ready talent cards.",s:"READY"},
+    {i:"💳",t:"Credits & Payments",d:"Stripe-ready credit logic with protected paid calls and server-side secret handling.",s:"PLANNED"},
+  ];
+  const routes = [
+    "/api/generate-video",
+    "/api/check-video",
+    "/api/generate/image",
+    "/api/generate/audio",
+    "/api/generate/marketing",
+    "/api/generate/influencer",
+  ];
+  const stack = ["Next.js App Router","TypeScript-safe UI","Server API routes","Runway API secret protected","Generation history","Future Stripe credits"];
+  return (
+    <section style={{maxWidth:1280,margin:"0 auto 56px",padding:"0 16px"}}>
+      <div style={{background:`linear-gradient(135deg,rgba(232,0,111,.12),rgba(255,77,166,.04) 42%,rgba(255,255,255,.02))`,border:`1px solid ${B1}`,borderRadius:26,padding:"28px",position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",inset:0,backgroundImage:`radial-gradient(${M}55 1px, transparent 1px)`,backgroundSize:"22px 22px",opacity:.16}}/>
+        <div style={{position:"relative",zIndex:1}}>
+          <div style={{display:"flex",alignItems:"end",justifyContent:"space-between",gap:18,flexWrap:"wrap",marginBottom:22}}>
+            <div>
+              <Lbl s="AI engine layer"/>
+              <h2 style={{fontSize:"clamp(24px,4vw,44px)",fontWeight:950,letterSpacing:-1.4,marginTop:8}}>Lumenfield production backend map</h2>
+              <p style={{color:T2,fontSize:14,lineHeight:1.7,maxWidth:680,marginTop:8}}>A safe, original architecture for routing image, video, audio, marketing and influencer generation through protected server routes.</p>
+            </div>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+              {stack.map(s=><span key={s} className="chip" style={{cursor:"default"}}>{s}</span>)}
+            </div>
+          </div>
+
+          <div style={{display:"grid",gridTemplateColumns:"minmax(0,1.35fr) minmax(280px,.65fr)",gap:18}}>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:12}}>
+              {engines.map(e=>(
+                <div key={e.t} className="card" style={{padding:18,minHeight:164,position:"relative",overflow:"hidden"}}>
+                  <div style={{position:"absolute",right:-18,top:-18,width:92,height:92,borderRadius:"50%",background:`${M}18`,filter:"blur(8px)"}}/>
+                  <div style={{position:"relative"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",gap:10,alignItems:"center",marginBottom:14}}>
+                      <div style={{width:42,height:42,borderRadius:13,background:S2,border:`1px solid ${B1}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>{e.i}</div>
+                      <span className={e.s==="ACTIVE"?"tn":"tx"}>{e.s}</span>
+                    </div>
+                    <div style={{color:T1,fontSize:14,fontWeight:900,marginBottom:7}}>{e.t}</div>
+                    <div style={{color:T3,fontSize:12,lineHeight:1.65}}>{e.d}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="card" style={{padding:20,background:"rgba(5,5,5,.72)",backdropFilter:"blur(18px)"}}>
+              <Lbl s="Protected routes"/>
+              <div style={{display:"grid",gap:8,marginTop:14}}>
+                {routes.map(r=>(
+                  <div key={r} style={{display:"flex",alignItems:"center",gap:10,background:S2,border:`1px solid ${B1}`,borderRadius:10,padding:"10px 12px"}}>
+                    <span style={{width:8,height:8,borderRadius:"50%",background:M,boxShadow:`0 0 16px ${M}`}}/>
+                    <code style={{color:T2,fontSize:12,wordBreak:"break-all"}}>{r}</code>
+                  </div>
+                ))}
+              </div>
+              <div style={{marginTop:18,padding:14,borderRadius:14,background:`${M}12`,border:`1px solid ${M}33`}}>
+                <div style={{color:ML,fontSize:12,fontWeight:900,marginBottom:6}}>Security rule</div>
+                <p style={{color:T2,fontSize:12,lineHeight:1.6}}>API keys stay server-side. Client buttons call Lumenfield routes, and paid provider calls run only through protected backend endpoints.</p>
               </div>
             </div>
           </div>
