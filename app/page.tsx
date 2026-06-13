@@ -232,7 +232,7 @@ function Logo({sz=28}:{sz?:number}) {
   return (
     <div style={{display:"flex",alignItems:"center",gap:8}}>
       <div style={{width:sz,height:sz,borderRadius:7,background:`linear-gradient(135deg,${M},${MD})`,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:sz*.5,color:"#fff",flexShrink:0}}>L</div>
-      <span style={{color:T1,fontWeight:800,fontSize:Math.max(12,sz*.42),letterSpacing:-.5}}>Lumen<span style={{color:M}}>field</span><span style={{color:T3,fontWeight:700}}>-AI-Studio</span></span>
+      <span style={{fontWeight:800,fontSize:Math.max(12,sz*.42),letterSpacing:-.5,whiteSpace:"nowrap",background:`linear-gradient(90deg,${T1} 0%,${T1} 42%,${M} 43%,${ML} 62%,${T3} 63%)`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Lumenfield-AI-Studio</span>
     </div>
   );
 }
