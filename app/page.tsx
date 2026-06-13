@@ -1040,7 +1040,7 @@ function CinemaPage() {
   const [videoUrl,setVideoUrl] = useState("");
   const [imageUrl,setImageUrl] = useState("");
   const [apiError,setApiError] = useState("");
-  const [mode,setMode]         = useState<"image"|"video">("video");
+  const [mode,setMode]         = useState<"image"|"video">("image");
 
   const gen = async () => {
     if (!prompt.trim()) return;
@@ -1100,9 +1100,9 @@ function CinemaPage() {
           )}
           {!loading&&apiError&&results.length===0&&(
             <div className="fi" style={{maxWidth:520,textAlign:"center",background:S1,border:`1px solid ${M}66`,borderRadius:14,padding:24}}>
-              <div style={{color:ML,fontSize:13,fontWeight:900,marginBottom:8}}>Runway connection needs attention</div>
+              <div style={{color:ML,fontSize:13,fontWeight:900,marginBottom:8}}>FAL connection needs attention</div>
               <div style={{color:T2,fontSize:12,lineHeight:1.7}}>{apiError}</div>
-              <div style={{color:T3,fontSize:11,marginTop:12}}>Check `RUNWAYML_API_SECRET` in Vercel Environment Variables, then redeploy.</div>
+              <div style={{color:T3,fontSize:11,marginTop:12}}>Check `FAL_KEY` in Vercel Environment Variables, then redeploy. If image works but video says Forbidden, the selected FAL video model is not enabled for that account.</div>
             </div>
           )}
           {loading&&(
