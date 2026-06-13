@@ -1,89 +1,50 @@
 import { fal } from "@fal-ai/client";
-import { NextRequest, NextResponse } from "next/server";
 
-import { getModel } from "@/lib/models";
+export const runtime = "nodejs";
 
-type StudioGenerateRequest = {
-  modelId?: string;
-  params?: Record<string, unknown>;
-  prompt?: string;
-};
-
-type StudioResult = {
-  data?: {
-    audio?: { url?: string };
-    images?: Array<{ url?: string }>;
-    video?: { url?: string };
-  };
-  audio?: { url?: string };
-  images?: Array<{ url?: string }>;
-  video?: { url?: string };
-};
-
-function findAssetUrl(result: StudioResult): string | undefined {
-  return (
-    result.data?.images?.[0]?.url ??
-    result.data?.video?.url ??
-    result.data?.audio?.url ??
-    result.images?.[0]?.url ??
-    result.video?.url ??
-    result.audio?.url
-  );
-}
-
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
-    const { modelId, prompt, params } = (await req.json()) as StudioGenerateRequest;
-    const model = getModel(modelId ?? "flux-2") ?? getModel("flux-2");
-
-    if (!model) {
-      return NextResponse.json({ error: "No model registry found" }, { status: 500 });
+    const falKey = process.env.FAL_KEY;
+    if (!falKey) {
+      return Response.json({ ok: false, error: "FAL_KEY eksik." }, { status: 500 });
     }
 
-    if (!prompt || prompt.trim().length === 0) {
-      return NextResponse.json({ error: "Prompt is required" }, { status: 400 });
+    fal.config({ credentials: falKey });
+
+    const body = await req.json();
+    const { prompt, modelId, params } = body;
+
+    if (!prompt?.trim()) {
+      return Response.json({ ok: false, error: "Prompt gerekli." }, { status: 400 });
     }
 
-    if (model.provider !== "fal") {
-      return NextResponse.json(
-        { error: `${model.label} needs a separate provider integration` },
-        { status: 400 },
-      );
-    }
+    const videoModels = ["cs35","cs30","cs25","seedance-2","kling-3","veo-3-1","happyhorse","grok-video","minimax-hailuo"];
+    const isVideo = videoModels.includes(modelId);
 
-    if (!process.env.FAL_KEY) {
-      return NextResponse.json(
-        {
-          error: "FAL_KEY is not configured",
-          model: model.label,
-          input: { prompt, ...model.defaultParams, ...params },
+    if (isVideo) {
+      const result = await fal.subscribe("fal-ai/kling-video/v1.6/standard/text-to-video", {
+        input: {
+          prompt: prompt.trim(),
+          duration: String(params?.duration ?? "5"),
+          aspect_ratio: params?.aspect_ratio ?? "16:9",
         },
-        { status: 503 },
-      );
+      });
+      const url = (result.data as { video?: { url?: string } }).video?.url;
+      return Response.json({ ok: true, type: "video", url });
+    } else {
+      const result = await fal.subscribe("fal-ai/flux/schnell", {
+        input: {
+          prompt: prompt.trim(),
+          image_size: "landscape_16_9",
+          num_images: 1,
+        },
+      });
+      const url = (result.data as { images?: { url: string }[] }).images?.[0]?.url;
+      return Response.json({ ok: true, type: "image", url });
     }
 
-    fal.config({ credentials: process.env.FAL_KEY });
-
-    const result = (await fal.subscribe(model.endpoint, {
-      input: { prompt, ...model.defaultParams, ...params },
-    })) as StudioResult;
-
-    const url = findAssetUrl(result);
-
-    if (!url) {
-      return NextResponse.json(
-        { error: "The provider did not return an asset URL", result },
-        { status: 502 },
-      );
-    }
-
-    return NextResponse.json({ label: model.label, type: model.type, url });
   } catch (error) {
-    const detail = error instanceof Error ? error.message : "Unknown error";
-
-    return NextResponse.json(
-      { error: "Studio generation failed", detail },
-      { status: 500 },
-    );
+    const message = error instanceof Error ? error.message : "Üretim başarısız.";
+    return Response.json({ ok: false, error: message }, { status: 500 });
   }
 }
